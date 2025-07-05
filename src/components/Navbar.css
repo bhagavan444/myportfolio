@@ -1,0 +1,126 @@
+/* Navbar Container */
+.navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #7e22ce, #db2777, #ef4444);
+  box-shadow: 0 4px 12px rgba(231, 67, 145, 0.4);
+  z-index: 9999;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar Inner Container */
+.navbar-container nav {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+/* Logo Styling */
+.navbar-logo {
+  color: white;
+  font-weight: 800;
+  font-size: 1.75rem;
+  user-select: none;
+  letter-spacing: 0.05em;
+  cursor: default;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Nav Links Container */
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Individual Nav Link */
+.nav-link {
+  position: relative;
+  padding: 10px 20px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 9999px; /* fully rounded */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Glow and Scale on Hover */
+.nav-link:hover {
+  background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
+  box-shadow:
+    0 0 8px #ec4899,
+    0 0 16px #8b5cf6,
+    0 0 24px #3b82f6;
+  color: white;
+  transform: scale(1.05);
+  text-decoration: none;
+  z-index: 10;
+}
+
+/* Underline Animation on Hover */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
+  border-radius: 9999px;
+  transition: width 0.4s ease, left 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 70%;
+  left: 50%;
+}
+
+/* Navbar Icons Container */
+.navbar-icons {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.25rem;
+  color: white;
+}
+
+/* Icons Hover Effects */
+.navbar-icons a {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-icons a:hover {
+  color: #f472b6; /* pink-400 */
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 6px #f472b6);
+}
+
+/* Responsive Mobile Menu Icon */
+.menu-icon {
+  display: none;
+  font-size: 1.75rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile Menu Styling */
+@media (max-width: 767px) {
+  .navbar-links {
+    display: none; /* hide desktop links on mobile */
+  }
+  .navbar-icons {
+    display: none; /* hide social icons on mobile */
+  }
+  .menu-icon {
+    display: block;
+  }
+}

@@ -1,0 +1,180 @@
+.projects-container {
+  width: 100vw;           /* Full viewport width */
+  max-width: none;        /* No max width limit */
+  margin: 4rem 0;         /* Vertical margin only */
+  padding: 0 2rem 4rem;   /* Horizontal padding for spacing */
+  box-sizing: border-box; /* Include padding in width */
+  
+  user-select: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  border-radius: 1.2rem;
+  box-shadow:
+    0 0 50px rgba(255, 255, 255, 0.05),
+    inset 0 0 100px rgba(255, 255, 255, 0.03);
+}
+
+
+/* Title with gradient text and glow */
+.projects-title {
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 3.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #7f5af0, #f43f5e, #fb7185);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 12px rgba(255, 71, 130, 0.7);
+  user-select: text;
+}
+
+/* Grid layout with gap and responsive columns */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Project card styles */
+.project-card {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 1rem;
+  padding: 2.2rem 2rem 2.5rem;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #f0f0f0;
+  cursor: default;
+  user-select: text;
+}
+
+/* Lift card and glow on hover */
+.project-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow:
+    0 20px 45px rgba(244, 63, 94, 0.45),
+    0 0 30px rgba(244, 63, 94, 0.35);
+}
+
+/* Project title styling */
+.project-card h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 1.1rem;
+  color: #ff5f7e;
+  text-shadow: 0 0 8px #ff5f7e;
+}
+
+/* Project description styling */
+.project-card p {
+  flex-grow: 1;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #d1d1d1;
+  margin-bottom: 1.4rem;
+  user-select: text;
+}
+
+/* Technology line styling */
+.tech-used {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fbc8d4;
+  margin-bottom: 2rem;
+  user-select: text;
+}
+
+/* Button styles */
+.visit-btn {
+  align-self: flex-start;
+  background: linear-gradient(90deg, #fb7185, #f43f5e);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow:
+    0 6px 20px rgba(244, 63, 94, 0.65);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+/* Button hover */
+.visit-btn:hover,
+.visit-btn:focus {
+  background: linear-gradient(90deg, #f43f5e, #ec4899);
+  box-shadow:
+    0 8px 30px rgba(236, 72, 153, 0.85);
+  outline: none;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .projects-container {
+    margin: 2.5rem 1rem;
+    padding-bottom: 3rem;
+  }
+
+  .projects-title {
+    font-size: 2rem;
+  }
+
+  .project-card {
+    padding: 1.8rem 1.2rem 2rem;
+  }
+
+  .project-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .project-card p,
+  .tech-used {
+    font-size: 0.9rem;
+  }
+
+  /* Filter bar container */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 2rem;
+  user-select: none;
+}
+
+/* Filter buttons */
+.filter-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  color: #ddd;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+/* Active filter */
+.filter-btn.active,
+.filter-btn:hover,
+.filter-btn:focus {
+  background: linear-gradient(90deg, #fb7185, #f43f5e);
+  color: white;
+  box-shadow: 0 6px 25px rgba(244, 63, 94, 0.7);
+  outline: none;
+}
+
+}
