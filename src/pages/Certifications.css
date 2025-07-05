@@ -1,14 +1,13 @@
 .certifications-container {
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically center content */
+  justify-content: center;
   padding: 3rem 2rem;
   max-width: 1100px;
   margin: 0 auto;
   user-select: none;
 }
-
 
 .cert-title {
   font-size: 3rem;
@@ -23,20 +22,22 @@
   user-select: text;
 }
 
-/* Grid container for cards */
+/* Grid for cards */
 .cert-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 🔥 Fixed to 2 columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
+
+/* Responsive: Tablets */
 @media (max-width: 768px) {
   .cert-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
-/* Responsive adjustments for smaller screens */
 
-/* Each certification card */
+/* Certification card */
 .cert-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);
@@ -52,7 +53,12 @@
   user-select: none;
 }
 
-/* Certificate name text with gradient color */
+.cert-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* Certificate name */
 .cert-name {
   font-weight: 700;
   font-size: 1.15rem;
@@ -88,13 +94,43 @@
   outline: none;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
+/* 📱 Mobile Optimization */
+@media (max-width: 640px) {
   .certifications-container {
     padding: 2rem 1rem;
   }
 
   .cert-title {
     font-size: 2.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .cert-card {
+    padding: 1.2rem 1.4rem;
+  }
+
+  .cert-name {
+    font-size: 1rem;
+  }
+
+  .cert-download-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.1rem;
+  }
+}
+
+/* 📱 Extra Small Devices */
+@media (max-width: 400px) {
+  .cert-title {
+    font-size: 1.75rem;
+  }
+
+  .cert-name {
+    font-size: 0.95rem;
+  }
+
+  .cert-download-btn {
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
   }
 }

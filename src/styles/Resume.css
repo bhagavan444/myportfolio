@@ -1,7 +1,7 @@
 /* Container & card */
 .resume-container {
   min-height: 100vh;
-  padding: 0;               /* remove padding */
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,46 +9,54 @@
   color: #e0e0e0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   user-select: none;
+  overflow-x: hidden;
+  text-align: center;
 }
 
 .resume-card {
-  width: 100vw;             /* full viewport width */
-  height: 100vh;            /* full viewport height */
-  border-radius: 0;         /* remove rounded corners */
+  width: 100vw;
+  height: 100vh;
   padding: 3rem 2rem;
-  max-width: none;
-  max-height: none;
-  box-shadow: none;         /* optional: remove shadow */
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: none;
+  max-height: none;
 }
 
-
+/* Title */
 .resume-title {
   font-size: 2.5rem;
   font-weight: 900;
   margin-bottom: 1rem;
+  margin-right: 20px;
   color: #06b6d4;
   text-shadow: 0 0 10px #06b6d4;
 }
 
+/* Description */
 .resume-description {
   font-size: 1.15rem;
   color: #cbd5e1;
   margin-bottom: 2.5rem;
   line-height: 1.5;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Buttons */
+/* Button group */
 .resume-btn-group {
   display: flex;
   justify-content: center;
   gap: 1.8rem;
+  flex-wrap: wrap;
 }
 
+/* Buttons */
 .resume-view-btn,
 .resume-download-btn {
   background: linear-gradient(90deg, #06b6d4, #10b981);
@@ -126,4 +134,58 @@
   border: none;
   border-radius: 0 0 1rem 1rem;
   user-select: text;
+}
+
+/* 📱 Responsive styles */
+@media (max-width: 768px) {
+  .resume-title {
+    font-size: 2rem;
+  }
+
+  .resume-description {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .resume-btn-group {
+    gap: 1.2rem;
+    margin-right: 30px;
+  }
+
+  .resume-view-btn,
+  .resume-download-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .resume-modal-content {
+    width: 90vw;
+    height: 80vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-title {
+    font-size: 1.65rem;
+  }
+
+  .resume-description {
+    font-size: 0.95rem;
+  }
+
+  .resume-view-btn,
+  .resume-download-btn {
+    font-size: 0.95rem;
+    padding: 0.75rem 1.3rem;
+  }
+
+  .resume-modal-content {
+    width: 95vw;
+    height: 75vh;
+    border-radius: 0.8rem;
+  }
+
+  .resume-close-btn {
+    font-size: 1.5rem;
+  }
 }
