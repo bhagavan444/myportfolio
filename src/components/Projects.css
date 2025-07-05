@@ -153,15 +153,19 @@
   .projects-container {
     margin: 2.5rem 1rem;
     padding: 0 1rem 3rem;
+    margin-right: 20px;
   }
 
   .projects-title {
     font-size: 2rem;
     margin-bottom: 2.5rem;
+    margin-right: 20px;
   }
 
   .project-card {
     padding: 1.8rem 1.2rem 2rem;
+    margin-right: 50px;
+    padding-right: 0%;
   }
 
   .project-card h3 {

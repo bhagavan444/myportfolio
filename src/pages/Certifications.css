@@ -80,6 +80,7 @@
   color: white;
   font-weight: 700;
   font-size: 1rem;
+  margin-right: 50px;
   border-radius: 9999px;
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.7);
   text-decoration: none;
@@ -123,6 +124,7 @@
 @media (max-width: 400px) {
   .cert-title {
     font-size: 1.75rem;
+    margin-right: 35px;
   }
 
   .cert-name {
@@ -134,3 +136,6 @@
     padding: 0.45rem 1rem;
   }
 }
+
+
+

@@ -3,14 +3,13 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  width: 100%; /* ✅ Fix width overflow on mobile */
+  width: 100%;
   padding: 2rem 1rem;
   background: linear-gradient(135deg, #1e3a8a, #7e22ce, #db2777, #f59e0b);
   background-size: 400% 400%;
   animation: gradientMove 10s ease infinite;
   box-sizing: border-box;
-  /* margin-top: 30px; */
-  overflow-x: hidden; /* ✅ Prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
 @keyframes gradientMove {
@@ -21,15 +20,19 @@
 
 .beast-contact-card {
   width: 100%;
-  max-width: 500px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
+  max-width: 500px; /* ✅ Controls the width of the contact form */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 0 25px rgba(255, 0, 128, 0.6), 0 0 50px rgba(0, 255, 255, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  animation: pulseCard 2.5s infinite alternate;
-  box-sizing: border-box;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ Center form elements horizontally */
+  transition: transform 0.4s ease;
+  align-items: center;
+  display-content: center;
 }
 
 @keyframes pulseCard {
@@ -114,6 +117,7 @@
 @media (max-width: 768px) {
   .beast-contact-card {
     padding: 1.5rem;
+    
   }
 
   .beast-contact-title {
@@ -149,4 +153,6 @@
   .beast-contact-icons a {
     font-size: 1.4rem;
   }
+
+  
 }

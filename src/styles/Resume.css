@@ -167,10 +167,13 @@
 @media (max-width: 480px) {
   .resume-title {
     font-size: 1.65rem;
+    padding-left: 0%;
+    margin-right: 50px;
   }
 
   .resume-description {
     font-size: 0.95rem;
+    margin-right: 40px;
   }
 
   .resume-view-btn,
