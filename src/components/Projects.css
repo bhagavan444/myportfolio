@@ -1,6 +1,6 @@
+/* 🌌 Project Section Container */
 .projects-container {
   width: 100vw;
-  max-width: none;
   margin: 4rem 0;
   padding: 0 2rem 4rem;
   box-sizing: border-box;
@@ -13,9 +13,10 @@
     0 0 50px rgba(255, 255, 255, 0.05),
     inset 0 0 100px rgba(255, 255, 255, 0.03);
   overflow-x: hidden;
+  animation: fadeIn 1.2s ease-in-out;
 }
 
-/* Title with gradient */
+/* 🌈 Title Styling */
 .projects-title {
   font-size: 3rem;
   font-weight: 900;
@@ -27,17 +28,17 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 12px rgba(255, 71, 130, 0.7);
-  user-select: text;
+  animation: fadeSlideDown 1s ease-in-out;
 }
 
-/* Grid layout */
+/* 🔲 Project Grid */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2.5rem;
 }
 
-/* Project card */
+/* 🧊 Project Card */
 .project-card {
   background: rgba(255, 255, 255, 0.07);
   border-radius: 1rem;
@@ -46,16 +47,17 @@
     0 8px 20px rgba(0, 0, 0, 0.3),
     inset 0 0 20px rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(18px);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #f0f0f0;
   cursor: default;
   user-select: text;
+  gap: 1rem;
+  animation: cardFadeUp 1s ease-in-out;
 }
 
-/* Hover effect */
 .project-card:hover {
   transform: translateY(-12px) scale(1.03);
   box-shadow:
@@ -63,35 +65,30 @@
     0 0 30px rgba(244, 63, 94, 0.35);
 }
 
-/* Project title */
+/* 📝 Card Title */
 .project-card h3 {
   font-size: 1.6rem;
   font-weight: 800;
-  margin-bottom: 1.1rem;
   color: #ff5f7e;
   text-shadow: 0 0 8px #ff5f7e;
 }
 
-/* Description */
+/* 📄 Description */
 .project-card p {
   flex-grow: 1;
   font-size: 1rem;
   line-height: 1.5;
   color: #d1d1d1;
-  margin-bottom: 1.4rem;
-  user-select: text;
 }
 
-/* Tech used */
+/* 🛠️ Technologies */
 .tech-used {
   font-size: 0.9rem;
   font-weight: 700;
   color: #fbc8d4;
-  margin-bottom: 2rem;
-  user-select: text;
 }
 
-/* Visit button */
+/* 🔗 Visit Button */
 .visit-btn {
   align-self: flex-start;
   background: linear-gradient(90deg, #fb7185, #f43f5e);
@@ -102,19 +99,18 @@
   border-radius: 9999px;
   text-decoration: none;
   box-shadow: 0 6px 20px rgba(244, 63, 94, 0.65);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  user-select: none;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s;
 }
 
-/* Button hover */
 .visit-btn:hover,
 .visit-btn:focus {
   background: linear-gradient(90deg, #f43f5e, #ec4899);
   box-shadow: 0 8px 30px rgba(236, 72, 153, 0.85);
+  transform: scale(1.05);
   outline: none;
 }
 
-/* Filter bar container */
+/* 🧪 Filter Bar */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -124,7 +120,6 @@
   user-select: none;
 }
 
-/* Filter buttons */
 .filter-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -138,7 +133,6 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Active & hover filter */
 .filter-btn.active,
 .filter-btn:hover,
 .filter-btn:focus {
@@ -147,7 +141,99 @@
   box-shadow: 0 6px 25px rgba(244, 63, 94, 0.7);
   outline: none;
 }
+
+/* 📱 Responsive - Mobile */
 @media (max-width: 480px) {
+  .projects-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1.5rem 1rem;
+  }
+
+  .projects-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .project-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1.2rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .project-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .project-card p,
+  .tech-used {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .visit-btn {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .projects-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* 🌟 Animations */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+  @media (max-width: 480px) {
   .projects-container {
     display: flex;
     flex-direction: column;
@@ -155,6 +241,7 @@
     justify-content: flex-start;
     padding: 1.5rem 1rem;
     box-sizing: border-box;
+  }
   }
 
   .projects-grid {
@@ -217,7 +304,6 @@
     margin-bottom: 2rem;
     color: #fff;
   }
-}
 
   .project-card {
     padding: 1.5rem;
@@ -303,3 +389,4 @@
     background-position: 0% 50%;
   }
 }
+

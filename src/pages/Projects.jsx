@@ -38,7 +38,7 @@ const projectData = [
     tech: "Flask, Scikit-learn, Pandas, React, HTML/CSS, Bootstrap",
     link: "https://github.com/bhagavan444",
   },
-  {}
+  
 ];
 
 const Projects = () => {
