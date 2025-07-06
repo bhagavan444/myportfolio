@@ -15,9 +15,9 @@ const projectData = [
     description:
       "Developed a deep learning-based Flask web app using MobileNetV2 (Transfer Learning) to detect whether uploaded images of fruits or vegetables are healthy or rotten. Trained on a custom Kaggle dataset with real-world image categories like Fresh Apple, Rotten Tomato, etc. Features include real-time prediction, smooth UI with animated cards, and responsive design.",
     tech: "TensorFlow, Keras, MobileNetV2, Flask, React, CSS3, Python",
-    link: "https://github.com/bhagavan444/fruit-veg-classifier",
-  },
-  {
+    link: "https://github.com/bhagavan444/smartbidgeproject",
+  }, 
+  {   
     title: "🎯 Career Path Recommendation System",
     description:
       "Machine Learning-based web application that suggests suitable career paths based on user’s academic background, skillset, and interests. Collected real-world career data, applied classification algorithms, and built a Flask backend for predictions. Frontend displays dynamic suggestions, career roadmap, and learning resources.",
@@ -35,25 +35,25 @@ const projectData = [
     title: "Fake News Detector",
     description: "An AI-powered web application using NLP and machine learning to classify news articles as real or fake based on their content.",
     tech:"Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS",
-    github: "https://github.com/bhagavan444/fake-news-detector"
+    link: "https://github.com/bhagavan444/fake-news-detector"
   },
   {
     title: "Smart Career Chatbot",
     description: "An intelligent career counseling chatbot built with LangChain and OpenAI API that interacts with students and suggests career paths.",
     tech: "LangChain, OpenAI API, Flask, React",
-    github: "https://github.com/bhagavan444/smart-career-chatbot"
+    link: "https://github.com/bhagavan444/smart-career-chatbot"
   },
    {
     title: "Diabetes Predictor",
     description: "A machine learning-based Flask web app that predicts the likelihood of diabetes using medical input data. Includes a user-friendly UI.",
     tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
-    github: "https://github.com/bhagavan444/diabetes-predictor-app"
+    link: "https://github.com/bhagavan444/diabetes-predictor-app"
   },
   {
     title: "Career Path Recommendation System",
     description: "A smart recommendation system that analyzes skills and interests to suggest suitable career paths using ML and Flask web interface.",
     tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
-    github: "https://github.com/bhagavan444/career-path-project"
+    link : "https://github.com/bhagavan444/career-path-project"
   }  
 ];
 
