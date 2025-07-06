@@ -22,23 +22,39 @@ const projectData = [
     description:
       "Machine Learning-based web application that suggests suitable career paths based on user’s academic background, skillset, and interests. Collected real-world career data, applied classification algorithms, and built a Flask backend for predictions. Frontend displays dynamic suggestions, career roadmap, and learning resources.",
     tech: "Python, Flask, React.js, Scikit-learn, Pandas, HTML/CSS",
-    link: "https://github.com/bhagavan444",
+    link: "https://github.com/bhagavan444/career-path-project",
   },
   {
     title: "💻 Online 2nd Hand Electronics Selling Platform",
     description:
       "Developed during a 24-hour hackathon, this is a full-stack web platform for users to list and buy second-hand electronic products. Features include secure user login, product image uploads, real-time messaging, and categorized listings. This was built using MERN stack and implemented in a team collaboration setup.",
     tech: "MongoDB, Express, React, Node.js, Cloudinary, Socket.io",
-    link: "https://github.com/bhagavan444",
+    link: "https://github.com/bhagavan444/hacakthon-project",
   },
   {
-    title: "❤️ Heart Disease Prediction App",
-    description:
-      "A Flask-based medical diagnostic tool that predicts the presence of heart disease using user inputs such as age, cholesterol levels, chest pain type, etc. Built with Logistic Regression and Random Forest models trained on UCI dataset. Frontend provides a smooth UI with live prediction and health recommendations.",
-    tech: "Flask, Scikit-learn, Pandas, React, HTML/CSS, Bootstrap",
-    link: "https://github.com/bhagavan444",
+    title: "Fake News Detector",
+    description: "An AI-powered web application using NLP and machine learning to classify news articles as real or fake based on their content.",
+    tech:"Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS",
+    github: "https://github.com/bhagavan444/fake-news-detector"
   },
-  
+  {
+    title: "Smart Career Chatbot",
+    description: "An intelligent career counseling chatbot built with LangChain and OpenAI API that interacts with students and suggests career paths.",
+    tech: "LangChain, OpenAI API, Flask, React",
+    github: "https://github.com/bhagavan444/smart-career-chatbot"
+  },
+   {
+    title: "Diabetes Predictor",
+    description: "A machine learning-based Flask web app that predicts the likelihood of diabetes using medical input data. Includes a user-friendly UI.",
+    tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
+    github: "https://github.com/bhagavan444/diabetes-predictor-app"
+  },
+  {
+    title: "Career Path Recommendation System",
+    description: "A smart recommendation system that analyzes skills and interests to suggest suitable career paths using ML and Flask web interface.",
+    tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
+    github: "https://github.com/bhagavan444/career-path-project"
+  }  
 ];
 
 const Projects = () => {
