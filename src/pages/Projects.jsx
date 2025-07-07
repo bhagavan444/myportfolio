@@ -8,7 +8,7 @@ const projectData = [
     description:
       "An intelligent MERN stack application that allows users to create professional resumes using modern templates, and evaluate them using ATS (Applicant Tracking System) scoring. Integrated Google and GitHub authentication, dynamic form handling, and PDF/Word export features. Resume data is stored in MongoDB, and scoring is based on keyword matching using a Node.js API.",
     tech: "MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML2PDF",
-    link: "https://github.com/bhagavan444/resumeanalyzer",
+    link: "https://github.com/bhagavan444/resumebuilder",
   },
   {
     title: "🍏 Fruit & Vegetable Disease Classifier",
@@ -49,12 +49,8 @@ const projectData = [
     tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
     link: "https://github.com/bhagavan444/diabetes-predictor-app"
   },
-  {
-    title: "Career Path Recommendation System",
-    description: "A smart recommendation system that analyzes skills and interests to suggest suitable career paths using ML and Flask web interface.",
-    tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
-    link : "https://github.com/bhagavan444/career-path-project"
-  }  
+  
+    
 ];
 
 const Projects = () => {
