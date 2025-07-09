@@ -45,7 +45,7 @@ const Home = () => {
       >
         Rising Final Year B.Tech Student Specialized in{" "}
         <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 animate-text-glow font-extrabold">
-          AI, Web & ML
+          AI ,Data Science ,ML & Web
           <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-full animate-gradient-underline"></span>
         </span>
       </motion.h1>
