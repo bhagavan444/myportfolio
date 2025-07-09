@@ -86,8 +86,9 @@ const Home = () => {
           <h2 className="text-4xl font-extrabold mb-6 text-white drop-shadow-lg"></h2>
           <p className="text-lg text-gray-300 leading-relaxed mb-6">
             I’m a passionate and highly motivated{" "}
-            <strong>Final Year B.Tech AI&DS student</strong>
-            specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
+            <strong>Final Year B.Tech AI&DS student </strong>
+            <br></br>
+            Specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
             With strong hands-on experience in full-stack projects (MERN), Python, and Data Science,
             I love solving real-world problems with clean, intelligent code.
           </p>
