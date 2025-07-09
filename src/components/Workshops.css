@@ -1,105 +1,177 @@
+/* ⚡ Beast Neon Background */
 .workshops-container {
-  width: 100vw;            /* full viewport width */
-  min-height: 100vh;       /* full viewport height */
-  padding: 3rem 2rem 5rem;
-  background: linear-gradient(135deg, #1f4037, #99f2c8);
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #0f172a;
-  user-select: none;
-  box-sizing: border-box;  /* ensure padding inside width */
-  overflow-x: hidden;      /* prevent horizontal scroll */
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #ff00aa, #7e22ce, #00ffff, #ff00aa);
+  background-size: 600% 600%;
+  animation: pulseBackground 12s ease infinite;
+  box-sizing: border-box;
+  overflow-x: hidden;
+   width: 100vw;
+  height: 100vh;
+
 }
 
+@keyframes pulseBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 🔥 Section Title with animated gradient text */
 .section-title {
   font-size: 3rem;
   font-weight: 900;
-  margin-bottom: 3rem;
-  color: #065f46;
-  text-shadow: 0 0 8px #22c55e88;
-  letter-spacing: 1.5px;
-  animation: glowPulse 3s ease-in-out infinite;
+  background: linear-gradient(90deg, #f472b6, #00ffff, #f472b6);
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: glowTitle 5s linear infinite;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  text-shadow: 0 0 15px #ff00aa88;
 }
 
-/* Glassmorphic card */
+@keyframes glowTitle {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* 🧊 Glowing Glass Card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 2rem 2.5rem;
-  max-width: 700px;    /* slightly wider for full screen feel */
-  width: 90%;
-  margin-bottom: 2.8rem;
-  color: #064e3b;
-  cursor: default;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  user-select: text;
+  width: 100%;
+  max-width: 750px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(20px);
+  position: relative;
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
+  transition: all 0.4s ease;
+  animation: cardFadeIn 1s ease forwards;
 }
 
 .glass-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow:
-    0 12px 40px rgba(34, 197, 94, 0.5),
-    0 0 25px #22c55eaa inset;
+  transform: scale(1.03);
+  box-shadow: 0 0 40px rgba(255, 0, 128, 0.6), 0 0 60px rgba(0, 255, 255, 0.3);
 }
 
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 💫 Neon Pulse Border */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  z-index: -1;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ff00ff, #00ffff, #ff00aa);
+  background-size: 400% 400%;
+  animation: pulseBorder 10s ease infinite;
+  filter: blur(18px);
+}
+
+@keyframes pulseBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 💡 Card Titles */
 .card-title {
   font-size: 1.8rem;
+  color: #00ffff;
   font-weight: 700;
-  margin-bottom: 1.2rem;
-  color: #16a34a;
-  text-shadow: 0 0 5px #22c55e;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 12px #00ffffaa;
+}
+
+/* 📚 Card Text */
+.glass-card p {
+  font-size: 1.1rem;
+  color: #f1f5f9;
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }
 
 .workshop-list {
-  list-style: none;
-  padding-left: 0;
   font-size: 1.1rem;
-  line-height: 1.6;
-  color: #064e3b;
+  color: #e2e8f0;
+  line-height: 1.8;
+  padding-left: 1.5rem;
 }
 
 .workshop-list li {
+  position: relative;
   margin-bottom: 0.7rem;
-  transition: color 0.3s ease;
 }
 
-.workshop-list li:hover {
-  color: #22c55e;
+.workshop-list li::before {
+  content: "⚡";
+  position: absolute;
+  left: -1.5rem;
+  color: #facc15;
+  animation: flicker 1.2s infinite alternate;
+}
+
+@keyframes flicker {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0.6; transform: scale(1.2); }
 }
 
 .tag {
-  margin-top: 1.5rem;
-  font-weight: 600;
-  color: #065f46;
   font-style: italic;
-  letter-spacing: 1px;
-  user-select: none;
+  color: #ff66cc;
+  text-shadow: 0 0 10px #ff66ccaa;
+  font-size: 1rem;
+  margin-top: 1rem;
 }
 
-/* Glow pulse animation for title */
-@keyframes glowPulse {
-  0%, 100% {
-    text-shadow: 0 0 8px #22c55e88;
-  }
-  50% {
-    text-shadow: 0 0 18px #22c55eee;
-  }
-}
-
-/* Responsive tweaks */
+/* ✅ Responsive */
 @media (max-width: 768px) {
   .section-title {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
   }
 
   .glass-card {
-    max-width: 95%;
-    padding: 1.5rem 1.8rem;
+    padding: 1.5rem;
+  }
+
+  .workshop-list {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .glass-card p,
+  .workshop-list {
+    font-size: 0.95rem;
+  }
+
+  .tag {
+    font-size: 0.9rem;
   }
 }

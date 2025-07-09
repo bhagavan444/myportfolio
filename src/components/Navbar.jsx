@@ -17,11 +17,11 @@ const links = [
   "Home",
   "Education",
   "MySkills",
-  "Personal Details",
   "Projects",
   "Certifications",
   "Resume",
   "Workshops & Hacathons",
+  "Personal Details",
   "Contact",
 ];
 
