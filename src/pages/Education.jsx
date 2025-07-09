@@ -5,7 +5,7 @@ import "./Education.css"; // ✅ Link your CSS here
 const educationData = [
   {
     sno: 1,
-    qualification: "B.Tech - AI & DS",
+    qualification: "B Tech - Artifical Intelligence And Data Science",
     board: "JNTUK University",
     college: "Ramachandra College of Engineering",
     cgpa: "8.1 CGPA",

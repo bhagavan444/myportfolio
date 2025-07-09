@@ -17,15 +17,15 @@ const MySkills = () => {
         >
           <h2>Languages</h2>
           <ul>
-            <li>Python</li>
-            <li>Java</li>
             <li>C</li>
+            <li>Java</li>
+            <li>Python</li>
             <li>R </li>
             <li>AI & ML</li>
             <li>SQL</li>
             <li>HTML & CSS</li>
-            <li>React</li>
-            <li>MONGO DB</li>
+            <li>Cloud computing</li>
+            <li>AWS</li>
             <li>JavaScript</li>
             <li>TypeScript</li>
           </ul>

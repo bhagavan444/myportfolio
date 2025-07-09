@@ -45,7 +45,7 @@ const Home = () => {
       >
         Final Year B.Tech Student Specialized in{" "}
         <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 animate-text-glow font-extrabold">
-          AI ,Data Science ,ML & Web
+          AI ,Data Science ,ML & Web Development
           <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-full animate-gradient-underline"></span>
         </span>
       </motion.h1>
@@ -71,7 +71,7 @@ const Home = () => {
         transition={{ delay: 2.3, duration: 0.7 }}
         whileHover={{ scale: 1.05, boxShadow: "0 0 20px #ec4899" }}
       >
-        About Me
+        About My self
       </motion.a>
 
       {/* About Me Section (conditionally rendered) */}
@@ -86,7 +86,7 @@ const Home = () => {
           <h2 className="text-4xl font-extrabold mb-6 text-white drop-shadow-lg"></h2>
           <p className="text-lg text-gray-300 leading-relaxed mb-6">
             I’m a passionate and highly motivated{" "}
-            <strong>Final Year B.Tech AI&DS student.</strong>
+            <strong>Final Year B Tech AI&DS student.</strong>
             <br></br>
             Specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
             With strong hands-on experience in full-stack projects (MERN), Python, and Data Science,

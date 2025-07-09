@@ -46,7 +46,7 @@ const Contact = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h2 className="beast-contact-title">🌈 Let's Connect in Style!</h2>
+        <h2 className="beast-contact-title">🌈 Let's Connect in Globally</h2>
 
         <form ref={form} onSubmit={sendEmail}>
           <motion.input

@@ -4,7 +4,7 @@ import "../components/Projects.css";
 
 const projectData = [
   {
-    title: "🧠 AI-Powered Resume Builder",
+    title: "🧠 Enhance CV-Resume Builder",
     description:
       "An intelligent MERN stack application that allows users to create professional resumes using modern templates, and evaluate them using ATS (Applicant Tracking System) scoring. Integrated Google and GitHub authentication, dynamic form handling, and PDF/Word export features. Resume data is stored in MongoDB, and scoring is based on keyword matching using a Node.js API.",
     tech: "MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML2PDF",
