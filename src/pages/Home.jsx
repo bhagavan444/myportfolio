@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import profile from "../assets/profile.jpg";
 import "../components/Home.css";
 
 const Home = () => {
+  const [showAbout, setShowAbout] = useState(false); // state to toggle About section
+
   return (
     <motion.div
       className="relative min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#334155] text-white flex flex-col items-center justify-center px-6 md:px-0 overflow-x-hidden"
@@ -62,6 +64,7 @@ const Home = () => {
       {/* Call to Action */}
       <motion.a
         href="#about"
+        onClick={() => setShowAbout(true)}
         className="z-10 mt-12 inline-block px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-full text-white text-lg font-semibold shadow-lg hover:shadow-purple-500 transition-shadow duration-300"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -71,27 +74,30 @@ const Home = () => {
         About Me
       </motion.a>
 
-      {/* About Me Section */}
-      <motion.section
-        id="about"
-        className="z-10 mt-24 max-w-5xl w-full px-6 md:px-0 text-center"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.8, duration: 1 }}
-      >
-        <h2 className="text-4xl font-extrabold mb-6 text-white drop-shadow-lg">
-        </h2>
-        <p className="text-lg text-gray-300 leading-relaxed mb-6">
-          I’m a passionate and highly motivated <strong>Final Year B.Tech AI&DS student</strong>
-          specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
-          With strong hands-on experience in full-stack projects (MERN), Python, and Data Science,
-          I love solving real-world problems with clean, intelligent code.
-        </p>
-        <p className="text-lg text-gray-300 leading-relaxed">
-          I'm actively seeking opportunities as a <strong>Full Stack Developer, Python Developer, or AI/ML Engineer</strong>.
-          Eager to contribute to impactful teams, build scalable software, and grow continuously with the latest technologies.
-        </p>
-      </motion.section>
+      {/* About Me Section (conditionally rendered) */}
+      {showAbout && (
+        <motion.section
+          id="about"
+          className="z-10 mt-24 max-w-5xl w-full px-6 md:px-0 text-center"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 1 }}
+        >
+          <h2 className="text-4xl font-extrabold mb-6 text-white drop-shadow-lg"></h2>
+          <p className="text-lg text-gray-300 leading-relaxed mb-6">
+            I’m a passionate and highly motivated{" "}
+            <strong>Final Year B.Tech AI&DS student</strong>
+            specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
+            With strong hands-on experience in full-stack projects (MERN), Python, and Data Science,
+            I love solving real-world problems with clean, intelligent code.
+          </p>
+          <p className="text-lg text-gray-300 leading-relaxed">
+            I'm actively seeking opportunities as a{" "}
+            <strong>Full Stack Developer, Python Developer, or AI/ML Engineer</strong>.
+            Eager to contribute to impactful teams, build scalable software, and grow continuously with the latest technologies.
+          </p>
+        </motion.section>
+      )}
 
       {/* Scroll Down Arrow */}
       <motion.div

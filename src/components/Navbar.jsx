@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Navbar.css"; // Assuming you have a CSS file for additional styles
+import "./Navbar.css";
 import {
   FaLinkedin,
   FaTwitter,
@@ -12,19 +12,30 @@ import {
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ✅ Updated links
 const links = [
   "Home",
-  "Contact",
-  "Certifications",
+  "Education",
+  "MySkills",
+  "Personal Details",
   "Projects",
+  "Certifications",
   "Resume",
   "Workshops & Hacathons",
+  "Contact",
 ];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleToggle = () => setMenuOpen((prev) => !prev);
+
+  // ✅ Utility function to format paths correctly
+  const formatLinkPath = (link) => {
+    if (link === "Home") return "/";
+    if (link === "Workshops & Hacathons") return "/workshops-hackathons";
+    return `/${link.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-")}`;
+  };
 
   return (
     <header className="fixed w-full top-0 left-0 bg-gradient-to-r from-purple-700 via-pink-600 to-red-500 shadow-lg z-50">
@@ -34,7 +45,7 @@ const Navbar = () => {
           to="/"
           className="text-white font-extrabold text-2xl tracking-wide select-none"
         >
-          Bhagavan
+          Siva Satya Sai Bhagavan GopalaJosyula
         </Link>
 
         {/* Desktop Links */}
@@ -42,18 +53,10 @@ const Navbar = () => {
           {links.map((link) => (
             <li key={link}>
               <Link
-                to={
-                  link.toLowerCase() === "home"
-                    ? "/"
-                    : link === "Workshops & Hacathons"
-                    ? "/workshops-hackathons"
-                    : `/${link.toLowerCase()}`
-                }
+                to={formatLinkPath(link)}
                 className="relative px-4 py-2 text-white font-semibold rounded-full transition-all duration-300 hover:bg-white hover:text-purple-700 hover:shadow-lg hover:scale-105"
               >
                 {link}
-                {/* Glow underline on hover */}
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-full transition-all duration-300 group-hover:w-3/4"></span>
               </Link>
             </li>
           ))}
@@ -108,8 +111,12 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile Hamburger Menu */}
-        <div className="md:hidden text-white text-2xl cursor-pointer" onClick={handleToggle} aria-label="Toggle menu">
+        {/* Mobile Hamburger */}
+        <div
+          className="md:hidden text-white text-2xl cursor-pointer"
+          onClick={handleToggle}
+          aria-label="Toggle menu"
+        >
           {menuOpen ? <FaTimes /> : <FaBars />}
         </div>
       </nav>
@@ -125,15 +132,12 @@ const Navbar = () => {
             className="md:hidden bg-gradient-to-r from-purple-700 via-pink-600 to-red-500 shadow-inner overflow-hidden"
           >
             {links.map((link) => (
-              <li key={link} className="border-b border-white/30 last:border-none">
+              <li
+                key={link}
+                className="border-b border-white/30 last:border-none"
+              >
                 <Link
-                  to={
-                    link.toLowerCase() === "home"
-                      ? "/"
-                      : link === "Workshops & Hacathons"
-                      ? "/workshops-hackathons"
-                      : `/${link.toLowerCase()}`
-                  }
+                  to={formatLinkPath(link)}
                   onClick={() => setMenuOpen(false)}
                   className="block px-6 py-4 text-white font-semibold hover:bg-white hover:text-purple-700 transition-colors duration-300"
                 >
@@ -142,6 +146,7 @@ const Navbar = () => {
               </li>
             ))}
 
+            {/* Mobile social icons */}
             <li className="flex justify-center space-x-6 py-4">
               <a
                 href="mailto:your@email.com"

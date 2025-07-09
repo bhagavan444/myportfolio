@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -8,7 +14,23 @@ import Projects from "./pages/Projects";
 import Resume from "./pages/Resume";
 import Contact from "./pages/Contact";
 import Certifications from "./pages/Certifications";
-import Workshops from "./pages/Workshops"; // ✅ Make sure this file exists
+import Workshops from "./pages/Workshops";
+
+// ✅ New pages you will create next
+import Education from "./pages/Education";
+import MySkills from "./pages/MySkills";
+import PersonalDetails from "./pages/PersonalDetails";
+
+// ✅ ScrollToTop Component (Scrolls to top on every route change)
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  return null;
+};
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -27,6 +49,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop /> {/* ✅ Always scrolls to top when route changes */}
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className="pt-20">
         <Routes>
@@ -35,6 +58,8 @@ function App() {
             path="/workshops & hacathons"
             element={<Navigate to="/workshops-hackathons" replace />}
           />
+
+          {/* Standard routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
@@ -42,6 +67,11 @@ function App() {
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/workshops-hackathons" element={<Workshops />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* ✅ New routes */}
+          <Route path="/education" element={<Education />} />
+          <Route path="/myskills" element={<MySkills />} />
+          <Route path="/personal-details" element={<PersonalDetails />} />
         </Routes>
       </div>
     </Router>

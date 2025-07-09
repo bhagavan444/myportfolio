@@ -1,8 +1,93 @@
-/* src/pages/About.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* About.css */
+.beast-about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3a8a, #7e22ce, #db2777, #f59e0b);
+  background-size: 400% 400%;
+  animation: gradientFlow 12s ease infinite;
+  color: white;
+  box-sizing: border-box;
+  overflow: hidden;
 
-.about-section {
-  @apply w-full min-h-screen bg-white text-center md:text-left;
+  /* ✅ Make it span full width & height */
+  width: 100vw;
+  height: 100vh;
+
+  /* ❌ REMOVE this line if present */
+  /* margin-right: 200px; */
+}
+
+.back-home-button {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  margin-top: 20px;
+  border-radius: 9999px;
+  font-weight: 600;
+  border: 1px solid white;
+  transition: all 0.3s ease;
+
+  /* ✅ Center the button */
+  display: inline-block;
+  text-align: center;
+}
+
+.back-home-button:hover {
+  background-color: #ec4899;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+}
+
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.beast-about-title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 12px #ec4899, 0 0 24px #9333ea;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.beast-about-text {
+  max-width: 800px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #f1f5f9;
+}
+
+.beast-about-text strong {
+  color: #facc15;
+  text-shadow: 0 0 8px #facc15;
+}
+
+.back-home-button {
+  margin-top: 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid white;
+}
+
+.back-home-button:hover {
+  background-color: #ec4899;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
 }
