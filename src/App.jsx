@@ -15,11 +15,10 @@ import Resume from "./pages/Resume";
 import Contact from "./pages/Contact";
 import Certifications from "./pages/Certifications";
 import Workshops from "./pages/Workshops";
-
-// ✅ New pages you will create next
 import Education from "./pages/Education";
 import MySkills from "./pages/MySkills";
 import PersonalDetails from "./pages/PersonalDetails";
+import Internships from "./pages/Internships"; // ✅ Added new page
 
 // ✅ ScrollToTop Component (Scrolls to top on every route change)
 const ScrollToTop = () => {
@@ -49,7 +48,7 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop /> {/* ✅ Always scrolls to top when route changes */}
+      <ScrollToTop />
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className="pt-20">
         <Routes>
@@ -59,7 +58,7 @@ function App() {
             element={<Navigate to="/workshops-hackathons" replace />}
           />
 
-          {/* Standard routes */}
+          {/* Standard Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
@@ -68,10 +67,11 @@ function App() {
           <Route path="/workshops-hackathons" element={<Workshops />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* ✅ New routes */}
+          {/* New Routes */}
           <Route path="/education" element={<Education />} />
           <Route path="/myskills" element={<MySkills />} />
           <Route path="/personal-details" element={<PersonalDetails />} />
+          <Route path="/internships" element={<Internships />} /> {/* ✅ New route */}
         </Routes>
       </div>
     </Router>

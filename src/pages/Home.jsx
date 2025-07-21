@@ -43,9 +43,9 @@ const Home = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 1 }}
       >
-        Final Year B.Tech Student Specialized in{" "}
+        Final Year B Tech AI&DS Student Specialized in{" "}
         <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 animate-text-glow font-extrabold">
-          AI ,Data Science ,ML & Web Development
+          AI,ML,DS  & Full Stack Web Development
           <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-full animate-gradient-underline"></span>
         </span>
       </motion.h1>

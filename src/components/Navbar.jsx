@@ -18,6 +18,7 @@ const links = [
   "Education",
   "MySkills",
   "Projects",
+  "Internships", // 👈 Added here
   "Certifications",
   "Resume",
   "Workshops & Hacathons",
