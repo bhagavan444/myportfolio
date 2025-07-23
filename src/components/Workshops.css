@@ -1,151 +1,158 @@
-/* ⚡ Beast Neon Background */
+/* 🌌 Starfield Neon Background */
 .workshops-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* ✅ Vertically centers content */
   min-height: 100vh;
   padding: 3rem 1rem;
-  background: linear-gradient(135deg, #ff00aa, #7e22ce, #00ffff, #ff00aa);
-  background-size: 600% 600%;
-  animation: pulseBackground 12s ease infinite;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  width: 100vw;
-  height: 100vh;
-  scroll-behavior: smooth;
-}
-
-@keyframes pulseBackground {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* 🔥 Section Title with animated gradient text */
-.section-title {
-  font-size: 3rem;
-  font-weight: 900;
-  background: linear-gradient(90deg, #f472b6, #00ffff, #f472b6);
-  background-size: 300% auto;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: glowTitle 6s linear infinite;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  text-shadow: 0 0 25px #ff00aa88;
-}
-
-@keyframes glowTitle {
-  0% { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
-
-/* 🧊 Glowing Glass Card */
-.glass-card {
-  width: 100%;
-  max-width: 750px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  backdrop-filter: blur(22px);
-  position: relative;
-  box-shadow: 0 0 30px rgba(255, 0, 255, 0.3), 0 0 60px rgba(0, 255, 255, 0.15);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  animation: cardFadeIn 1.2s ease forwards;
+  background: radial-gradient(ellipse at top, #000013, #0a001f, #000013);
+  overflow: hidden;
   z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.workshops-container::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-radial-gradient(circle at center, #ffffff11 0px, #00000000 1px, #00000000 2px);
+  background-size: 4px 4px;
+  animation: sparkle 20s linear infinite;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+@keyframes sparkle {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, -100px); }
+}
+
+/* 🔥 Neon Animated Gradient Title */
+.section-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  background: linear-gradient(270deg, #00ffff, #ff00ff, #00ff66, #ff0066);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rainbowGlow 8s ease infinite;
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 30px #000;
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes rainbowGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 🧊 Card with Rainbow Flickering Borders */
+.glass-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 100%; /* ✅ Take full width of container */
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease, box-shadow 0.5s ease;
+  z-index: 2;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .glass-card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 0 50px #ff00ffcc, 0 0 80px #00ffff88;
+  transform: rotateY(2deg) rotateX(2deg) scale(1.02);
+  box-shadow: 0 0 40px #00ffff, 0 0 60px #ff00ff;
 }
 
-@keyframes cardFadeIn {
-  0% { opacity: 0; transform: translateY(50px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* 💫 Neon Pulse Border */
 .glass-card::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffcc, #ff6600, #00ffff);
+  background-size: 300% 300%;
+  animation: flicker-border 6s ease infinite;
   z-index: -1;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #ff00ff, #00ffff, #ff00aa, #00ffcc);
-  background-size: 400% 400%;
-  animation: pulseBorder 8s ease infinite;
-  filter: blur(18px);
-  opacity: 0.8;
+  filter: blur(12px);
+  opacity: 0.7;
 }
 
-@keyframes pulseBorder {
-  0%, 100% { background-position: 0% 50%; }
+@keyframes flicker-border {
+  0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* 💡 Card Titles */
+/* 🔥 Card Titles */
 .card-title {
   font-size: 1.9rem;
-  color: #00ffff;
   font-weight: 800;
-  margin-bottom: 1.2rem;
-  text-shadow: 0 0 14px #00ffffaa;
+  color: #00ffe7;
+  margin-bottom: 1.3rem;
+  text-shadow: 0 0 12px #00ffee88;
 }
 
-/* 📚 Card Text */
+/* 📘 Paragraph Text */
 .glass-card p {
   font-size: 1.1rem;
-  color: #f8fafc;
-  line-height: 1.8;
+  line-height: 1.75;
+  color: #e0f7fa;
   margin-bottom: 1rem;
 }
 
-/* 🔧 Workshop List */
+/* 🚀 Workshops List */
 .workshop-list {
+  list-style: none;
+  padding-left: 0;
   font-size: 1.1rem;
-  color: #e2e8f0;
-  line-height: 1.9;
-  padding-left: 1.5rem;
+  color: #d1d5db;
 }
 
 .workshop-list li {
+  margin-bottom: 1.1rem;
   position: relative;
-  margin-bottom: 0.8rem;
-  padding-left: 1.5rem;
-  list-style: none;
+  padding-left: 1.8rem;
 }
 
 .workshop-list li::before {
-  content: "⚡";
+  content: "🚀";
   position: absolute;
   left: 0;
-  color: #facc15;
-  font-size: 1.1rem;
-  animation: flicker 1.4s infinite alternate;
+  animation: pop 1.2s ease-in-out infinite alternate;
 }
 
-@keyframes flicker {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0.6; transform: scale(1.15); }
+@keyframes pop {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.2); opacity: 0.8; }
 }
 
 .tag {
-  font-style: italic;
   color: #ff66cc;
-  text-shadow: 0 0 12px #ff66ccaa;
-  font-size: 1rem;
-  margin-top: 1.2rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  text-shadow: 0 0 10px #ff66ccaa;
+  margin-top: 1rem;
 }
 
-/* ✅ Responsive Design */
+/* 🎯 Responsive */
 @media (max-width: 768px) {
   .section-title {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
   }
 
   .card-title {
@@ -154,15 +161,7 @@
 
   .glass-card {
     padding: 1.5rem;
-  }
-
-  .glass-card p,
-  .workshop-list {
-    font-size: 1rem;
-  }
-
-  .tag {
-    font-size: 0.95rem;
+    width: 100%; /* ✅ Full width on tablets */
   }
 }
 
@@ -175,9 +174,14 @@
     font-size: 1.3rem;
   }
 
+  .glass-card {
+    padding: 1.2rem;
+    width: 100%; /* ✅ Full width on mobile */
+  }
+
   .glass-card p,
   .workshop-list {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .tag {
