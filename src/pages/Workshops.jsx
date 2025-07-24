@@ -14,6 +14,7 @@ const Workshops = () => {
         Workshops & Hackathons
       </motion.h2>
 
+      {/* 🔧 Hackathon Card */}
       <motion.div
         className="glass-card"
         initial={{ opacity: 0, y: 40 }}
@@ -26,9 +27,28 @@ const Workshops = () => {
           <strong>Online 2nd Hand Electronics Selling</strong> using the <strong>MERN Stack</strong> with features like user authentication, product listing, and dynamic search filtering.
           We built a fully functional web platform inspired by OLX, aimed at enabling users to buy and sell second-hand electronic gadgets in a secure and user-friendly environment.
         </p>
+        <div className="button-group">
+          <a
+            href="https://github.com/bhagavan444/hacakthon-project"
+            className="view-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🔗 View Project
+          </a>
+          <a
+            href="https://drive.google.com/file/d/1CQaoA9V93Lg4XS1FmcG-0gVUaKvw2zUq/view?usp=sharing"
+            className="view-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🎓 View Certificate
+          </a>
+        </div>
         <p className="tag">#MERN #Hackathon #RealProject</p>
       </motion.div>
 
+      {/* 📚 Workshops Card */}
       <motion.div
         className="glass-card"
         initial={{ opacity: 0, y: 40 }}
@@ -37,10 +57,10 @@ const Workshops = () => {
       >
         <h3 className="card-title">📚 Workshops Attended</h3>
         <ul className="workshop-list">
-          <li>🔬 <strong>Machine Learning</strong> - 7-day intensive workshop Learned core ML concepts such as supervised/unsupervised learning, data preprocessing, model training, evaluation metrics, and implemented basic ML models using Python and Scikit-learn.</li>
-          <li>🧠 <strong>Deep Learning with TensorFlow</strong> - 7-day project-oriented workshop Explored the fundamentals of neural networks, activation functions, CNN architectures, and real-world use cases like image classification. Hands-on practice using TensorFlow and Keras.</li>
-          <li>📱 <strong>Mobile Application Development</strong> - 7-day bootcamp using Flutter Developed basic Android apps, understood UI/UX principles, and explored tools like Android Studio and Flutter to build functional mobile interfaces.</li>
-          <li>🌐 <strong>Web Development</strong> - 7-day hands-on program with HTML, CSS, JS Built responsive web pages using HTML, CSS, JavaScript, and React.js. Learned about client-server interactions, routing, components, and modern UI frameworks.</li>
+          <li>🔬 <strong>Machine Learning</strong> – 7-day intensive workshop covering supervised/unsupervised learning, data preprocessing, model training, and evaluation using Python and Scikit-learn.</li>
+          <li>🧠 <strong>Deep Learning with TensorFlow</strong> – Project-oriented workshop on CNNs, activation functions, and image classification using TensorFlow & Keras.</li>
+          <li>📱 <strong>Mobile App Development</strong> – Bootcamp using Flutter and Android Studio. Learned UI/UX principles and developed basic Android apps.</li>
+          <li>🌐 <strong>Web Development</strong> – Hands-on workshop with HTML, CSS, JavaScript, and React.js. Built responsive pages and understood client-server flow.</li>
         </ul>
         <p className="tag">#ML #DL #Flutter #WebDev</p>
       </motion.div>

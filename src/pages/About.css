@@ -1,19 +1,19 @@
 /* 🌌 Full-Screen Animated Gradient Background */
 .beast-about-container {
   position: relative;
-  width: 100vw;                /* Ensures full viewport width */
+  width: 100vw;
   min-height: 100vh;
   padding: 4rem 2rem;
   background: linear-gradient(-45deg, #1e3a8a, #7e22ce, #db2777, #f59e0b);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  background-size: 500% 500%;
+  animation: gradientBG 20s ease infinite;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
-  margin: 0;                   /* Removes any default margin */
-  box-sizing: border-box;     /* Ensures padding doesn't reduce width */
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1;
 }
-
 
 /* 🔄 Gradient animation */
 @keyframes gradientBG {
@@ -28,114 +28,158 @@
   }
 }
 
-/* ✨ Highlight name */
+/* ✨ Fade-up Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌟 Highlight */
 .highlight {
   color: #facc15;
   font-weight: bold;
+  text-shadow: 0 0 8px #facc15, 0 0 12px #facc15;
 }
 
 /* 🔠 Title Styling */
 .beast-about-title {
-  font-size: 2.8rem;
-  font-weight: 700;
+  font-size: 3rem;
+  font-weight: 800;
   text-align: center;
   margin-bottom: 1rem;
+  animation: fadeUp 1.5s ease-out;
 }
 
 /* 💬 Subtitle */
 .beast-about-subtitle {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-align: center;
   margin-bottom: 2.5rem;
   color: #e5e7eb;
+  animation: fadeUp 2s ease-out;
 }
 
-/* 📦 Text Box */
+/* 📦 Text Box with animated border glow */
 .beast-about-box {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.8rem;
-  margin: 0 auto 2rem;
-  max-width: 750px;
-  border-left: 4px solid #facc15;
-  border-radius: 12px;
-  line-height: 1.8;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2rem;
+  margin: 0 auto 2.5rem;
+  max-width: 800px;
+  border-left: 5px solid #facc15;
+  border-radius: 16px;
+  line-height: 1.9;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+  animation: fadeUp 2.2s ease-out;
+  transition: box-shadow 0.3s ease;
+}
+.beast-about-box:hover {
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.5), 0 0 40px rgba(250, 204, 21, 0.2);
 }
 
-/* 📂 Section Headings */
+/* 📂 Section */
 .beast-about-section {
-  max-width: 850px;
+  max-width: 900px;
   margin: 0 auto 3rem;
 }
 
 .beast-about-section h3 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
   color: #fff;
-  border-bottom: 2px solid #facc15;
+  border-bottom: 3px solid #facc15;
   display: inline-block;
+  animation: fadeUp 2.4s ease-out;
 }
 
-/* 🔢 Lists */
+/* 🔢 List Items */
 .beast-about-section ul {
-  padding-left: 1.2rem;
+  padding-left: 1.4rem;
   list-style-type: disc;
 }
-
 .beast-about-section ul li {
-  margin-bottom: 0.6rem;
-  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  animation: fadeUp 2.6s ease-out;
 }
 
-/* 🏷️ Badge Grid */
+/* 🏷️ Badge Section */
 .beast-about-badges {
   text-align: center;
   max-width: 1000px;
   margin: 0 auto;
 }
-
 .beast-about-badges h4 {
-  font-size: 1.5rem;
-  margin-bottom: 1.2rem;
-  color: #fcd34d;
+  font-size: 1.7rem;
+  margin-bottom: 1.4rem;
+  color: #fde047;
+  animation: fadeUp 2.8s ease-out;
 }
 
-/* 🧩 Badges Style */
+/* 🧩 Badge Grid */
 .badge-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.8rem;
   justify-content: center;
 }
 
+/* ✨ Badges with pulse and glow */
 .badge {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid #facc15;
   border-radius: 9999px;
-  padding: 0.5rem 1.2rem;
-  font-size: 0.9rem;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
   color: #fff;
   font-weight: 500;
-  box-shadow: 0 0 8px rgba(252, 211, 77, 0.4);
+  box-shadow: 0 0 10px rgba(252, 211, 77, 0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: pulseBadge 2.5s infinite ease-in-out;
 }
-
 .badge:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 15px rgba(252, 211, 77, 0.7);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(252, 211, 77, 0.8);
 }
 
-/* 📱 Responsive Design */
+/* 🎯 Badge Pulse */
+@keyframes pulseBadge {
+  0% {
+    box-shadow: 0 0 8px rgba(252, 211, 77, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(252, 211, 77, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(252, 211, 77, 0.4);
+  }
+}
+
+/* 📱 Responsive Enhancements */
 @media screen and (max-width: 768px) {
   .beast-about-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 
   .beast-about-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   .badge {
-    font-size: 0.8rem;
-    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .beast-about-box {
+    padding: 1.5rem;
+  }
+
+  .beast-about-section h3 {
+    font-size: 1.5rem;
   }
 }

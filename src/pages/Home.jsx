@@ -75,7 +75,7 @@ const Home = () => {
         Final Year B Tech AI&DS Student Specialized in
         <br />
         <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
-          AI, DS & Full Stack Web Development
+          AI,Ml, DS & Full Stack Web Development
         </span>
       </motion.h1>
 
