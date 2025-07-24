@@ -193,6 +193,7 @@ img:hover {
 /* Button */
 .inline-block {
   display: inline-block;
+  margin-top: 0%;
 }
 
 .px-8 {

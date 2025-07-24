@@ -1,130 +1,141 @@
-/* Background Animation */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
+/* Global Container */
 .internship-container {
+  padding: 2rem 1rem;
+  background: linear-gradient(to right top, #1e3a8a, #9333ea, #f43f5e);
   min-height: 100vh;
-  padding: 3rem 1.5rem;
-  background: linear-gradient(-45deg, #cce5ff, #e0f7fa, #f3e5f5, #ffe0b2);
-  background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
-  color: #1f2937;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Inner Wrapper */
 .internship-wrapper {
   max-width: 1200px;
-  margin: auto;
+  width: 100%;
+  text-align: center;
+  padding: 0 1rem; /* Add this line to create left & right gap */
 }
 
+
+/* Heading */
 .internship-heading {
   font-size: 3rem;
+  margin-bottom: 2rem;
   font-weight: bold;
-  text-align: center;
-  color: #004ba0;
-  margin-bottom: 3rem;
-  animation: fadeIn 1s ease forwards;
+  background: linear-gradient(to right, #fff, #facc15);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeInDown 1s ease-in-out;
 }
 
-/* Card Design */
+/* Internship Cards Grid */
 .internship-grid {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  animation: fadeInUp 1.5s ease-in-out;
 }
 
-@media (min-width: 768px) {
-  .internship-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
+/* Card Styles */
 .internship-card {
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
   border-radius: 1.5rem;
-  padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
-  animation: slideUp 0.8s ease forwards;
-  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .internship-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  border: 2px solid #90caf9;
-  box-shadow: 0 15px 30px rgba(33, 150, 243, 0.3);
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
+/* Typography */
 .internship-title {
   font-size: 1.4rem;
-  font-weight: 600;
-  color: #1565c0;
+  font-weight: 700;
+  color: #facc15;
+  margin-bottom: 0.5rem;
 }
 
 .internship-company {
-  font-weight: 500;
-  margin-top: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e0f2fe;
+  margin-bottom: 0.3rem;
 }
 
 .internship-duration {
-  color: #666;
-  font-size: 0.9rem;
-  margin-top: 2px;
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
 }
 
 .internship-description {
-  margin-top: 1rem;
   font-size: 0.95rem;
-  text-align: justify;
-  color: #333;
+  color: #e2e8f0;
+  margin-bottom: 1.2rem;
 }
 
+/* Certificate Link */
 .internship-link {
   display: inline-flex;
   align-items: center;
-  color: #1565c0;
-  margin-top: 1rem;
+  gap: 0.4rem;
+  font-weight: bold;
+  color: #facc15;
   text-decoration: none;
-  font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .internship-link:hover {
-  color: #004ba0;
+  color: #fff;
 }
 
 .icon {
-  margin-left: 6px;
+  font-size: 1rem;
 }
 
 /* Animations */
-@keyframes slideUp {
+@keyframes fadeInUp {
   0% {
-    transform: translateY(40px);
     opacity: 0;
+    transform: translateY(40px);
   }
   100% {
-    transform: translateY(0px);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes fadeIn {
-  from {
+@keyframes fadeInDown {
+  0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(-40px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .internship-heading {
+    font-size: 2.2rem;
+  }
+
+  .internship-title {
+    font-size: 1.2rem;
+  }
+
+  .internship-description,
+  .internship-duration,
+  .internship-company {
+    font-size: 0.9rem;
   }
 }

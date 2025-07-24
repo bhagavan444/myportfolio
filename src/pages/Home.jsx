@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import profile from "../assets/profile.jpg";
 import "../components/Home.css";
 
 const Home = () => {
-  const [showAbout, setShowAbout] = useState(false); // state to toggle About section
+  const navigate = useNavigate();
 
   return (
     <motion.div
-      className="relative min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#334155] text-white flex flex-col items-center justify-center px-6 md:px-0 overflow-x-hidden"
+      className="relative min-h-screen w-full bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#334155] text-white flex flex-col items-center justify-center px-6 md:px-0 overflow-x-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
     >
-      {/* Animated Background Circles */}
+      {/* Glowing Aurora Background Layer */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{
+          background: "radial-gradient(circle at 30% 30%, rgba(139,92,246,0.15), transparent 60%)",
+        }}
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 15, repeat: Infinity, repeatType: "mirror" }}
+      />
+
+      {/* Animated Gradient Blobs */}
       <motion.div
         className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-purple-700 opacity-30 blur-3xl animate-blob"
         animate={{ scale: [1, 1.3, 1] }}
@@ -25,28 +36,46 @@ const Home = () => {
         transition={{ duration: 9, repeat: Infinity, repeatType: "mirror" }}
       />
 
+      {/* Twinkling Star Background Layer */}
+      <motion.div className="absolute inset-0 z-0 overflow-hidden">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-white rounded-full opacity-70"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 2 + 1}px`,
+              height: `${Math.random() * 2 + 1}px`,
+            }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: Math.random() * 5 + 3, repeat: Infinity }}
+          />
+        ))}
+      </motion.div>
+
       {/* Profile Image */}
       <motion.img
         src={profile}
         alt="Bhagavan"
-        className="z-10 w-48 h-48 rounded-full border-4 border-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-[0_0_20px_rgb(139,92,246)] object-cover"
+        className="z-10 w-48 h-48 rounded-full border-4 border-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-[0_0_25px_rgb(168,85,247)] object-cover"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        whileHover={{ scale: 1.05, rotate: 5, boxShadow: "0 0 30px #a855f7" }}
+        whileHover={{ scale: 1.05, rotate: 5 }}
       />
 
       {/* Main Heading */}
       <motion.h1
-        className="z-10 mt-10 max-w-4xl text-center text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
+        className="z-10 mt-10 max-w-4xl text-center text-5xl md:text-6xl font-extrabold tracking-tight leading-tight animate-text-glow"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 1 }}
       >
-        Final Year B Tech AI&DS Student Specialized in{" "}
-        <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 animate-text-glow font-extrabold">
-          AI,ML,DS  & Full Stack Web Development
-          <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-full animate-gradient-underline"></span>
+        Final Year B Tech AI&DS Student Specialized in
+        <br />
+        <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
+          AI, DS & Full Stack Web Development
         </span>
       </motion.h1>
 
@@ -61,44 +90,17 @@ const Home = () => {
         and solving real-world problems with code.
       </motion.p>
 
-      {/* Call to Action */}
-      <motion.a
-        href="#about"
-        onClick={() => setShowAbout(true)}
-        className="z-10 mt-12 inline-block px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-full text-white text-lg font-semibold shadow-lg hover:shadow-purple-500 transition-shadow duration-300"
+      {/* CTA Button */}
+      <motion.button
+        onClick={() => navigate("/about")}
+        className="z-10 mt-12 px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-full text-white text-lg font-semibold shadow-lg hover:shadow-pink-500 transition-all duration-300"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 2.3, duration: 0.7 }}
-        whileHover={{ scale: 1.05, boxShadow: "0 0 20px #ec4899" }}
+        whileHover={{ scale: 1.1 }}
       >
-        About My self
-      </motion.a>
-
-      {/* About Me Section (conditionally rendered) */}
-      {showAbout && (
-        <motion.section
-          id="about"
-          className="z-10 mt-24 max-w-5xl w-full px-6 md:px-0 text-center"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-        >
-          <h2 className="text-4xl font-extrabold mb-6 text-white drop-shadow-lg"></h2>
-          <p className="text-lg text-gray-300 leading-relaxed mb-6">
-            I’m a passionate and highly motivated{" "}
-            <strong>Final Year B Tech AI&DS student.</strong>
-            <br></br>
-            Specializing in <strong>AI, Web Development, Data Science and Machine Learning</strong>.
-            With strong hands-on experience in full-stack projects (MERN), Python, and Data Science,
-            I love solving real-world problems with clean, intelligent code.
-          </p>
-          <p className="text-lg text-gray-300 leading-relaxed">
-            I'm actively seeking opportunities as a{" "}
-            <strong>Full Stack Developer, Python Developer, or AI/ML Engineer</strong>.
-            Eager to contribute to impactful teams, build scalable software, and grow continuously with the latest technologies.
-          </p>
-        </motion.section>
-      )}
+        About Me
+      </motion.button>
 
       {/* Scroll Down Arrow */}
       <motion.div
@@ -118,22 +120,16 @@ const Home = () => {
         </svg>
       </motion.div>
 
-      {/* CSS Animations */}
+      {/* Keyframes and CSS */}
       <style>
         {`
           @keyframes blob {
-            0%, 100% {
-              transform: translate(0px, 0px) scale(1);
-            }
-            33% {
-              transform: translate(30px, -50px) scale(1.1);
-            }
-            66% {
-              transform: translate(-20px, 20px) scale(0.9);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
           }
           .animate-blob {
-            animation: blob 8s infinite;
+            animation: blob 8s infinite ease-in-out;
           }
           .animation-delay-2000 {
             animation-delay: 2s;
@@ -146,17 +142,6 @@ const Home = () => {
               0 0 20px #9333ea,
               0 0 30px #7e22ce,
               0 0 40px #6b21a8;
-          }
-          .animate-gradient-underline {
-            animation: gradient-slide 3s ease-in-out infinite alternate;
-          }
-          @keyframes gradient-slide {
-            0% {
-              background-position: 0% 50%;
-            }
-            100% {
-              background-position: 100% 50%;
-            }
           }
         `}
       </style>
