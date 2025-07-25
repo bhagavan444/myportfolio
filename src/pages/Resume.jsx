@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import resumePDF from "../assets/ats.pdf";
+import resumePDF from "../assets/bhagavanresume.pdf";
 
 import "../styles/Resume.css";
 
