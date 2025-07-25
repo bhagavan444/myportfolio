@@ -12,13 +12,14 @@ const internships = [
     certificateLink: "https://drive.google.com/file/d/1yQQqBf32o8d3sYlheDCdaLTKj5_hepfY/view?usp=sharing",
   },
   {
-    title: "AI & Machine Learning Intern (AI&ML)",
-    company: "SmartBridge (in collaboration with Edu skills)",
-    duration: "May 2025 - June 2025 (2 Months)",
-    description:
-      "Successfully completed a certified internship in Artificial Intelligence & Machine Learning (AIML). Designed and deployed intelligent AWS-powered chatbot systems using Python, AWS Lex, and Lambda, guided by AWS experts.",
-    certificateLink: "https://drive.google.com/file/d/1-_8ZI8uZ3DcrFpfZ3pts7VSYrAqPN5Zw/view?usp=sharing",
-  },
+  title: "AI & Machine Learning Intern",
+  company: "SmartBridge (in collaboration with Eduskills)",
+  duration: "May 2025 – June 2025 (2 Months)",
+  description:
+    "Successfully completed a certified internship in Artificial Intelligence & Machine Learning focused on image classification. Developed a deep learning-based Fruit and Vegetable Disease Classifier using transfer learning with MobileNetV2. Implemented model training, validation, and Flask-based deployment for real-time disease detection.",
+  certificateLink: "https://drive.google.com/file/d/1-_8ZI8uZ3DcrFpfZ3pts7VSYrAqPN5Zw/view?usp=sharing",
+}
+
 ];
 
 const Internships = () => {

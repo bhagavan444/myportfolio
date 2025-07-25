@@ -48,7 +48,7 @@ const About = () => {
         <p>
           I’m a proactive and solution-driven developer with hands-on experience in{" "}
           <strong>Full Stack (MERN)</strong>, <strong>Python</strong>, and{" "}
-          <strong>Machine Learning</strong>. I love building scalable web apps and real-time AI solutions. 
+          <strong>Machine Learning and AI </strong>. I love building scalable web apps and real-time AI solutions. 
           My focus is on delivering clean code and solving real-world challenges.
         </p>
       </motion.div>
@@ -57,17 +57,19 @@ const About = () => {
         <h3>🚀 Real-World Projects</h3>
         <ul>
           <li><strong>Resume Builder (MERN + ATS)</strong> – Google/GitHub login, ATS scoring using NLP, PDF/Word export.</li>
-          <li><strong>Fruit & Veggie Classifier</strong> – DL model with MobileNetV2, Flask deployment, real-time freshness prediction.</li>
+          <li><strong>Carrer Recommendation System</strong> – Python, Machine Learning, and Flask to suggest suitable career paths based on user skills and interests.</li>
           <li><strong>Second-Hand Electronics Platform</strong> – Full-stack MERN app with secure auth, product listings, MongoDB.</li>
           <li><strong>AI Chatbot (AWS Lex)</strong> – Deployed chatbot with AWS Lambda, Lex, backend logic for NLP queries.</li>
+          <li><strong>OLX-Style Marketplace Platform</strong> – Designed and developed a full-stack web application for buying and selling second-hand electronics with features like product listings, user authentication, and search filters.</li>
+
         </ul>
       </motion.div>
 
       <motion.div className="beast-about-section" custom={3} variants={fadeIn}>
         <h3>📜 Internship Experience</h3>
         <ul>
-          <li><strong>AI/ML Intern @ Blackbucks Pvt Ltd</strong> – Built real-time predictive dashboards, automated pipelines.</li>
-          <li><strong>SmartBridge x Eduskills (AI/ML + AWS)</strong> – Deployed chatbots using AWS Lambda, Lex, and backend API integration.</li>
+          <li><strong>AI/ML Intern @ Blackbucks Pvt Ltd</strong> – Developed Real -time Ml Project on Prediction.</li>
+          <li><strong>SmartBridge x Eduskills (AI/ML + AWS)</strong> – Developed Real-time Project on Fruit and Vegetable Classification using TensorFlow and DL.</li>
         </ul>
       </motion.div>
 

@@ -91,9 +91,9 @@ const Contact = () => {
           transition={{ delay: 0.6 }}
         >
           <a href="mailto:g.sivasatyasaibhagavan@gmail.com"><FaEnvelope /></a>
-          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer"><FaLinkedin /></a>
-          <a href="https://github.com/yourprofile" target="_blank" rel="noreferrer"><FaGithub /></a>
-          {/* <a href="https://twitter.com/yourprofile" target="_blank" rel="noreferrer"><FaTwitter /></a> */}
+          <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
+          <a href="https://github.com/bhagavan444" target="_blank" rel="noreferrer"><FaGithub /></a>
+          
         </motion.div>
       </motion.div>
     </motion.div>

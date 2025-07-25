@@ -72,7 +72,7 @@ const Home = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 1 }}
       >
-        Final Year B Tech AI&DS Student Specialized in
+       B tech AI&DS Student | Passionate & Specialized in 
         <br />
         <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
           AI,Ml, DS & Full Stack Web Development

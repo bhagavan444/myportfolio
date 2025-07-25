@@ -4,7 +4,7 @@ import "../components/Projects.css";
 
 const projectData = [
   {
-    title: "🧠 Enhance CV-Resume Builder",
+    title: "🧠 Enhance Resume Builder",
     description:
       "An intelligent MERN stack application that allows users to create professional resumes using modern templates, and evaluate them using ATS (Applicant Tracking System) scoring. Integrated Google and GitHub authentication, dynamic form handling, and PDF/Word export features. Resume data is stored in MongoDB, and scoring is based on keyword matching using a Node.js API.",
     tech: "MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML2PDF",
@@ -18,7 +18,7 @@ const projectData = [
     link: "https://github.com/bhagavan444/smartbidgeproject",
   }, 
   {   
-    title: "🎯 Career Path Recommendation System",
+    title: "🎯 Career Recommendation System",
     description:
       "Machine Learning-based web application that suggests suitable career paths based on user’s academic background, skillset, and interests. Collected real-world career data, applied classification algorithms, and built a Flask backend for predictions. Frontend displays dynamic suggestions, career roadmap, and learning resources.",
     tech: "Python, Flask, React.js, Scikit-learn, Pandas, HTML/CSS",
@@ -32,24 +32,30 @@ const projectData = [
     link: "https://github.com/bhagavan444/hacakthon-project",
   },
   {
-    title: "Fake News Detector",
+    title: "❌Fake News Detector",
     description: "An AI-powered web application using NLP and machine learning to classify news articles as real or fake based on their content.",
     tech:"Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS",
     link: "https://github.com/bhagavan444/fake-news-detector"
   },
   {
-    title: "Smart Career Chatbot",
+    title: "📖 Smart Career Chatbot",
     description: "An intelligent career counseling chatbot built with LangChain and OpenAI API that interacts with students and suggests career paths.",
     tech: "LangChain, OpenAI API, Flask, React",
     link: "https://github.com/bhagavan444/smart-career-chatbot"
   },
    {
-    title: "Diabetes Predictor",
+    title: "📑Diabetes Predictor",
     description: "A machine learning-based Flask web app that predicts the likelihood of diabetes using medical input data. Includes a user-friendly UI.",
     tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
     link: "https://github.com/bhagavan444/diabetes-predictor-app"
   },
-  
+  {
+  title: "📊 Data Science Projects – ML-Based Predictions",
+  description: "A collection of machine learning-powered. Each project predicts outcomes based on user input data, including diabetes risk, heart disease risk, cancer risk, and more.",
+  tech: "Python, Flask, Scikit-learn, Pandas, Tensorflow, Numpys , Machine learning.",
+  link: "https://github.com/bhagavan444" // or use a GitHub repo collection link or personal portfolio
+}
+
     
 ];
 

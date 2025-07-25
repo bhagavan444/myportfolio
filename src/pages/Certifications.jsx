@@ -16,7 +16,15 @@ const certifications = [
   { name: "CSS - Infosys Spring Board", file: "https://drive.google.com/file/d/1iC65FGw0MSmjeKIivdnrZVm3GfXOKVvE/view?usp=drive_link" },
   { name: "AWS Certified", file: "https://drive.google.com/file/d/17vu2Vd5QnxAHe4iEYv21ADC-Pfs-90U9/view?usp=drive_link" },
   { name: "Mastering Python - Infosys Spring Board", file: "https://drive.google.com/file/d/1k402Ba4Azvjj823xlxaridsmMy-jahVu/view?usp=drive_link" },
-];
+  { name: "R Programming - Infosys Spring Board", file: "https://drive.google.com/file/d/14MnNRgQKwmCXCeZIr1QG0Q9-GhE1jVJJ/view?usp=sharing" },
+  { name: "Continuous Integration and Continuous Delivery - Infosys Spring Board", file: "https://drive.google.com/file/d/1xccQv29hZCWCvr-JnM-nEfE8meESrWIr/view?usp=sharing" },
+  { name: "Large language Model - IBM Skills", file: "https://drive.google.com/file/d/1CyN6_Bm3c68R0NkQWWTOgNAXTv27In_s/view?usp=sharing" },
+  { name: "Mastering the Art of Programming - IBM Skills", file: "https://drive.google.com/file/d/1SwQGo_zGZIGcTzzlMApXZU0Wt5ScyWXx/view?usp=sharing"},
+  { name: "Build your First Chat bot  - IBM Skills", file: "https://drive.google.com/file/d/1HOr1qGDbIZ_t-Uw3KJU9PGYk65xCW41R/view?usp=sharing"},
+  { name: "Soft ware Enginnering - Infosys Spring Board", file: "https://drive.google.com/file/d/1siy3p3J8Y9yr8oSzrXMjf0fZ7V7iNKcl/view?usp=sharing"},
+
+]
+
 
 const Certifications = () => {
   return (

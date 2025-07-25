@@ -12,6 +12,7 @@ const personalDetails = [
   },
   { label: "Date of Birth", value: "16th October 2004" },
   { label: "Email", value: "g.sivasatyasaibhagavan.com" },
+   { label: "Blood Group", value: "O possitive" },
   { label: "Father's Name", value: "Gopalajosyula Sridharbabu" },
   { label: "Mother's Name", value: "Gopalajosyula Vijayalakshmi Madhavi" },
   { label: "Brother's Name", value: "Gopalajosyula Avinash Babu (25 yrs)" },

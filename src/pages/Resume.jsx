@@ -15,7 +15,7 @@ const Resume = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="resume-title">📄 My Resume</h2>
+        <h2 className="resume-title">📄 Bhagavan Resume</h2>
         <p className="resume-description">
           Explore my journey, skills, and experiences below.
         </p>
