@@ -13,8 +13,8 @@ const Home = () => {
     const handleOrientation = (event) => {
       const { beta, gamma } = event;
 
-      const rotateX = (beta - 45) / 15;  // X: front-back
-      const rotateY = gamma / 15;       // Y: left-right
+      const rotateX = (beta - 45) / 15;
+      const rotateY = gamma / 15;
 
       cards.forEach((card) => {
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -28,7 +28,7 @@ const Home = () => {
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
     };
-  }, []);
+  },);
 
   return (
     <motion.div
@@ -37,10 +37,8 @@ const Home = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1.8 }}
     >
-      {/* 🌌 Animated Galaxy Background */}
       <div className="stars-bg" />
 
-      {/* 💫 Hero Section (Fixed) */}
       <section id="home">
         <motion.div
           className="hero-glass-card upgraded"
@@ -85,7 +83,6 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* 🧠 About Section (Moves on tilt) */}
       <section id="about">
         <div className="description-section upgraded">
           <div className="card-rotator">
@@ -106,7 +103,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 🌟 Vision Section (Moves on tilt) */}
       <section id="vision">
         <div className="description-section upgraded">
           <div className="card-rotator">
