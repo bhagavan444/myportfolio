@@ -8,15 +8,17 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleOrientation = (event) => {
-      const { beta, gamma } = event; // beta = front/back, gamma = left/right
+    const cards = document.querySelectorAll(".description-card");
 
-      const card = document.querySelector(".hero-glass-card");
-      if (card) {
-        const rotateX = (beta - 45) / 30;
-        const rotateY = gamma / 30;
+    const handleOrientation = (event) => {
+      const { beta, gamma } = event;
+
+      const rotateX = (beta - 45) / 15;  // X: front-back
+      const rotateY = gamma / 15;       // Y: left-right
+
+      cards.forEach((card) => {
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      }
+      });
     };
 
     if (window.DeviceOrientationEvent) {
@@ -36,13 +38,9 @@ const Home = () => {
       transition={{ duration: 1.8 }}
     >
       {/* 🌌 Animated Galaxy Background */}
-      <div className="stars-bg">
-        <div className="stars" />
-        <div className="twinkling" />
-        <div className="clouds" />
-      </div>
+      <div className="stars-bg" />
 
-      {/* 💫 Hero Section */}
+      {/* 💫 Hero Section (Fixed) */}
       <section id="home">
         <motion.div
           className="hero-glass-card upgraded"
@@ -53,11 +51,7 @@ const Home = () => {
           <motion.div
             className="profile-wrapper"
             animate={{ y: [0, -10, 0] }}
-            transition={{
-              repeat: Infinity,
-              duration: 4,
-              ease: "easeInOut",
-            }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           >
             <img src={profile} alt="Rocky" className="profile-pic glow" />
           </motion.div>
@@ -91,18 +85,9 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* 🧠 About Section */}
+      {/* 🧠 About Section (Moves on tilt) */}
       <section id="about">
-        <motion.div
-          className="description-section upgraded"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: { staggerChildren: 0.3 },
-            },
-          }}
-        >
+        <div className="description-section upgraded">
           <div className="card-rotator">
             <motion.div
               className="description-card flip-inner left"
@@ -118,18 +103,12 @@ const Home = () => {
               </p>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* 🌟 Vision Section */}
+      {/* 🌟 Vision Section (Moves on tilt) */}
       <section id="vision">
-        <motion.div
-          className="description-section upgraded"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
+        <div className="description-section upgraded">
           <div className="card-rotator">
             <motion.div
               className="description-card flip-inner right"
@@ -145,7 +124,7 @@ const Home = () => {
               </p>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
     </motion.div>
   );
