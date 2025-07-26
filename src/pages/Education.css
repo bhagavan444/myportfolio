@@ -1,126 +1,182 @@
+/* === 📚 Education Container === */
 .education-beast-container {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  background: linear-gradient(135deg, #0f172a, #3b0764, #9333ea, #f43f5e);
   align-items: center;
-  text-align: center;
-  padding: 3rem 1.5rem;
-  width: 120%;
-  height: 100%;
-  margin-right: 20px;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1e3a8a, #7e22ce, #db2777, #f59e0b);
-  background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
-  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  color: #f1f5f9;
+  z-index: 1;
+}
+
+/* === 🌟 Animated Floating Background Elements === */
+.education-beast-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(56, 189, 248, 0.2), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.2), transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.15), transparent 60%);
+  animation: bgPulse 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* === ✨ Floating Moving Blob === */
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-20px) translateX(20px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+.floating-object {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  z-index: 0;
+  pointer-events: none;
+  animation: float 8s ease-in-out infinite;
+}
+
+.floating-object.one {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #facc15, #f43f5e);
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-object.two {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #9333ea, #3b82f6);
+  bottom: 10%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+/* === 🔁 Background Pulse Animation === */
+@keyframes bgPulse {
+  0%, 100% {
+    background-position: 20% 40%, 80% 20%, 50% 90%;
+  }
+  50% {
+    background-position: 30% 45%, 75% 25%, 52% 85%;
+  }
+}
+
+/* === ✨ Title with Neon Gradient === */
+.education-beast-title {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #facc15, #34d399, #60a5fa, #9333ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  position: relative;
+  margin-bottom: 3rem;
+  z-index: 2;
+}
+
+.education-beast-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 3px;
+  width: 80px;
+  background: linear-gradient(90deg, #facc15, #34d399, #60a5fa);
+  border-radius: 10px;
+  animation: underlineExpand 2s ease forwards;
+}
+
+@keyframes underlineExpand {
+  from { width: 0; opacity: 0; }
+  to { width: 80px; opacity: 1; }
+}
+
+/* === 📐 Grid for Cards === */
+.education-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  z-index: 2;
+}
+
+/* === 🧊 Glassmorphic Card === */
+.education-beast-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.07);
+  transition: all 0.4s ease;
+  position: relative;
   overflow: hidden;
 }
 
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.education-beast-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, #22d3ee33, #9333ea33, #facc1533, transparent);
+  z-index: 0;
+  animation: rotateGlow 8s linear infinite;
 }
 
-.education-beast-title {
-  font-size: 2.8rem;
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  color: white;
-  text-shadow: 0 0 12px #ec4899, 0 0 24px #9333ea;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* 🔥 Cards Wrapper */
-.education-grid-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 960px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-/* 🎴 Card Style */
-.education-beast-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  border-radius: 1.2rem;
-  padding: 2rem;
-  color: white;
-  width: 280px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05),
-              0 12px 40px rgba(0, 0, 0, 0.3),
-              inset 0 0 30px rgba(255, 255, 255, 0.04);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: left;
-}
-
-/* ✨ Hover Effect */
 .education-beast-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.5),
-              0 0 35px rgba(255, 255, 255, 0.3);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 25px 50px rgba(255, 255, 255, 0.1);
 }
 
-/* 🏷 Title */
+/* === 📝 Card Content === */
 .education-beast-card h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-  color: #fbbf24;
-  text-shadow: 0 0 10px #facc15;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #a5f3fc;
+  z-index: 1;
+  position: relative;
 }
 
-/* 📋 Details */
 .education-beast-card p {
   font-size: 1rem;
-  margin-bottom: 0.4rem;
-  color: #f1f5f9;
-  line-height: 1.4;
+  margin: 0.5rem 0;
+  color: #e2e8f0;
+  z-index: 1;
+  position: relative;
 }
 
+/* === 🟡 Label Styling === */
 .education-label {
-  font-weight: 700;
-  color: #f472b6;
+  font-weight: bold;
+  color: #facc15;
 }
 
-/* 📱 Responsive */
+/* === 📱 Responsive === */
 @media (max-width: 768px) {
   .education-beast-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    margin-right: 40px;
-    
+    font-size: 2.2rem;
   }
 
   .education-beast-card {
-    width: 90%;
-    max-width: 320px;
     padding: 1.5rem;
-    margin-right: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .education-beast-title {
-    font-size: 1.75rem;
-  }
-
-  .education-beast-card {
-    padding: 1.2rem;
-  }
-
-  .education-beast-card h2 {
-    font-size: 1.2rem;
-  }
-
-  .education-beast-card p {
-    font-size: 0.95rem;
   }
 }

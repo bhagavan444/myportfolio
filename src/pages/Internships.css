@@ -1,141 +1,174 @@
-/* Global Container */
-.internship-container {
-  padding: 2rem 1rem;
-  background: linear-gradient(to right top, #1e3a8a, #9333ea, #f43f5e);
+/* ==== Internship Container ==== */
+.internships-container {
   min-height: 100vh;
-  color: #fff;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  justify-content: center;
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Inner Wrapper */
-.internship-wrapper {
-  max-width: 1200px;
-  width: 100%;
+/* ==== Section Heading ==== */
+.internship-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
   text-align: center;
-  padding: 0 1rem; /* Add this line to create left & right gap */
-}
-
-
-/* Heading */
-.internship-heading {
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #fff, #facc15);
+  margin-bottom: 3.5rem;
+  background: linear-gradient(90deg, #00f260, #0575e6, #f53844);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: fadeInDown 1s ease-in-out;
+  animation: glow-text 5s ease infinite;
 }
 
-/* Internship Cards Grid */
+/* ==== Internship Grid ==== */
 .internship-grid {
   display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  animation: fadeInUp 1.5s ease-in-out;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 2.2rem;
+  width: 100%;
+  max-width: 1200px;
 }
 
-/* Card Styles */
+/* ==== Internship Card ==== */
 .internship-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 1.5rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.4s ease, box-shadow 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.4s ease;
+  transform-style: preserve-3d;
 }
 
 .internship-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.3),
+              0 0 20px rgba(0, 255, 255, 0.2);
 }
 
-/* Typography */
-.internship-title {
+/* ==== Role (Title) ==== */
+.internship-role {
   font-size: 1.4rem;
-  font-weight: 700;
-  color: #facc15;
-  margin-bottom: 0.5rem;
-}
-
-.internship-company {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #e0f2fe;
-  margin-bottom: 0.3rem;
-}
-
-.internship-duration {
-  font-size: 0.95rem;
-  color: #cbd5e1;
+  font-weight: 800;
   margin-bottom: 1rem;
+  background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ADEDE, #C4E759);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow-text 6s ease infinite;
 }
 
-.internship-description {
+/* ==== Company ==== */
+.internship-company {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(270deg, #f9d423, #ff4e50);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow-text 4s ease infinite;
+}
+
+/* ==== Duration ==== */
+.internship-duration {
+  font-weight: 600;
   font-size: 0.95rem;
-  color: #e2e8f0;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(270deg, #24c6dc, #514a9d);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow-text 5s ease infinite;
 }
 
-/* Certificate Link */
-.internship-link {
+/* ==== Description ==== */
+.internship-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(270deg, #00c9ff, #92fe9d);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow-text 6s ease infinite;
+}
+
+/* ==== View Certificate Button ==== */
+.internship-btn {
+  align-self: flex-start;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00f260, #0575e6);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 242, 96, 0.4);
+  transition: all 0.35s ease;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-weight: bold;
-  color: #facc15;
-  text-decoration: none;
-  transition: color 0.3s ease;
 }
 
-.internship-link:hover {
-  color: #fff;
+.internship-btn:hover,
+.internship-btn:focus {
+  background: linear-gradient(90deg, #fc466b, #3f5efb);
+  box-shadow: 0 12px 28px rgba(252, 70, 107, 0.6);
+  transform: scale(1.05);
+  outline: none;
 }
 
-.icon {
-  font-size: 1rem;
+/* ==== Glow Animation ==== */
+@keyframes glow-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Typography */
+/* ==== Responsive ==== */
 @media (max-width: 768px) {
-  .internship-heading {
-    font-size: 2.2rem;
+  .internship-title {
+    font-size: 2.25rem;
+    margin-bottom: 2.5rem;
   }
 
-  .internship-title {
+  .internship-role {
     font-size: 1.2rem;
   }
 
-  .internship-description,
-  .internship-duration,
-  .internship-company {
-    font-size: 0.9rem;
+  .internship-btn {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .internships-container {
+    padding: 2rem 1rem;
+  }
+
+  .internship-title {
+    font-size: 1.9rem;
+  }
+
+  .internship-role {
+    font-size: 1rem;
+  }
+
+  .internship-btn {
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
   }
 }

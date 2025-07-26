@@ -1,0 +1,253 @@
+/* === MAIN WRAPPER === */
+.portfolio-home-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff6ec4, #7873f5, #4ADEDE, #16f5b4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === STARFIELD BACKGROUND === */
+.stars-bg::before,
+.stars-bg::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background: url("https://raw.githubusercontent.com/Kalashnkat/StarsBG/main/stars.png") repeat;
+  animation: starMove 120s linear infinite;
+  opacity: 0.3;
+}
+
+.stars-bg::after {
+  background: url("https://raw.githubusercontent.com/Kalashnkat/StarsBG/main/meteors.png") repeat;
+  animation: meteorMove 60s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+
+@keyframes starMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, -100%); }
+}
+
+@keyframes meteorMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(100%, 100%); }
+}
+
+/* === GLASS CARD === */
+.hero-glass-card {
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2.5rem 3rem;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(147, 51, 234, 0.2);
+  animation: rotateIn 2s ease-in-out forwards, floatCard 6s ease-in-out infinite;
+}
+
+/* === PROFILE PICTURE === */
+.profile-pic {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #9333ea;
+  box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
+  animation: floatImage 6s ease-in-out infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes floatImage {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+/* === TEXT === */
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color:black;
+  margin-bottom: 0.5rem;
+}
+.hero-title span {
+  color: linear-gradient(135deg, #00f0ff, #00ffd5, #38bdf8, #06b6d4);
+}
+.hero-role {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 2rem;
+}
+
+/* === BUTTON === */
+.hero-btn {
+  background: linear-gradient(135deg, #9333ea, #4f46e5);
+  color: white;
+  font-size: 1rem;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+}
+.hero-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(147, 51, 234, 1);
+}
+
+/* === DESCRIPTION SECTION === */
+.description-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  z-index: 1;
+}
+
+/* === DESCRIPTION CARDS (Left & Right) === */
+.description-card {
+  background: linear-gradient(135deg, #a78bfa, #9333ea, #7c3aed, #c084fc);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  padding: 2rem 1.8rem;
+  width: 340px;
+  border-radius: 18px;
+  box-shadow: 0 0 30px rgba(147, 51, 234, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform: translateY(0px);
+  animation: rotateIn 2.5s ease-in-out forwards, floatCard 6s ease-in-out infinite;
+  text-align: left;
+  color: #f3f4f6;
+}
+
+.description-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 40px rgba(147, 51, 234, 0.4);
+}
+
+/* === CARD HEADINGS === */
+.description-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #9333ea;
+  padding-left: 0.6rem;
+  color: #ffffff;
+}
+
+/* === CARD PARAGRAPHS === */
+.description-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #d1d5db;
+}
+
+/* === FLOATING ANIMATION FOR CARDS === */
+@keyframes floatCard {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* === 3D ROTATE ENTRANCE === */
+@keyframes rotateIn {
+  0% {
+    transform: rotateY(20deg) rotateX(10deg) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: rotateY(-8deg) rotateX(-5deg) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(0deg) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* === MOBILE RESPONSIVE === */
+/* === MOBILE & TABLET RESPONSIVE === */
+@media (max-width: 1024px) {
+  .portfolio-home-wrapper {
+    padding: 2rem 1rem;
+    height: auto;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-glass-card {
+    width: 90%;
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.2rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-role {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+
+  .description-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .description-card {
+    width: 95%;
+    padding: 1.5rem 1.2rem;
+  }
+
+  .description-card h2 {
+    font-size: 1.3rem;
+  }
+
+  .description-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .card-rotator {
+    perspective: none;
+  }
+
+  .flip-inner {
+    transform: none !important;
+  }
+}
+
+
+

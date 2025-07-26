@@ -1,126 +1,202 @@
+/* === 🌈 Gradient Background with Motion === */
 .skills-beast-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 3rem 1.5rem;
-  min-height: 100vh;
-  width: 110%;
-  height: 100%;
-  margin-right: 20px;
-  background: linear-gradient(135deg, #1e3a8a, #7e22ce, #db2777, #f59e0b);
-  background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
-  box-sizing: border-box;
+  background: linear-gradient(135deg, #ff512f, #dd2476, #ff6a00);
+
+
+  background-size: 300% 300%;
+  animation: gradientFlow 20s ease infinite;
   overflow: hidden;
+  z-index: 0;
 }
 
-@keyframes gradientMove {
+/* === 🎆 Animated Gradient Flow === */
+@keyframes gradientFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
+/* === 💡 Bouncing and Flashing Heading === */
 .skills-beast-title {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 900;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  color: white;
-  text-shadow: 0 0 12px #ec4899, 0 0 24px #9333ea;
+  color: #facc15;
+  text-shadow: 0 0 12px #facc15, 0 0 25px #f43f5e;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  margin-bottom: 3rem;
+  animation: bounceFlash 2.8s ease-in-out infinite;
 }
 
+/* 🕺 Bounce + Flash Combo */
+@keyframes bounceFlash {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-15px); opacity: 0.7; }
+}
+
+/* === 🎴 Skill Cards Grid === */
 .skills-grid-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 2rem;
-  max-width: 1100px;
   width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem;
+  max-width: 1200px;
+  z-index: 2;
 }
 
-/* Card Style */
+/* === 🔮 Glass Skill Card === */
 .skills-beast-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  border-radius: 1.2rem;
+  position: relative;
+  background: linear-gradient(135deg, #232526, #414345, #6a11cb);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.5rem;
   padding: 2rem;
-  color: white;
-  width: 280px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05),
-              0 12px 40px rgba(0, 0, 0, 0.3),
-              inset 0 0 30px rgba(255, 255, 255, 0.04);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: left;
+  color: #f8fafc;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  transition: 0.4s ease;
+  overflow: hidden;
+  animation: fadeInUp 1.4s ease forwards;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
+  transform: scale(0.98);
 }
 
 .skills-beast-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.5),
-              0 0 35px rgba(255, 255, 255, 0.3);
+  transform: scale(1.06);
+  box-shadow: 0 0 50px rgba(236, 72, 153, 0.3), 0 0 20px #60a5fa;
 }
 
+.skills-beast-card:nth-child(1) { animation-delay: 0.3s; }
+.skills-beast-card:nth-child(2) { animation-delay: 0.6s; }
+.skills-beast-card:nth-child(3) { animation-delay: 0.9s; }
+
+/* === 🧠 Card Heading === */
 .skills-beast-card h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-  color: #fbbf24;
-  text-shadow: 0 0 10px #facc15;
+  font-size: 1.7rem;
+  color: orange;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 12px #fde68a;
+  animation: flickerGlow 3s infinite alternate;
 }
 
+/* 💡 Flickering Text Animation */
+@keyframes flickerGlow {
+  0% { opacity: 1; text-shadow: 0 0 8px #fde68a, 0 0 20px #facc15; }
+  50% { opacity: 0.6; text-shadow: 0 0 4px #fde68a; }
+  100% { opacity: 1; text-shadow: 0 0 10px #facc15, 0 0 30px #facc15; }
+}
+
+/* === ⚡ Skill List === */
 .skills-beast-card ul {
-  list-style-type: none;
-  padding-left: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .skills-beast-card li {
   font-size: 1rem;
-  margin-bottom: 0.4rem;
-  color: #f1f5f9;
-  line-height: 1.5;
-  padding-left: 1.2rem;
+  margin-bottom: 0.7rem;
+  padding-left: 1.6rem;
+  line-height: 1.6;
+  color: #e0f2fe;
   position: relative;
+  transition: transform 0.2s ease, color 0.3s ease;
 }
 
 .skills-beast-card li::before {
-  content: "🔥";
+  content: "⚡";
   position: absolute;
   left: 0;
+  animation: pulseEmoji 1.6s infinite ease-in-out alternate;
 }
 
-/* Responsive */
+.skills-beast-card li:hover {
+  transform: translateX(6px);
+  color: #facc15;
+}
+
+@keyframes pulseEmoji {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.15) rotate(8deg); opacity: 0.9; }
+}
+
+/* === 🫧 Floating Backside Circles === */
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  z-index: 0;
+  animation: floaty alternate infinite ease-in-out;
+}
+
+.shape1 {
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: #f43f5e;
+  animation-duration: 14s;
+}
+
+.shape2 {
+  bottom: -80px;
+  right: -120px;
+  width: 360px;
+  height: 360px;
+  background: #38bdf8;
+  animation-duration: 18s;
+  animation-delay: 2s;
+}
+
+.shape3 {
+  top: 20%;
+  left: 55%;
+  width: 260px;
+  height: 260px;
+  background: #9333ea;
+  animation-duration: 16s;
+  animation-delay: 3s;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0px) translateX(0px) scale(1); }
+  50% { transform: translateY(-25px) translateX(25px) scale(1.05); }
+  100% { transform: translateY(0px) translateX(0px) scale(1); }
+}
+
+/* === 👋 Card Entrance === */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(60px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 📱 Responsive Styling */
 @media (max-width: 768px) {
   .skills-beast-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    margin-right: 40px;
+    font-size: 2.2rem;
   }
 
   .skills-beast-card {
-    width: 90%;
-    max-width: 320px;
-    padding: 1.5rem;
-    margin-right: 70px;
+    padding: 1.6rem;
   }
 }
 
 @media (max-width: 480px) {
   .skills-beast-title {
-    font-size: 1.75rem;
-  }
-
-  .skills-beast-card {
-    padding: 1.2rem;
+    font-size: 1.8rem;
   }
 
   .skills-beast-card h2 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .skills-beast-card li {

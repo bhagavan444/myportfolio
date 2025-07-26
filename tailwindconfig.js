@@ -9,6 +9,8 @@ export default {
   },
   plugins: [],
 }
+
+
 // tailwind.config.js
 module.exports = {
   theme: {
@@ -31,4 +33,7 @@ module.exports = {
     },
   },
   plugins: [],
+  
+  
 };
+

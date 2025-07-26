@@ -1,70 +1,139 @@
-import React from "react";
+import React, { useState } from "react";
 import "../components/Workshops.css";
 import { motion } from "framer-motion";
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const data = [
+  {
+    type: "hackathon",
+    title: "🚀 Hackathon - Brainovision x RCE",
+    description:
+      "Participated in a 24-hour Hackathon by Brainovision & RCE. Built a full-stack MERN app for buying and selling second-hand electronics, inspired by OLX.",
+    certLink: "https://drive.google.com/file/d/1CQaoA9V93Lg4XS1FmcG-0gVUaKvw2zUq/view?usp=sharing",
+    projLink: "https://github.com/bhagavan444/hacakthon-project",
+    tag: "#MERN #Hackathon #FullStack",
+  },
+  {
+    type: "workshop",
+    title: "📚 Workshops Attended",
+    list: [
+      "🔬 Machine Learning – Supervised & unsupervised learning, model training with Scikit-learn.",
+      "🧠 Deep Learning – CNNs, image classification using TensorFlow & Keras.",
+      "📱 Mobile App Dev – Flutter-based Android apps and UI/UX best practices.",
+      "🌐 Web Development – Responsive design with HTML, CSS, JS & React.",
+    ],
+    tag: "#ML #DL #Flutter #WebDev",
+  },
+];
+
 const Workshops = () => {
+  const [filter, setFilter] = useState("all");
+
+  const filteredCards =
+    filter === "all" ? data : data.filter((card) => card.type === filter);
+
   return (
-    <div className="workshops-container">
-      <motion.h2
-        className="section-title"
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        Workshops & Hackathons
-      </motion.h2>
-
-      {/* 🔧 Hackathon Card */}
+    <motion.div
+      className="workshops-container"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       <motion.div
-        className="glass-card"
-        initial={{ opacity: 0, y: 40 }}
+        className="workshops-header"
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.7 }}
       >
-        <h3 className="card-title">🚀 Hackathon - Brainovision x RCE</h3>
-        <p>
-          Participated in a 24-hour Hackathon conducted by Brainovision and Ramachandra College of Engineering. Built a full-stack platform for{" "}
-          <strong>Online 2nd Hand Electronics Selling</strong> using the <strong>MERN Stack</strong> with features like user authentication, product listing, and dynamic search filtering.
-          We built a fully functional web platform inspired by OLX, aimed at enabling users to buy and sell second-hand electronic gadgets in a secure and user-friendly environment.
+        <h2 className="section-title">⚡ Workshops & Hackathons</h2>
+        <div className="underline"></div>
+        <p className="intro-text">
+          Here's a glimpse of my hands-on learning through Hackathons and Technical Workshops I participated in.
         </p>
-        <div className="button-group">
-          <a
-            href="https://github.com/bhagavan444/hacakthon-project"
-            className="view-button"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Filter Buttons */}
+        <div className="filter-buttons">
+          <button
+            className={filter === "all" ? "active" : ""}
+            onClick={() => setFilter("all")}
           >
-            🔗 View Project
-          </a>
-          <a
-            href="https://drive.google.com/file/d/1CQaoA9V93Lg4XS1FmcG-0gVUaKvw2zUq/view?usp=sharing"
-            className="view-button"
-            target="_blank"
-            rel="noopener noreferrer"
+            All
+          </button>
+          <button
+            className={filter === "hackathon" ? "active" : ""}
+            onClick={() => setFilter("hackathon")}
           >
-            🎓 View Certificate
-          </a>
+            Hackathons
+          </button>
+          <button
+            className={filter === "workshop" ? "active" : ""}
+            onClick={() => setFilter("workshop")}
+          >
+            Workshops
+          </button>
         </div>
-        <p className="tag">#MERN #Hackathon #RealProject</p>
       </motion.div>
 
-      {/* 📚 Workshops Card */}
-      <motion.div
-        className="glass-card"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <h3 className="card-title">📚 Workshops Attended</h3>
-        <ul className="workshop-list">
-          <li>🔬 <strong>Machine Learning</strong> – 7-day intensive workshop covering supervised/unsupervised learning, data preprocessing, model training, and evaluation using Python and Scikit-learn.</li>
-          <li>🧠 <strong>Deep Learning with TensorFlow</strong> – Project-oriented workshop on CNNs, activation functions, and image classification using TensorFlow & Keras.</li>
-          <li>📱 <strong>Mobile App Development</strong> – Bootcamp using Flutter and Android Studio. Learned UI/UX principles and developed basic Android apps.</li>
-          <li>🌐 <strong>Web Development</strong> – Hands-on workshop with HTML, CSS, JavaScript, and React.js. Built responsive pages and understood client-server flow.</li>
-        </ul>
-        <p className="tag">#ML #DL #Flutter #WebDev</p>
-      </motion.div>
-    </div>
+      {/* 🔲 Cards Grid */}
+      <div className="cards-grid">
+        {filteredCards.map((item, index) => (
+          <motion.div
+            className="glass-card"
+            key={index}
+            variants={cardVariants}
+            whileHover={{ scale: 1.03 }}
+          >
+            <h3 className="card-title">{item.title}</h3>
+            {item.description && <p>{item.description}</p>}
+
+            {item.list && (
+              <ul className="workshop-list">
+                {item.list.map((point, idx) => (
+                  <li key={idx}>{point}</li>
+                ))}
+              </ul>
+            )}
+
+            <div className="button-group">
+              {item.projLink && (
+                <a
+                  href={item.projLink}
+                  className="view-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🔗 View Project
+                </a>
+              )}
+              {item.certLink && (
+                <a
+                  href={item.certLink}
+                  className="view-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🎓 View Certificate
+                </a>
+              )}
+            </div>
+            <p className="tag">{item.tag}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
   );
 };
 

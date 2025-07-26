@@ -1,62 +1,144 @@
 import React from "react";
 import { motion } from "framer-motion";
+import {
+  SiMongodb,
+  SiExpress,
+  SiReact,
+  SiNodedotjs,
+  SiFlask,
+  SiPython,
+  SiFirebase,
+  SiHtml5,
+  SiCss3,
+  SiScikitlearn,
+  SiTensorflow,
+  SiPandas,
+  SiOpenai,
+  SiSocketdotio,
+  SiCloudinary,
+  SiNumpy,
+} from "react-icons/si";
 import "../components/Projects.css";
+
+const getTechIcons = (tech) => {
+  const iconMap = {
+    MongoDB: { icon: <SiMongodb />, label: "MongoDB" },
+    Express: { icon: <SiExpress />, label: "Express" },
+    "Express.js": { icon: <SiExpress />, label: "Express.js" },
+    React: { icon: <SiReact />, label: "React" },
+    "React.js": { icon: <SiReact />, label: "React.js" },
+    Node: { icon: <SiNodedotjs />, label: "Node.js" },
+    "Node.js": { icon: <SiNodedotjs />, label: "Node.js" },
+    Flask: { icon: <SiFlask />, label: "Flask" },
+    Python: { icon: <SiPython />, label: "Python" },
+    Firebase: { icon: <SiFirebase />, label: "Firebase" },
+    "Firebase Auth": { icon: <SiFirebase />, label: "Firebase Auth" },
+    HTML: { icon: <SiHtml5 />, label: "HTML" },
+    CSS: { icon: <SiCss3 />, label: "CSS" },
+    CSS3: { icon: <SiCss3 />, label: "CSS3" },
+    "HTML/CSS": {
+      icon: (
+        <>
+          <SiHtml5 /> <SiCss3 />
+        </>
+      ),
+      label: "HTML/CSS",
+    },
+    "Scikit-learn": { icon: <SiScikitlearn />, label: "Scikit-learn" },
+    TensorFlow: { icon: <SiTensorflow />, label: "TensorFlow" },
+    Pandas: { icon: <SiPandas />, label: "Pandas" },
+    OpenAI: { icon: <SiOpenai />, label: "OpenAI" },
+    "OpenAI API": { icon: <SiOpenai />, label: "OpenAI API" },
+    Socket: { icon: <SiSocketdotio />, label: "Socket.io" },
+    "Socket.io": { icon: <SiSocketdotio />, label: "Socket.io" },
+    Cloudinary: { icon: <SiCloudinary />, label: "Cloudinary" },
+    Numpy: { icon: <SiNumpy />, label: "Numpy" },
+    Numpys: { icon: <SiNumpy />, label: "Numpy" },
+  };
+
+  return tech.split(", ").map((t, i) => {
+    const entry = iconMap[t];
+    return (
+      <span
+        key={i}
+        style={{
+          marginRight: "12px",
+          fontSize: "1.1rem",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "4px",
+        }}
+      >
+        {entry ? (
+          <>
+            {entry.icon}
+            <span>{entry.label}</span>
+          </>
+        ) : (
+          <span>{t}</span>
+        )}
+      </span>
+    );
+  });
+};
 
 const projectData = [
   {
     title: "🧠 Enhance Resume Builder",
     description:
-      "An intelligent MERN stack application that allows users to create professional resumes using modern templates, and evaluate them using ATS (Applicant Tracking System) scoring. Integrated Google and GitHub authentication, dynamic form handling, and PDF/Word export features. Resume data is stored in MongoDB, and scoring is based on keyword matching using a Node.js API.",
-    tech: "MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML2PDF",
+      "An intelligent MERN stack application that allows users to create professional resumes with modern templates, scoring using ATS.",
+    tech: "MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML/CSS",
     link: "https://github.com/bhagavan444/resumebuilder",
   },
   {
     title: "🍏 Fruit & Vegetable Disease Classifier",
     description:
-      "Developed a deep learning-based Flask web app using MobileNetV2 (Transfer Learning) to detect whether uploaded images of fruits or vegetables are healthy or rotten. Trained on a custom Kaggle dataset with real-world image categories like Fresh Apple, Rotten Tomato, etc. Features include real-time prediction, smooth UI with animated cards, and responsive design.",
-    tech: "TensorFlow, Keras, MobileNetV2, Flask, React, CSS3, Python",
+      "Flask + MobileNetV2-based image classifier to detect fruit/vegetable health. Real-time prediction and animated UI.",
+    tech: "TensorFlow, Keras, Flask, React, CSS3, Python",
     link: "https://github.com/bhagavan444/smartbidgeproject",
-  }, 
-  {   
+  },
+  {
     title: "🎯 Career Recommendation System",
     description:
-      "Machine Learning-based web application that suggests suitable career paths based on user’s academic background, skillset, and interests. Collected real-world career data, applied classification algorithms, and built a Flask backend for predictions. Frontend displays dynamic suggestions, career roadmap, and learning resources.",
+      "ML-powered system recommending careers based on user's data. Includes predictions, roadmap, and resources.",
     tech: "Python, Flask, React.js, Scikit-learn, Pandas, HTML/CSS",
     link: "https://github.com/bhagavan444/career-path-project",
   },
   {
-    title: "💻 Online 2nd Hand Electronics Selling Platform",
+    title: "💻 2nd Hand Electronics Platform",
     description:
-      "Developed during a 24-hour hackathon, this is a full-stack web platform for users to list and buy second-hand electronic products. Features include secure user login, product image uploads, real-time messaging, and categorized listings. This was built using MERN stack and implemented in a team collaboration setup.",
+      "Full-stack app for buying/selling electronics. Built during a hackathon with real-time chat, image uploads, auth.",
     tech: "MongoDB, Express, React, Node.js, Cloudinary, Socket.io",
     link: "https://github.com/bhagavan444/hacakthon-project",
   },
   {
-    title: "❌Fake News Detector",
-    description: "An AI-powered web application using NLP and machine learning to classify news articles as real or fake based on their content.",
-    tech:"Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS",
-    link: "https://github.com/bhagavan444/fake-news-detector"
+    title: "❌ Fake News Detector",
+    description:
+      "An AI-driven app that detects fake news using TF-IDF, NLP, and classification models.",
+    tech: "Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS",
+    link: "https://github.com/bhagavan444/fake-news-detector",
   },
   {
     title: "📖 Smart Career Chatbot",
-    description: "An intelligent career counseling chatbot built with LangChain and OpenAI API that interacts with students and suggests career paths.",
+    description:
+      "LangChain + OpenAI-based chatbot that recommends careers through interactive dialogue.",
     tech: "LangChain, OpenAI API, Flask, React",
-    link: "https://github.com/bhagavan444/smart-career-chatbot"
-  },
-   {
-    title: "📑Diabetes Predictor",
-    description: "A machine learning-based Flask web app that predicts the likelihood of diabetes using medical input data. Includes a user-friendly UI.",
-    tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
-    link: "https://github.com/bhagavan444/diabetes-predictor-app"
+    link: "https://github.com/bhagavan444/smart-career-chatbot",
   },
   {
-  title: "📊 Data Science Projects – ML-Based Predictions",
-  description: "A collection of machine learning-powered. Each project predicts outcomes based on user input data, including diabetes risk, heart disease risk, cancer risk, and more.",
-  tech: "Python, Flask, Scikit-learn, Pandas, Tensorflow, Numpys , Machine learning.",
-  link: "https://github.com/bhagavan444" // or use a GitHub repo collection link or personal portfolio
-}
-
-    
+    title: "📑 Diabetes Predictor",
+    description:
+      "A Flask ML app predicting diabetes from user medical data. Simple and elegant UI.",
+    tech: "Python, Flask, Scikit-learn, Pandas, HTML/CSS",
+    link: "https://github.com/bhagavan444/diabetes-predictor-app",
+  },
+  {
+    title: "📊 ML Projects – Health Risk Predictions",
+    description:
+      "Collection of mini-ML projects including diabetes, heart, and cancer risk predictors.",
+    tech: "Python, Flask, Scikit-learn, Pandas, TensorFlow, Numpys",
+    link: "https://github.com/bhagavan444",
+  },
 ];
 
 const Projects = () => {
@@ -78,12 +160,17 @@ const Projects = () => {
             className="project-card"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.2 }}
+            transition={{ delay: index * 0.15 }}
             viewport={{ once: true }}
           >
             <h3>{project.title}</h3>
             <p>{project.description}</p>
-            <p className="tech-used">🔧 <b>Technologies:</b> {project.tech}</p>
+            <p className="tech-used">
+              <b>🔧 Tech:</b>
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "4px" }}>
+              {getTechIcons(project.tech)}
+            </div>
             <a
               href={project.link}
               className="visit-btn"

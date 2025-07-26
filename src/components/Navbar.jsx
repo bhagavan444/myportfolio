@@ -1,204 +1,95 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
-import {
-  FaLinkedin,
-  FaTwitter,
-  FaEnvelope,
-  FaTiktok,
-  FaGithub,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
-
-// ✅ Updated links
-const links = [
-  "Home",
-  "Education",
-  "MySkills",
-  "Projects",
-  "Internships", // 👈 Added here
-  "Certifications",
-  "Resume",
-  "Workshops & Hacathons",
-  "Personal Details",
-  "Contact",
-];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
-  const handleToggle = () => setMenuOpen((prev) => !prev);
-
-  // ✅ Utility function to format paths correctly
-  const formatLinkPath = (link) => {
-    if (link === "Home") return "/";
-    if (link === "Workshops & Hacathons") return "/workshops-hackathons";
-    return `/${link.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-")}`;
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="fixed w-full top-0 left-0 bg-gradient-to-r from-purple-700 via-pink-600 to-red-500 shadow-lg z-50">
-      <nav className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
+    <nav className="navbar">
+      <div className="nav-container">
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-white font-extrabold text-2xl tracking-wide select-none"
-        >
-          Siva Satya Sai Bhagavan GopalaJosyula
-        </Link>
+        <motion.div className="nav-logo" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+          <Link to="/home">🚀 Rocky</Link>
+        </motion.div>
 
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-6">
-          {links.map((link) => (
-            <li key={link}>
-              <Link
-                to={formatLinkPath(link)}
-                className="relative px-4 py-2 text-white font-semibold rounded-full transition-all duration-300 hover:bg-white hover:text-purple-700 hover:shadow-lg hover:scale-105"
-              >
-                {link}
+        {/* Hamburger */}
+        <div className="hamburger" onClick={toggleMenu}>
+          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </div>
+
+        {/* Links */}
+        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
+          {/* Static Links */}
+          {["Home", "About", "Education", "My Skills", "Workshops", "Resume", "Certifications", "Contact"].map((name, i) => (
+            <motion.div
+              key={name}
+              className="nav-link"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
+            >
+              <Link to={`/${name.toLowerCase().replace(/\s+/g, "")}`} className={location.pathname.includes(name.toLowerCase()) ? "active-link" : ""}>
+                {name}
               </Link>
-            </li>
+            </motion.div>
           ))}
-        </ul>
 
-        {/* Social Icons */}
-        <div className="hidden md:flex space-x-5 text-white text-xl">
-          <a
-            href="mailto:your@email.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-yellow-400 transition-colors duration-300"
-            aria-label="Email"
-          >
-            <FaEnvelope />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-blue-400 transition-colors duration-300"
-            aria-label="LinkedIn"
-          >
-            <FaLinkedin />
-          </a>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-gray-300 transition-colors duration-300"
-            aria-label="GitHub"
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-sky-400 transition-colors duration-300"
-            aria-label="Twitter"
-          >
-            <FaTwitter />
-          </a>
-          <a
-            href="https://tiktok.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-pink-400 transition-colors duration-300"
-            aria-label="TikTok"
-          >
-            <FaTiktok />
-          </a>
+          {/* Mega Menu: Internships */}
+          <div className="nav-link mega-parent">
+            <span>Internships ▾</span>
+            <div className="mega-menu">
+              <div className="mega-column">
+                <h4>Company</h4>
+                <Link to="/internships/blackbucks">Blackbucks</Link>
+                <Link to="/internships/smart Bridge">Smart Bridge</Link>
+              </div>
+              <div className="mega-column">
+                <h4>Domains</h4>
+                <Link to="/internships/aiml">AI/ML</Link>
+                <Link to="/internships/webdev">Web Dev</Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Mega Menu: Projects */}
+          <div className="nav-link mega-parent">
+            <span>Projects ▾</span>
+            <div className="mega-menu">
+              <div className="mega-column">
+                <h4>MERN Stack</h4>
+                <Link to="/projects/resume">Resume Builder</Link>
+                <Link to="/projects/ecommerce">E-Commerce</Link>
+                <Link to="/projects/Chat bot ">AI-Chatbot</Link>
+                <Link to="/projects/Carrer">Carrer Recommendation System</Link>
+              </div>
+              <div className="mega-column">
+                <h4>AI/ML</h4>
+                <Link to="/projects/fruit-ai">Fruit Classifier</Link>
+                <Link to="/projects/heart">Heart Predictor</Link>
+                <Link to="/projects/Predictor">Disease Predictor App</Link>
+              </div>
+              <div className="mega-column">
+                <h4>Mini Tools</h4>
+                <Link to="/projects/todo">Todo App</Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Icons */}
+          <div className="nav-icons">
+            <a href="https://github.com/bhagavan444" target="_blank"><FaGithub /></a>
+            <a href="mailto:g.sivasatyasaibhagavan@gmail.com"><FaEnvelope /></a>
+            <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank"><FaLinkedin /></a>
+          </div>
         </div>
-
-        {/* Mobile Hamburger */}
-        <div
-          className="md:hidden text-white text-2xl cursor-pointer"
-          onClick={handleToggle}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.ul
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-gradient-to-r from-purple-700 via-pink-600 to-red-500 shadow-inner overflow-hidden"
-          >
-            {links.map((link) => (
-              <li
-                key={link}
-                className="border-b border-white/30 last:border-none"
-              >
-                <Link
-                  to={formatLinkPath(link)}
-                  onClick={() => setMenuOpen(false)}
-                  className="block px-6 py-4 text-white font-semibold hover:bg-white hover:text-purple-700 transition-colors duration-300"
-                >
-                  {link}
-                </Link>
-              </li>
-            ))}
-
-            {/* Mobile social icons */}
-            <li className="flex justify-center space-x-6 py-4">
-              <a
-                href="mailto:your@email.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-yellow-400 transition-colors duration-300 text-xl"
-                aria-label="Email"
-              >
-                <FaEnvelope />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-blue-400 transition-colors duration-300 text-xl"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-gray-300 transition-colors duration-300 text-xl"
-                aria-label="GitHub"
-              >
-                <FaGithub />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-sky-400 transition-colors duration-300 text-xl"
-                aria-label="Twitter"
-              >
-                <FaTwitter />
-              </a>
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-pink-400 transition-colors duration-300 text-xl"
-                aria-label="TikTok"
-              >
-                <FaTiktok />
-              </a>
-            </li>
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    </header>
+      </div>
+    </nav>
   );
 };
 

@@ -1,0 +1,9 @@
+.tilt3d-wrapper {
+  display: inline-block;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+  transform: rotateX(var(--tiltX, 0deg)) rotateY(var(--tiltY, 0deg));
+  will-change: transform;
+  border-radius: 50%;
+}
