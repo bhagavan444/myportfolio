@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
@@ -6,30 +6,47 @@ import profile from "../assets/profile.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [motionPermission, setMotionPermission] = useState("default");
+
+  const handleOrientation = (event) => {
+    const { beta, gamma } = event;
+    const rotateX = (beta - 45) / 15;
+    const rotateY = gamma / 15;
+
+    const cards = document.querySelectorAll(".description-card");
+    cards.forEach((card) => {
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+  };
+
+  const requestMotionPermission = () => {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      DeviceOrientationEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            setMotionPermission("granted");
+            window.addEventListener("deviceorientation", handleOrientation, true);
+          } else {
+            setMotionPermission("denied");
+          }
+        })
+        .catch(console.error);
+    } else {
+      // For older browsers that don't need a prompt
+      window.addEventListener("deviceorientation", handleOrientation, true);
+      setMotionPermission("granted");
+    }
+  };
 
   useEffect(() => {
-    const cards = document.querySelectorAll(".description-card");
-
-    const handleOrientation = (event) => {
-      const { beta, gamma } = event;
-
-      const rotateX = (beta - 45) / 15;
-      const rotateY = gamma / 15;
-
-      cards.forEach((card) => {
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      });
-    };
-
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", handleOrientation, true);
+    if (motionPermission === "granted") {
+      return () => {
+        window.removeEventListener("deviceorientation", handleOrientation);
+      };
     }
+  }, [motionPermission]);
 
-    return () => {
-      window.removeEventListener("deviceorientation", handleOrientation);
-    };
-  },);
-
+  // Rest of your JSX
   return (
     <motion.div
       className="portfolio-home-wrapper"
@@ -38,7 +55,6 @@ const Home = () => {
       transition={{ duration: 1.8 }}
     >
       <div className="stars-bg" />
-
       <section id="home">
         <motion.div
           className="hero-glass-card upgraded"
@@ -51,9 +67,8 @@ const Home = () => {
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           >
-            <img src={profile} alt="Rocky" className="profile-pic glow" />
+            <img src={profile} alt="Sai" className="profile-pic glow" />
           </motion.div>
-
           <motion.h1
             className="hero-title"
             initial={{ y: -30, opacity: 0 }}
@@ -62,7 +77,6 @@ const Home = () => {
           >
             Hi, I'm <span>Sai</span> 👋
           </motion.h1>
-
           <motion.p
             className="hero-role"
             initial={{ y: 40, opacity: 0 }}
@@ -71,18 +85,29 @@ const Home = () => {
           >
             Full Stack Developer | Deep Learning Enthusiast | Career Builder
           </motion.p>
-
-          <motion.button
-            className="hero-btn"
-            whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/about")}
-          >
-            View My Work 🚀
-          </motion.button>
+          {motionPermission !== "granted" && (
+            <motion.button
+              className="hero-btn"
+              whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
+              whileTap={{ scale: 0.95 }}
+              onClick={requestMotionPermission}
+            >
+              Enable 3D Experience 🌌
+            </motion.button>
+          )}
+          {motionPermission === "granted" && (
+            <motion.button
+              className="hero-btn"
+              whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/about")}
+            >
+              View My Work 🚀
+            </motion.button>
+          )}
         </motion.div>
       </section>
-
+      {/* ... rest of your JSX remains the same */}
       <section id="about">
         <div className="description-section upgraded">
           <div className="card-rotator">
@@ -102,7 +127,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
       <section id="vision">
         <div className="description-section upgraded">
           <div className="card-rotator">
