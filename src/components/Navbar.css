@@ -1,128 +1,130 @@
-/* ==== Reset ==== */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Global */
 body {
-  background-color: #0f172a;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
+  background: #0a0a0a;
   color: white;
-  overflow-x: hidden;
 }
 
-/* ==== Navbar Base ==== */
+/* Navbar Base */
 .navbar {
-  position: sticky;
-  top: 0;
   width: 100%;
+  position: fixed;
+  top: 0;
   z-index: 999;
-  padding: 1rem 2rem;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  overflow: hidden;
+  background: linear-gradient(135deg, #00FFAB, #FF00C8, #00BFFF, #FFD700);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  backdrop-filter: blur(8px);
+  height: 60px; /* Reduced height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.navbar::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 255, 174, 0.06) 20%, transparent 70%);
-  animation: floatParticles 30s linear infinite;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes floatParticles {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
+/* Container */
 .nav-container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 2;
+  width: 100%;
 }
 
-/* ==== Logo ==== */
+/* Logo */
 .nav-logo a {
-  font-size: 2rem;
+  color: #00f5c4;
+  font-size: 1.6rem;
   font-weight: bold;
   text-decoration: none;
-  background: linear-gradient(270deg, #00ffe0, #00bfff, #ff6ec4, #00ffe0);
-  background-size: 600% 600%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: colorFlow 8s ease infinite;
+  text-shadow: 0 0 10px #00f5c4;
+  animation: glow 2s infinite alternate;
 }
 
-@keyframes colorFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #00f5c4;
+  }
+  to {
+    text-shadow: 0 0 20px #00f5c4, 0 0 30px #00cfff;
+  }
 }
 
-/* ==== Hamburger ==== */
+/* Hamburger */
 .hamburger {
   display: none;
   cursor: pointer;
-  color: white;
-  z-index: 10;
+  color: #ffffff;
+  font-size: 1.5rem;
 }
 
-/* ==== Nav Links ==== */
+/* Nav Links */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.nav-link {
-  animation: bounceIn 0.6s ease-out;
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
-@keyframes bounceIn {
-  0% { transform: translateY(-20px); opacity: 0; }
-  60% { transform: translateY(8px); opacity: 1; }
-  100% { transform: translateY(0); }
-}
-
-.nav-link a, .nav-link span {
-  position: relative;
-  font-weight: 600;
-  font-size: 1rem;
-  background: linear-gradient(270deg, #00ffe0, #ff6ec4, #00ffe0);
-  background-size: 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: colorFlow 6s linear infinite;
+.nav-link a,
+.nav-link span {
+  color: #ffffff;
   text-decoration: none;
+  font-size: 1rem;
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 20px;
+  transition: all 0.4s ease;
+  overflow: hidden;
 }
 
-.nav-link a::after,
-.nav-link span::after {
+/* Curved hover animation */
+.nav-link a::before {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -4px;
-  height: 2px;
-  width: 0%;
-  background: linear-gradient(to right, #00ffae, #00ffe0);
-  transition: 0.3s ease;
+  width: 120%;
+  height: 300%;
+  background: radial-gradient(circle at center, #00f5c4 10%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease;
+  border-radius: 50%;
+  z-index: -1;
 }
 
-.nav-link a:hover::after,
-.nav-link span:hover::after {
-  width: 100%;
+.nav-link a:hover::before {
+  transform: translate(-50%, -50%) scale(1.2);
 }
 
-/* ==== Mega Menu ==== */
+.nav-link a:hover,
+.nav-link span:hover {
+  color: #00f5c4;
+  text-shadow: 0 0 10px #00f5c4;
+}
+
+.nav-link a.active-link {
+  color: #00f5c4;
+  border-bottom: 2px solid #00f5c4;
+}
+
+/* Mega Menu */
 .mega-parent {
   position: relative;
 }
@@ -131,22 +133,17 @@ body {
   position: absolute;
   top: 2.5rem;
   left: 0;
-  display: flex;
-  gap: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  padding: 1.5rem 2rem;
+  background-color: rgba(15, 23, 42, 0.95);
   border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s ease;
-  z-index: 5;
+  display: none;
+  padding: 1rem 2rem;
+  box-shadow: 0 0 20px #00f5c4;
+  z-index: 999;
 }
 
 .mega-parent:hover .mega-menu {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex;
+  gap: 2rem;
 }
 
 .mega-column {
@@ -155,43 +152,40 @@ body {
 }
 
 .mega-column h4 {
-  color: #00ffe0;
-  font-size: 1rem;
   margin-bottom: 0.5rem;
-  font-weight: 600;
+  color: #00f5c4;
+  font-size: 1rem;
 }
 
 .mega-column a {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
-  padding: 4px 0;
+  margin: 0.3rem 0;
   transition: 0.3s ease;
 }
 
 .mega-column a:hover {
-  color: #00ffae;
-  transform: translateX(6px);
+  color: #00f5c4;
 }
 
-/* ==== Socials ==== */
+/* Icons */
 .nav-icons {
   display: flex;
   gap: 1rem;
-  margin-left: 1rem;
 }
 
 .nav-icons a {
-  color: white;
-  font-size: 1.3rem;
-  transition: transform 0.3s ease;
+  color: #ffffff;
+  transition: 0.3s ease;
+  font-size: 1.2rem;
 }
 
 .nav-icons a:hover {
-  color: #00ffae;
+  color: #00f5c4;
   transform: scale(1.1);
 }
 
-/* ==== Responsive ==== */
+/* Responsive */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -199,15 +193,15 @@ body {
 
   .nav-links {
     flex-direction: column;
-    align-items: flex-start;
-    background-color: #111827;
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    padding: 1rem 2rem;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 1.5rem 0;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
     display: none;
-    z-index: 10;
   }
 
   .nav-links.open {
@@ -217,14 +211,16 @@ body {
   .mega-menu {
     position: static;
     flex-direction: column;
-    gap: 1rem;
     background: none;
-    backdrop-filter: none;
     box-shadow: none;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
   }
 
-  .nav-link {
-    animation: none;
+  .mega-parent:hover .mega-menu {
+    display: flex;
+  }
+
+  .nav-icons {
+    margin-top: 1rem;
   }
 }

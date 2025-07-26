@@ -3,9 +3,13 @@
   position: relative;
   min-height: 100vh;
   padding: 4rem 1rem;
-  background: radial-gradient(ellipse at top, #38bdf8, #818cf8, #9333ea);
-  color: #f1f5f9;
+  background: linear-gradient(to bottom, #00FF00, #FF007F, #1E90FF, #FF8C00);
+  color: black;
   overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+  width: 100%;
 }
 
 /* 🌙 Orbiting glow circle */
@@ -46,7 +50,7 @@
   font-size: 2.8rem;
   font-weight: 700;
   text-align: center;
-  color: #ffffff;
+  color: black;
   text-shadow: 0 0 10px #93c5fd;
 }
 
@@ -95,7 +99,7 @@
 
 .beast-about-section li {
   margin-bottom: 0.5rem;
-  color: #e2e8f0;
+  color: black;
 }
 
 /* 🚀 Tech stack section */
@@ -114,7 +118,22 @@
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 1.2rem;
   justify-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+  grid-auto-rows: auto;
+  grid-template-rows: repeat(2, auto); /* Ensure 2 rows */
 }
+
+/* If you want exactly 2 rows with equal icon count: */
+/* .tech-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 1.2rem;
+  justify-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+} */
 
 .tech-icon-with-label {
   display: flex;
@@ -166,4 +185,46 @@
   transform: scale(1.08);
   background: #6366f1;
   color: #fff;
+}
+
+/* NEW: Fullscreen Card */
+.fullscreen-card {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+/* 🌐 Responsive tech icons layout */
+@media (max-width: 768px) {
+  .tech-stack-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .tech-icon-with-label {
+    font-size: 1.5rem;
+  }
+
+  .tech-label {
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-stack-grid {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .tech-icon-with-label {
+    font-size: 1.3rem;
+  }
+
+  .tech-label {
+    font-size: 0.65rem;
+  }
 }

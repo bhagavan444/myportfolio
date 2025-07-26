@@ -1,43 +1,29 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import "./About.css";
 import {
-  FaHtml5,
-  FaCss3Alt,
-  FaJs,
-  FaReact,
-  FaNodeJs,
-  FaDatabase,
-  FaGitAlt,
-  FaGithub,
-  FaPython,
+  FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs,
+  FaDatabase, FaGitAlt, FaGithub, FaPython
 } from "react-icons/fa";
 import {
-  SiMongodb,
-  SiTailwindcss,
-  SiExpress,
-  SiFlask,
-  SiTensorflow,
+  SiMongodb, SiTailwindcss, SiExpress, SiFlask, SiTensorflow
 } from "react-icons/si";
 
+// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      when: "beforeChildren",
-      staggerChildren: 0.25,
-    },
+    transition: { when: "beforeChildren", staggerChildren: 0.25 },
   },
 };
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 60, scale: 0.95 },
+const floatIn = {
+  hidden: { opacity: 0, y: -30 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.8, ease: "easeOut" },
+    transition: { duration: 1, ease: "easeOut" },
   },
 };
 
@@ -57,15 +43,7 @@ const badgeVariants = {
   }),
 };
 
-const floatIn = {
-  hidden: { opacity: 0, y: -30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, ease: "easeOut" },
-  },
-};
-
+// Data
 const techStack = [
   { name: "HTML5", icon: <FaHtml5 /> },
   { name: "CSS3", icon: <FaCss3Alt /> },
@@ -91,98 +69,114 @@ const badges = [
   "SQL", "VS Code", "Postman", "Agile", "CI/CD"
 ];
 
+const sections = [
+  {
+    title: "🚀 Real-World Projects",
+    items: [
+      "Resume Builder (MERN + ATS) – Google/GitHub login, ATS scoring using NLP, PDF/Word export.",
+      "Career Recommendation System – ML + Flask app to suggest best-fit careers based on inputs.",
+      "Second-Hand Electronics Platform – Full MERN app with secure auth and MongoDB listings.",
+      "AI Chatbot (AWS Lex) – Voice/text bot with AWS Lambda integration and NLP logic.",
+      "OLX-Style Marketplace – Full-stack marketplace for electronics (search, auth, filters).",
+    ],
+  },
+  {
+    title: "📜 Internship Experience",
+    items: [
+      "AI/ML Intern @ Blackbucks Pvt Ltd – Developed a real-time ML prediction system.",
+      "SmartBridge x Eduskills – Created fruit & vegetable classifier with DL + TensorFlow + AWS.",
+    ],
+  },
+  {
+    title: "🎯 Career Objectives",
+    items: [
+      "Seeking roles in Full Stack Development, Machine Learning, or Data Science.",
+      "Aim is to apply skills on real-world problems, work in agile teams, and grow as an engineer.",
+    ],
+  },
+  {
+    title: "🌟 Why Me?",
+    items: [
+      "✔ End-to-end delivery (frontend, backend, ML)",
+      "✔ Git, GitHub, APIs, CI/CD experience",
+      "✔ Agile collaboration & documentation",
+      "✔ Fast learner & tech explorer",
+    ],
+  },
+];
+
 const About = () => {
   return (
     <div className="about-wrapper">
-      <div className="orbiting-circle"></div>
+      <div className="orbiting-circle" />
 
-      <motion.section
-        className="beast-about-container"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.h2
-          className="beast-about-title"
-          variants={floatIn}
-          whileHover={{ scale: 1.05 }}
-        >
-          👋 Hi, I'm <span className="highlight">Siva Satya Sai Bhagavan</span>
-        </motion.h2>
+      {[null, ...sections].map((section, index) => {
+        const ref = useRef(null);
+        const isInView = useInView(ref, {
+          margin: "-40% 0px -40% 0px",
+          once: false,
+        });
 
-        <motion.p
-          className="beast-about-subtitle"
-          variants={floatIn}
-          whileHover={{ scale: 1.02 }}
-        >
-          Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
-        </motion.p>
+        if (index === 0) {
+          return (
+            <motion.section
+              key="intro"
+              className="fullscreen-card"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <motion.div
+                className="beast-about-container"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <motion.h2 className="beast-about-title" variants={floatIn}>
+                  👋 Hi, I'm <span className="highlight">Siva Satya Sai Bhagavan</span>
+                </motion.h2>
 
-        <motion.div className="beast-about-box" variants={sectionVariants}>
-          <p>
-            I’m a proactive and solution-driven developer with hands-on experience in{" "}
-            <strong>Full Stack (MERN)</strong>, <strong>Python</strong>, and{" "}
-            <strong>Machine Learning and AI</strong>. I love building scalable web apps and real-time AI solutions.
-          </p>
-        </motion.div>
+                <motion.p className="beast-about-subtitle" variants={floatIn}>
+                  Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
+                </motion.p>
+              </motion.div>
+            </motion.section>
+          );
+        }
 
-        {[
-          {
-            title: "🚀 Real-World Projects",
-            items: [
-              "Resume Builder (MERN + ATS) – Google/GitHub login, ATS scoring using NLP, PDF/Word export.",
-              "Career Recommendation System – ML + Flask app to suggest best-fit careers based on inputs.",
-              "Second-Hand Electronics Platform – Full MERN app with secure auth and MongoDB listings.",
-              "AI Chatbot (AWS Lex) – Voice/text bot with AWS Lambda integration and NLP logic.",
-              "OLX-Style Marketplace – Full-stack marketplace for electronics (search, auth, filters).",
-            ],
-          },
-          {
-            title: "📜 Internship Experience",
-            items: [
-              "AI/ML Intern @ Blackbucks Pvt Ltd – Developed a real-time ML prediction system.",
-              "SmartBridge x Eduskills – Created fruit & vegetable classifier with DL + TensorFlow + AWS.",
-            ],
-          },
-          {
-            title: "🎯 Career Objectives",
-            items: [
-              "Seeking roles in Full Stack Development, Machine Learning, or Data Science.",
-              "Aim is to apply skills on real-world problems, work in agile teams, and grow as an engineer.",
-            ],
-          },
-          {
-            title: "🌟 Why Me?",
-            items: [
-              "✔ End-to-end delivery (frontend, backend, ML)",
-              "✔ Git, GitHub, APIs, CI/CD experience",
-              "✔ Agile collaboration & documentation",
-              "✔ Fast learner & tech explorer",
-            ],
-          },
-        ].map((section, index) => (
-          <motion.div
-            className="beast-about-section"
-            key={index}
-            variants={sectionVariants}
-            whileHover={{ scale: 1.015 }}
+        const isEven = index % 2 === 0;
+        const fromX = isEven ? -150 : 150;
+        const toX = isEven ? 150 : -150;
+
+        return (
+          <motion.section
+            ref={ref}
+            key={section.title}
+            className="fullscreen-card"
+            initial={{ opacity: 0, x: fromX }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: toX }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
           >
-            <h3>{section.title}</h3>
-            <ul>
-              {section.items.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
+            <motion.div className="beast-about-section" whileHover={{ scale: 1.015 }}>
+              <h3>{section.title}</h3>
+              <ul>
+                {section.items.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </motion.div>
+          </motion.section>
+        );
+      })}
 
-        {/* 💠 Animated Icon-Based Tech Stack with Names */}
-        <motion.div
-          className="tech-stack-section"
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-        >
+      {/* Tech Stack */}
+      <motion.section
+        className="fullscreen-card"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <motion.div className="tech-stack-section" variants={floatIn}>
           <h4>🚀 Core Technologies</h4>
           <div className="tech-stack-grid">
             {techStack.map((tech, i) => (
@@ -192,8 +186,8 @@ const About = () => {
                 custom={i}
                 variants={badgeVariants}
                 initial="hidden"
-                animate="visible"
-                whileHover={{ scale: 1.15 }}
+                whileInView="visible"
+                viewport={{ once: false }}
               >
                 <div className="icon">{tech.icon}</div>
                 <div className="tech-label">{tech.name}</div>
@@ -201,14 +195,16 @@ const About = () => {
             ))}
           </div>
         </motion.div>
+      </motion.section>
 
-        {/* 🔤 Text-Based Skill Badges */}
-        <motion.div
-          className="beast-about-badges"
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-        >
+      {/* Tools & Skills */}
+      <motion.section
+        className="fullscreen-card"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <motion.div className="beast-about-badges">
           <h4>📚 Other Tools & Skills</h4>
           <div className="badge-grid">
             {badges.map((badge, i) => (
@@ -218,8 +214,8 @@ const About = () => {
                 custom={i}
                 variants={badgeVariants}
                 initial="hidden"
-                animate="visible"
-                whileHover={{ scale: 1.08 }}
+                whileInView="visible"
+                viewport={{ once: false }}
               >
                 {badge}
               </motion.span>

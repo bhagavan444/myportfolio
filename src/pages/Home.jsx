@@ -32,7 +32,6 @@ const Home = () => {
         })
         .catch(console.error);
     } else {
-      // For older browsers that don't need a prompt
       window.addEventListener("deviceorientation", handleOrientation, true);
       setMotionPermission("granted");
     }
@@ -46,105 +45,107 @@ const Home = () => {
     }
   }, [motionPermission]);
 
-  // Rest of your JSX
   return (
     <motion.div
       className="portfolio-home-wrapper"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.8 }}
+      transition={{ duration: 2 }}
     >
       <div className="stars-bg" />
       <section id="home">
         <motion.div
           className="hero-glass-card upgraded"
-          initial={{ y: 60, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 70, duration: 1.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 1 }}
         >
           <motion.div
             className="profile-wrapper"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 80,
+              damping: 10,
+              duration: 1.5,
+            }}
           >
-            <img src={profile} alt="Sai" className="profile-pic glow" />
+            <motion.img
+              src={profile}
+              alt="Sai"
+              className="profile-pic glow"
+              animate={{ y: [0, -10, 0] }}
+              transition={{
+                repeat: Infinity,
+                duration: 4,
+                ease: "easeInOut",
+              }}
+            />
           </motion.div>
+
           <motion.h1
-            className="hero-title"
-            initial={{ y: -30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            className="hero-title blinking"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              delay: 0.5,
+              type: "spring",
+              stiffness: 100,
+              damping: 8,
+            }}
           >
-            Hi, I'm <span>Sai</span> 👋
+            Hi, I'm <span>Siva Satya Sai Bhagavan GopalaJosyula</span> 👋
           </motion.h1>
+
           <motion.p
-            className="hero-role"
-            initial={{ y: 40, opacity: 0 }}
+            className="hero-role blinking"
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
+            transition={{ delay: 1, duration: 1.2 }}
           >
-            Full Stack Developer | Deep Learning Enthusiast | Career Builder
+            Full Stack Developer | Data Science Enthusiast | AI & ML Developer
           </motion.p>
-          {motionPermission !== "granted" && (
-            <motion.button
-              className="hero-btn"
-              whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
-              whileTap={{ scale: 0.95 }}
-              onClick={requestMotionPermission}
-            >
-              Enable 3D Experience 🌌
-            </motion.button>
-          )}
-          {motionPermission === "granted" && (
-            <motion.button
-              className="hero-btn"
-              whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/about")}
-            >
-              View My Work 🚀
-            </motion.button>
-          )}
+
+          {/* 🌟 New About Matter Section */}
+          <motion.div
+            className="hero-subtext"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 1 }}
+          >
+            <p style={{ textAlign: "center", maxWidth: "700px", margin: "0 auto", fontSize: "1rem", lineHeight: "1.6" }}>
+              I specialize in crafting efficient, scalable web apps with rich UI/UX experiences using the MERN stack. <br />
+              Passionate about solving real-world problems through AI and deep learning. Let's build something extraordinary together!
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.8, type: "spring", bounce: 0.4 }}
+          >
+            {motionPermission !== "granted" ? (
+              <motion.button
+                className="hero-btn blinking"
+                whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={requestMotionPermission}
+              >
+                Enable 3D Experience 🌌
+              </motion.button>
+            ) : (
+              <motion.button
+                className="hero-btn blinking"
+                whileHover={{ scale: 1.1, boxShadow: "0 0 25px #9333ea" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/about")}
+              >
+                View My Work 🚀
+              </motion.button>
+            )}
+          </motion.div>
         </motion.div>
-      </section>
-      {/* ... rest of your JSX remains the same */}
-      <section id="about">
-        <div className="description-section upgraded">
-          <div className="card-rotator">
-            <motion.div
-              className="description-card flip-inner left"
-              initial={{ y: 50, opacity: 0, rotate: -2 }}
-              animate={{ y: 0, opacity: 1, rotate: 0 }}
-              transition={{ delay: 1.5, duration: 1 }}
-            >
-              <h2>About Me</h2>
-              <p>
-                I’m a passionate B.Tech student with strong MERN stack skills,
-                building production-ready tools like resume builders,
-                AI-based recommenders, and real-time apps that matter.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      <section id="vision">
-        <div className="description-section upgraded">
-          <div className="card-rotator">
-            <motion.div
-              className="description-card flip-inner right"
-              initial={{ y: 50, opacity: 0, rotate: 2 }}
-              animate={{ y: 0, opacity: 1, rotate: 0 }}
-              transition={{ delay: 1.8, duration: 1 }}
-            >
-              <h2>Vision & Passion</h2>
-              <p>
-                Blending dev & deep learning, I aim to craft meaningful, smart UIs.
-                Every line of code moves me closer to building intelligent,
-                human-centric AI solutions.
-              </p>
-            </motion.div>
-          </div>
-        </div>
       </section>
     </motion.div>
   );
