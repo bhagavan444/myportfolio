@@ -1,194 +1,159 @@
-/* Container & card */
+/* Resume Container */
 .resume-container {
   min-height: 100vh;
-  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #e0e0e0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  user-select: none;
-  overflow-x: hidden;
-  text-align: center;
+  background: radial-gradient(ellipse at center, #0f172a, #1e293b);
+  animation: bgPulse 15s ease infinite;
+  padding: 2rem;
+  overflow: hidden;
 }
 
+/* Background Pulse Animation */
+@keyframes bgPulse {
+  0% {
+    background: radial-gradient(ellipse at center, #0f172a, #1e293b);
+  }
+  50% {
+    background: radial-gradient(ellipse at center, #1e293b, #0f172a);
+  }
+  100% {
+    background: radial-gradient(ellipse at center, #0f172a, #1e293b);
+  }
+}
+
+/* 🔄 360° Rotate Animation */
+@keyframes rotateCard {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Resume Card */
 .resume-card {
-  width: 100vw;
-  height: 100vh;
-  padding: 3rem 2rem;
-  background: linear-gradient(135deg, #00FFB2, #FF00A2, #00CFFF, #FFD700);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 0;
-  box-shadow: none;
-  max-width: none;
-  max-height: none;
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.25);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  animation: rotateCard 10s linear infinite; /* ⬅️ Added rotation */
+  transition: transform 0.3s ease-in-out;
+  transform-style: preserve-3d;
 }
 
-/* Title */
+/* Resume Title */
 .resume-title {
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
   margin-bottom: 1rem;
-  margin-right: 20px;
-  color: #06b6d4;
-  text-shadow: 0 0 10px #06b6d4;
 }
 
 /* Description */
 .resume-description {
-  font-size: 1.15rem;
-  color: #cbd5e1;
-  margin-bottom: 2.5rem;
-  line-height: 1.5;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  color: #e2e8f0;
+  font-size: 1.05rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
 }
 
-/* Button group */
+/* Button Group */
 .resume-btn-group {
   display: flex;
   justify-content: center;
-  gap: 1.8rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
-/* Buttons */
-.resume-view-btn,
-.resume-download-btn {
-  background: linear-gradient(90deg, #06b6d4, #10b981);
-  border: none;
-  padding: 0.9rem 2.2rem;
-  font-size: 1.1rem;
-  font-weight: 700;
+/* View Button */
+.resume-view-btn {
+  background: #06b6d4;
   color: white;
-  border-radius: 50px;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.6);
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease;
+}
+
+.resume-view-btn:hover {
+  background: #0891b2;
+}
+
+/* Download Button */
+.resume-download-btn {
+  background: #10b981;
+  color: white;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  border-radius: 12px;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
+  transition: background 0.3s ease;
 }
 
-.resume-view-btn:hover,
 .resume-download-btn:hover {
-  box-shadow: 0 0 20px #10b981;
+  background: #059669;
 }
 
-/* Modal overlay */
+/* Modal Overlay */
 .resume-modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(7px);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(15, 23, 42, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  user-select: none;
+  z-index: 999;
+  backdrop-filter: blur(10px);
 }
 
-/* Modal content */
+/* Modal Content */
 .resume-modal-content {
-  background: #121b26;
-  border-radius: 1rem;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.9);
-  max-width: 90vw;
-  max-height: 90vh;
-  width: 900px;
-  height: 600px;
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 16px;
+  max-width: 90%;
+  max-height: 90%;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
-/* Close button */
+/* Close Button */
 .resume-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: transparent;
+  top: 10px;
+  right: 12px;
+  background: #ef4444;
+  color: white;
+  font-size: 1.2rem;
   border: none;
-  font-size: 1.8rem;
-  color: #f87171;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-  user-select: none;
-  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.resume-close-btn:hover {
-  color: #ef4444;
-}
-
-/* Resume iframe */
+/* Iframe Viewer */
 .resume-iframe {
-  width: 100%;
-  height: 100%;
+  width: 80vw;
+  height: 80vh;
   border: none;
-  border-radius: 0 0 1rem 1rem;
-  user-select: text;
-}
-
-/* 📱 Responsive styles */
-@media (max-width: 768px) {
-  .resume-title {
-    font-size: 2rem;
-  }
-
-  .resume-description {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-
-  .resume-btn-group {
-    gap: 1.2rem;
-    margin-right: 30px;
-  }
-
-  .resume-view-btn,
-  .resume-download-btn {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-  }
-
-  .resume-modal-content {
-    width: 90vw;
-    height: 80vh;
-  }
-}
-
-@media (max-width: 480px) {
-  .resume-title {
-    font-size: 1.65rem;
-    padding-left: 0%;
-    margin-right: 50px;
-  }
-
-  .resume-description {
-    font-size: 0.95rem;
-    margin-right: 40px;
-  }
-
-  .resume-view-btn,
-  .resume-download-btn {
-    font-size: 0.95rem;
-    padding: 0.75rem 1.3rem;
-  }
-
-  .resume-modal-content {
-    width: 95vw;
-    height: 75vh;
-    border-radius: 0.8rem;
-  }
-
-  .resume-close-btn {
-    font-size: 1.5rem;
-  }
+  border-radius: 10px;
 }

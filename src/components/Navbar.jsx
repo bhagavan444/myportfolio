@@ -15,22 +15,28 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   const navLinks = [
-    "Home",
-    "About",
-    "Education",
-    "My Skills",
-    "Projects",
-    "Workshops",
-    "Resume",
-    "Certifications",
-    "Contact"
+    { label: "Home", path: "home" },
+    { label: "About", path: "about" },
+    { label: "Education", path: "education" },
+    { label: "Skills", path: "myskills" },
+    { label: "Internships", path: "Internships" },
+    { label: "Projects", path: "projects" },
+    { label: "Workshops&Hackthons", path: "workshops" },// ✅ Custom label but actual path is workshops.jsx
+    { label: "Resume", path: "resume" },
+    { label: "Certifications", path: "certifications" },
+    { label: "Contact", path: "contact" },
   ];
 
   return (
-    <nav className="navbar">
+    <nav className="animated-navbar">
       <div className="nav-container">
-        <motion.div className="nav-logo" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <Link to="/home">Bhagavan</Link>
+        <motion.div
+          className="nav-logo"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link to="/home"></Link>
         </motion.div>
 
         <div className="hamburger" onClick={toggleMenu}>
@@ -44,30 +50,34 @@ const Navbar = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3 }}
             >
-              {navLinks.map((name, i) => (
+              {navLinks.map((link, i) => (
                 <motion.div
-                  key={name}
+                  key={link.label}
                   className="nav-link"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.04 }}
+                  whileHover={{ scale: 1.15 }}
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.1 }}
                 >
                   <Link
-                    to={`/${name.toLowerCase().replace(/\s+/g, "")}`}
-                    className={location.pathname.includes(name.toLowerCase()) ? "active-link" : ""}
+                    to={`/${link.path}`}
+                    className={location.pathname.includes(link.path) ? "active-link" : ""}
                   >
-                    {name}
+                    {link.label}
                   </Link>
                 </motion.div>
               ))}
 
-              <div className="nav-icons">
+              <motion.div
+                className="nav-icons"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+              >
                 <a href="https://github.com/bhagavan444" target="_blank" rel="noreferrer"><FaGithub /></a>
-                <a href="mailto:g.sivasatyasaibhagavan@gmail.com"><FaEnvelope /></a>
                 <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

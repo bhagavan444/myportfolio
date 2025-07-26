@@ -17,7 +17,7 @@ const Resume = () => {
       >
         <h2 className="resume-title">📄 Bhagavan Resume</h2>
         <p className="resume-description">
-          Explore my journey, skills, and experiences below.
+          A concise, professionally crafted resume highlighting my technical skills, hands-on projects, and achievements — designed to impress recruiters at first glance.
         </p>
 
         <div className="resume-btn-group">
@@ -63,7 +63,7 @@ const Resume = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 className="resume-close-btn"
