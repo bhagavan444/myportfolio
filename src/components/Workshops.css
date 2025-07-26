@@ -5,14 +5,17 @@
   box-sizing: border-box;
 }
 
+/* === Container === */
 .workshops-container {
   padding: 4rem 2rem;
   min-height: 100vh;
-background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
+  background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   color: black;
   font-family: "Segoe UI", sans-serif;
+  overflow-x: hidden;
 }
 
+/* === Header === */
 .workshops-header {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -24,6 +27,7 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   background: linear-gradient(to right, #f953c6, #b91d73);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
 }
 
 .underline {
@@ -35,10 +39,12 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
 }
 
 .intro-text {
-  color: black;
   font-size: 1.1rem;
   max-width: 700px;
   margin: auto;
+  text-align: center;
+  line-height: 1.6;
+  padding: 0 1rem;
 }
 
 /* === Filter Buttons === */
@@ -46,7 +52,7 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   flex-wrap: wrap;
 }
 
@@ -55,45 +61,46 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   border: none;
   background: #1f2937;
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .filter-buttons button.active,
 .filter-buttons button:hover {
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  color: white;
+  transform: scale(1.05);
 }
 
 /* === Card Layout === */
 .cards-grid {
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
 }
 
 /* === Glass Card === */
 .glass-card {
   backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1.8rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  transition: 0.4s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
 }
 
+/* === Card Content === */
 .card-title {
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1rem;
   color: black;
 }
@@ -105,6 +112,7 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   line-height: 1.6;
 }
 
+/* === Workshop List === */
 .workshop-list {
   list-style: none;
   margin-top: 1rem;
@@ -112,12 +120,12 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
 }
 
 .workshop-list li::before {
-  content: "✔️";
+  content: '✔️';
   margin-right: 0.5rem;
-  color: #9df9ef;
+  color: #00bcd4;
 }
 
-/* === Buttons === */
+/* === Button Group === */
 .button-group {
   display: flex;
   flex-wrap: wrap;
@@ -125,6 +133,7 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   margin-top: 1.2rem;
 }
 
+/* === View Button === */
 .view-button {
   text-decoration: none;
   color: white;
@@ -140,9 +149,69 @@ background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
   transform: scale(1.05);
 }
 
+/* === Tags === */
 .tag {
   margin-top: 1rem;
   font-size: 0.85rem;
   font-style: italic;
-  color: #9ca3af;
+  color: #6b7280;
+}
+
+/* === Shimmer Animation === */
+@keyframes shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .filter-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .view-button {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.9rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .workshops-container {
+    padding: 2rem 1rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .intro-text {
+    font-size: 0.95rem;
+  }
+
+  .glass-card {
+    padding: 1.5rem;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }

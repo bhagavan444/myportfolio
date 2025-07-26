@@ -277,7 +277,7 @@
 @media (max-width: 480px) {
   .animated-navbar {
     padding: 0.6rem 0.8rem;
-    height: 30px;
+    height: 70px;
   }
 
   .nav-logo a {
