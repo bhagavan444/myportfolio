@@ -7,26 +7,44 @@ const Resume = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="resume-container">
-      <motion.div
+    <section className="resume-container">
+      <motion.article
         className="resume-card"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
+        whileHover={{ scale: 1.015 }}
       >
-        <h2 className="resume-title">🚀 Bhagavan's Professional Resume</h2>
-        <p className="resume-description">
-          Explore a well-structured resume that showcases my journey as a passionate full-stack developer. It features hands-on projects, collaborative internships, strong problem-solving abilities, and my commitment to delivering real-world solutions. 
-          This resume reflects my ability to adapt, learn quickly, and contribute to high-impact software development environments.
-        </p>
+        <motion.h2
+          className="resume-title"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
+        >
+          🚀 Bhagavan's Professional Resume
+        </motion.h2>
+
+        <motion.p
+          className="resume-description"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.8 }}
+        >
+          Dive into a structured showcase of my full-stack development journey,
+          featuring real-world projects, collaborative internships, and solid
+          problem-solving skills. I aim to deliver high-quality, scalable, and
+          impactful solutions in dynamic software environments.
+        </motion.p>
 
         <div className="resume-btn-group">
           <motion.button
-            className="resume-view-btn"
-            whileHover={{ scale: 1.1, boxShadow: "0px 0px 12px #06b6d4" }}
+            className="resume-btn preview-btn"
+            whileHover={{
+              scale: 1.08,
+              boxShadow: "0 0 20px rgba(14, 165, 233, 0.6)",
+            }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsModalOpen(true)}
-            aria-label="View Resume"
           >
             👀 Preview Resume
           </motion.button>
@@ -34,15 +52,17 @@ const Resume = () => {
           <motion.a
             href={resumePDF}
             download
-            className="resume-download-btn"
-            whileHover={{ scale: 1.1, boxShadow: "0px 0px 15px #10b981" }}
+            className="resume-btn download-btn"
+            whileHover={{
+              scale: 1.08,
+              boxShadow: "0 0 20px rgba(16, 185, 129, 0.6)",
+            }}
             whileTap={{ scale: 0.95 }}
-            aria-label="Download Resume"
           >
             📥 Download PDF
           </motion.a>
         </div>
-      </motion.div>
+      </motion.article>
 
       {/* Modal Viewer */}
       <AnimatePresence>
@@ -52,16 +72,14 @@ const Resume = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             onClick={() => setIsModalOpen(false)}
-            role="dialog"
-            aria-modal="true"
-            tabIndex={-1}
           >
             <motion.div
               className="resume-modal-content"
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -72,18 +90,17 @@ const Resume = () => {
               >
                 ✖
               </button>
-
               <iframe
                 src={resumePDF}
-                title="Resume PDF Viewer"
+                title="Bhagavan's Resume Viewer"
                 className="resume-iframe"
                 frameBorder="0"
-              ></iframe>
+              />
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
 };
 

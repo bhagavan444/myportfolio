@@ -11,6 +11,11 @@ body {
   color: #f1f5f9;
   overflow-x: hidden;
 }
+.certificate-link {
+  color: black;
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 /* === 📚 Container === */
 .education-beast-container {
