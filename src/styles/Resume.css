@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(ellipse at center, #0f172a, #1e293b);
+  background:radial-gradient(circle, #FF007F, #FF69B4, #FFB6C1, #FFDAB9);
   animation: bgPulse 15s ease infinite;
   padding: 2rem;
   overflow: hidden;
@@ -61,7 +61,7 @@
 
 /* Description */
 .resume-description {
-  color: #e2e8f0;
+  color: black;
   font-size: 1.05rem;
   margin-bottom: 1.8rem;
   line-height: 1.6;

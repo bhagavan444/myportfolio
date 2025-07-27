@@ -20,7 +20,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+   background: radial-gradient(circle, #FF4500, #FF1493, #FFFF00, #00FF7F);
   background-size: 600% 600%;
   animation: gradientWaves 20s ease infinite;
   z-index: 1;
@@ -184,7 +184,7 @@ body {
 .education-beast-card h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #a5f3fc;
+  color: black;
   margin-bottom: 1rem;
   position: relative;
   z-index: 1;
@@ -194,7 +194,7 @@ body {
   font-size: 1rem;
   margin: 0.5rem 0;
   line-height: 1.6;
-  color: #e2e8f0;
+  color: black;
   position: relative;
   z-index: 1;
 }
@@ -202,7 +202,7 @@ body {
 /* === 🔖 Labels === */
 .education-label {
   font-weight: bold;
-  color: #facc15;
+  color: red;
 }
 
 /* === 📱 Responsive === */
@@ -213,5 +213,6 @@ body {
 
   .education-beast-card {
     padding: 1.5rem;
+    margin-right: 40px;
   }
 }

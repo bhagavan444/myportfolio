@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import resumePDF from "../assets/bhagavanresume.pdf";
-
 import "../styles/Resume.css";
 
 const Resume = () => {
@@ -15,9 +14,10 @@ const Resume = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="resume-title">📄 Bhagavan Resume</h2>
+        <h2 className="resume-title">🚀 Bhagavan's Professional Resume</h2>
         <p className="resume-description">
-          A concise, professionally crafted resume highlighting my technical skills, hands-on projects, and achievements — designed to impress recruiters at first glance.
+          Explore a well-structured resume that showcases my journey as a passionate full-stack developer. It features hands-on projects, collaborative internships, strong problem-solving abilities, and my commitment to delivering real-world solutions. 
+          This resume reflects my ability to adapt, learn quickly, and contribute to high-impact software development environments.
         </p>
 
         <div className="resume-btn-group">
@@ -28,7 +28,7 @@ const Resume = () => {
             onClick={() => setIsModalOpen(true)}
             aria-label="View Resume"
           >
-            👀 View Resume
+            👀 Preview Resume
           </motion.button>
 
           <motion.a
@@ -39,7 +39,7 @@ const Resume = () => {
             whileTap={{ scale: 0.95 }}
             aria-label="Download Resume"
           >
-            📥 Download Resume
+            📥 Download PDF
           </motion.a>
         </div>
       </motion.div>

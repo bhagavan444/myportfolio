@@ -19,10 +19,11 @@ body {
   justify-content: center;
   align-items: center;
   padding: 0; /* No padding for full-page coverage */
-  background: linear-gradient(180deg, #0a0a0a, #1a1a2e); /* Subtle gradient for depth */
+   background:radial-gradient(circle, #8A2BE2, #00FFFF, #FFB6C1, #FFD700);/* Subtle gradient for depth */
 }
 
 .hero-glass-card {
+  margin-top: 50px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 0; /* No border-radius for edge-to-edge effect */
   backdrop-filter: blur(12px); /* Glassmorphism */
@@ -117,7 +118,7 @@ body {
 }
 
 .hero-subtext p {
-  color: #ddd;
+  color: black;
   font-size: 1.1rem;
   line-height: 1.8;
   max-width: 600px;
@@ -211,7 +212,7 @@ body {
 @media (max-width: 480px) {
   .hero-glass-card {
     padding: 1rem;
-    margin-top: 70px; /* Adjusted for mobile navbar height + animations */
+    margin-top: 30px; /* Adjusted for mobile navbar height + animations */
   }
   .content-rotator {
     padding-top: 1rem;

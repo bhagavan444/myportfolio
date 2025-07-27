@@ -9,7 +9,7 @@
 .workshops-container {
   padding: 4rem 2rem;
   min-height: 100vh;
-  background: linear-gradient(45deg, #FF6EC7, #00FFEF, #FFFC00, #FF007F);
+  background:radial-gradient(circle, #00FFB2, #FF007F, #1E90FF, #FFD700);
   color: black;
   font-family: "Segoe UI", sans-serif;
   overflow-x: hidden;

@@ -3,7 +3,7 @@
   position: relative;
   padding: 4rem 1.5rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background:radial-gradient(circle, #4B0082, #8A2BE2, #9370DB, #00BFFF);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,5 +131,6 @@
 
   .cert-card {
     padding: 1.3rem;
+    margin-right: 20px;
   }
 }
