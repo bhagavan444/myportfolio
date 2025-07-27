@@ -231,7 +231,7 @@
     top: 60px;
     left: 0;
     width: 100vw;
-    background: radial-gradient(circle, #228B22, #ADFF2F, #FFD700, #FF4500);
+    background: linear-gradient(270deg, #1e1e1e, #ff6f00, #ff3d00, #dd2c00, #1e1e1e);
     backdrop-filter: blur(10px);
     flex-direction: column;
     padding: 1.5rem;
