@@ -11,6 +11,7 @@ body {
   color: #f1f5f9;
   overflow-x: hidden;
 }
+
 .certificate-link {
   color: black;
   text-decoration: underline;
@@ -25,65 +26,49 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-   background: radial-gradient(circle, #FF4500, #FF1493, #FFFF00, #00FF7F);
-  background-size: 600% 600%;
-  animation: gradientWaves 20s ease infinite;
+  background: radial-gradient(circle, #FF4500, #FF1493, #FFFF00, #00FF7F);
+  background-size: 300% 300%;
+  animation: gradientWaves 25s linear infinite;
   z-index: 1;
   overflow: hidden;
 }
 
-/* === 🌈 Background Animation === */
 @keyframes gradientWaves {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-/* === 🫧 Floating Glow Circles === */
 .education-beast-container::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 20% 40%, rgba(56, 189, 248, 0.15), transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15), transparent 50%),
-    radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.1), transparent 60%);
-  animation: bgPulse 15s ease-in-out infinite;
+    radial-gradient(circle at 20% 40%, rgba(56, 189, 248, 0.1), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.1), transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.08), transparent 60%);
   pointer-events: none;
 }
 
-@keyframes bgPulse {
-  0%, 100% {
-    background-position: 20% 40%, 80% 20%, 50% 90%;
-  }
-  50% {
-    background-position: 30% 45%, 75% 25%, 52% 85%;
-  }
-}
-
-/* === 💫 Floating Blobs === */
+/* === 🫧 Floating Blobs (slower & subtler) === */
 .floating-object {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.1;
+  opacity: 0.06;
   z-index: 0;
   pointer-events: none;
-  animation: float 8s ease-in-out infinite;
+  animation: float 12s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes float {
-  0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-20px) translateX(20px); }
-  100% { transform: translateY(0) translateX(0); }
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-12px) translateX(12px); }
 }
 
 .floating-object.one {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   background: radial-gradient(circle, #facc15, #f43f5e);
   top: 20%;
   left: 10%;
@@ -91,25 +76,25 @@ body {
 }
 
 .floating-object.two {
-  width: 250px;
-  height: 250px;
+  width: 220px;
+  height: 220px;
   background: radial-gradient(circle, #9333ea, #3b82f6);
   bottom: 10%;
   right: 10%;
   animation-delay: 2s;
 }
 
-/* === 📝 Section Title === */
+/* === 📝 Title === */
 .education-beast-title {
   font-size: 3rem;
   font-weight: bold;
   background: linear-gradient(90deg, #facc15, #34d399, #60a5fa, #9333ea);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-  position: relative;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
   margin-bottom: 3rem;
   z-index: 2;
+  position: relative;
 }
 
 .education-beast-title::after {
@@ -122,15 +107,9 @@ body {
   width: 80px;
   background: linear-gradient(90deg, #facc15, #34d399, #60a5fa);
   border-radius: 10px;
-  animation: underlineExpand 2s ease forwards;
 }
 
-@keyframes underlineExpand {
-  from { width: 0; opacity: 0; }
-  to { width: 80px; opacity: 1; }
-}
-
-/* === 🔲 Card Grid === */
+/* === 🔲 Grid === */
 .education-grid-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -140,27 +119,17 @@ body {
   z-index: 2;
 }
 
-/* === 🧊 Education Cards === */
+/* === 🧊 Cards === */
 .education-beast-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 1.2rem;
   padding: 2rem;
-  overflow: hidden;
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  animation: floatCard 6s ease-in-out infinite;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  z-index: 1;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-}
-
-@keyframes floatCard {
-  0% { transform: translateY(0) rotateY(0deg); }
-  50% { transform: translateY(-12px) rotateY(3deg); }
-  100% { transform: translateY(0) rotateY(0deg); }
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
 }
 
 .education-beast-card::before {
@@ -171,8 +140,9 @@ body {
   width: 200%;
   height: 200%;
   background: conic-gradient(from 0deg, #22d3ee33, #9333ea33, #facc1533, transparent);
-  animation: rotateGlow 10s linear infinite;
+  animation: rotateGlow 15s linear infinite;
   z-index: 0;
+  opacity: 0.4;
 }
 
 @keyframes rotateGlow {
@@ -181,11 +151,11 @@ body {
 }
 
 .education-beast-card:hover {
-  transform: rotateY(360deg) scale(1.05);
-  box-shadow: 0 25px 60px rgba(255, 255, 255, 0.15);
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.12);
 }
 
-/* === 🔤 Card Content === */
+/* === 🔤 Content === */
 .education-beast-card h2 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -197,14 +167,12 @@ body {
 
 .education-beast-card p {
   font-size: 1rem;
-  margin: 0.5rem 0;
   line-height: 1.6;
   color: black;
   position: relative;
   z-index: 1;
 }
 
-/* === 🔖 Labels === */
 .education-label {
   font-weight: bold;
   color: red;
@@ -215,7 +183,6 @@ body {
   .education-beast-title {
     font-size: 2.2rem;
   }
-
   .education-beast-card {
     padding: 1.5rem;
     margin-right: 40px;

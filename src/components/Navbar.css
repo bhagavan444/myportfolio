@@ -1,6 +1,4 @@
-/* =============================
-   ⚡ ANIMATED NAVBAR.CSS ⚡
-   ============================= */
+/* ⚡ ANIMATED NAVBAR.CSS - PERFORMANCE OPTIMIZED ⚡ */
 
 /* ===== Reset ===== */
 * {
@@ -17,6 +15,7 @@
   width: 100vw;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   z-index: 1000;
@@ -25,6 +24,8 @@
   align-items: center;
   padding: 0.8rem 1rem;
   height: 70px;
+  will-change: transform;
+  transform: translateZ(0); /* Trigger GPU acceleration */
 }
 
 .animated-navbar::before {
@@ -39,6 +40,7 @@
   animation: gradientShift 10s ease infinite;
   opacity: 0.2;
   z-index: -1;
+  will-change: background-position;
 }
 
 /* ===== Container ===== */
@@ -57,7 +59,7 @@
   font-size: 1.6rem;
   font-weight: 700;
   text-decoration: none;
-  animation: pulseGlow 3s infinite;
+  animation: pulseGlow 3s ease-in-out infinite;
   text-shadow: 0 0 10px #00f5c466;
   transition: transform 0.3s ease;
 }
@@ -96,6 +98,7 @@
   align-items: center;
   gap: 1rem;
   animation: fadeIn 1s ease forwards;
+  will-change: opacity, transform;
 }
 
 .nav-link {
@@ -152,7 +155,7 @@
 .nav-icons a {
   color: black;
   font-size: 1.3rem;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .nav-icons a:hover {
@@ -161,7 +164,7 @@
   filter: drop-shadow(0 0 10px #00f5c466);
 }
 
-/* ===== Pyna-Style Mega Menu ===== */
+/* ===== Mega Menu ===== */
 .mega-parent {
   position: relative;
 }
@@ -183,6 +186,7 @@
   transition: all 0.4s ease;
   min-width: 300px;
   z-index: 999;
+  will-change: transform, opacity;
 }
 
 .mega-parent:hover .mega-menu {
@@ -237,8 +241,8 @@
     padding: 1.5rem;
     display: none;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     z-index: 999;
+    will-change: transform;
   }
 
   .nav-links.open {
