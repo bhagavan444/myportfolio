@@ -18,24 +18,17 @@ const cardVariants = {
 
 const data = [
   {
-    type: "hackathon",
-    title: "🚀 Hackathon - Brainovision x RCE",
-    description:
-      "Participated in a 24-hour Hackathon by Brainovision & RCE. Built a full-stack MERN app for buying and selling second-hand electronics, inspired by OLX.",
-    certLink: "https://drive.google.com/file/d/1CQaoA9V93Lg4XS1FmcG-0gVUaKvw2zUq/view?usp=sharing",
-    projLink: "https://github.com/bhagavan444/hacakthon-project",
-    tag: "#MERN #Hackathon #FullStack",
-  },
-  {
     type: "workshop",
-    title: "📚 Workshops Attended",
+    title: "📚 Technical Workshops Attended",
     list: [
-      "🔬 Machine Learning – Supervised & unsupervised learning, model training with Scikit-learn.",
-      "🧠 Deep Learning – CNNs, image classification using TensorFlow & Keras.",
-      "📱 Mobile App Dev – Flutter-based Android apps and UI/UX best practices.",
-      "🌐 Web Development – Responsive design with HTML, CSS, JS & React.",
+      "🔍 **Machine Learning (ML)** – Gained practical experience with supervised and unsupervised algorithms, explored model training, validation, and evaluation using Scikit-learn.",
+      "🧠 **Deep Learning (DL)** – Hands-on sessions on building Convolutional Neural Networks (CNNs) for image classification using TensorFlow & Keras.",
+      "📱 **Mobile App Development** – Designed cross-platform mobile applications using Flutter, with a focus on UI/UX principles and integration with APIs.",
+      "🌐 **Web Development** – Developed responsive web applications using HTML, CSS, JavaScript, and React. Covered frontend best practices and performance optimization.",
+      "🤖 **Introduction to Artificial Intelligence** – Understood AI fundamentals, real-time use cases, and ethics in AI through interactive sessions.",
+      "💻 **Full Stack Development Bootcamp** – Participated in a structured program on MERN stack development, including REST API design, MongoDB integration, and deployment practices.",
     ],
-    tag: "#ML #DL #Flutter #WebDev",
+    tag: "#ML #DL #AI #Flutter #React #FullStack",
   },
 ];
 
@@ -58,36 +51,19 @@ const Workshops = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="section-title">⚡ Workshops & Hackathons</h2>
+        <h2 className="section-title">📖 Technical Workshops</h2>
         <div className="underline"></div>
         <p className="intro-text">
-          Here's a glimpse of my hands-on learning through Hackathons and Technical Workshops I participated in.
+          I actively participate in workshops to build practical knowledge and stay updated with emerging technologies. Here’s a summary of the most impactful ones I've attended.
         </p>
 
         {/* Filter Buttons */}
         <div className="filter-buttons">
-          <button
-            className={filter === "all" ? "active" : ""}
-            onClick={() => setFilter("all")}
-          >
-            All
-          </button>
-          <button
-            className={filter === "hackathon" ? "active" : ""}
-            onClick={() => setFilter("hackathon")}
-          >
-            Hackathons
-          </button>
-          <button
-            className={filter === "workshop" ? "active" : ""}
-            onClick={() => setFilter("workshop")}
-          >
-            Workshops
-          </button>
+          
         </div>
       </motion.div>
 
-      {/* 🔲 Cards Grid */}
+      {/* Cards Grid */}
       <div className="cards-grid">
         {filteredCards.map((item, index) => (
           <motion.div
@@ -97,7 +73,6 @@ const Workshops = () => {
             whileHover={{ scale: 1.03 }}
           >
             <h3 className="card-title">{item.title}</h3>
-            {item.description && <p>{item.description}</p>}
 
             {item.list && (
               <ul className="workshop-list">
@@ -107,28 +82,6 @@ const Workshops = () => {
               </ul>
             )}
 
-            <div className="button-group">
-              {item.projLink && (
-                <a
-                  href={item.projLink}
-                  className="view-button"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🔗 View Project
-                </a>
-              )}
-              {item.certLink && (
-                <a
-                  href={item.certLink}
-                  className="view-button"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🎓 View Certificate
-                </a>
-              )}
-            </div>
             <p className="tag">{item.tag}</p>
           </motion.div>
         ))}

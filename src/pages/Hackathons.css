@@ -9,8 +9,8 @@
 .workshops-container {
   padding: 4rem 2rem;
   min-height: 100vh;
-  background: linear-gradient(to right, #BFFF00, #FF00FF, #00FFFF, #FF4500);
-  color: black;
+  background: linear-gradient(to right, #00c6ff, #0072ff, #00ff99, #ff6a00);
+  color: #0f0f0f;
   font-family: "Segoe UI", sans-serif;
   overflow-x: hidden;
 }
@@ -24,26 +24,28 @@
 .section-title {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(to right, #f953c6, #b91d73);
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
   animation: shimmer 4s linear infinite;
 }
 
 .underline {
   width: 80px;
   height: 4px;
-  background: #ff758c;
+  background: #ff416c;
   margin: 0.5rem auto 1rem;
   border-radius: 2px;
 }
 
 .intro-text {
   font-size: 1.1rem;
-  max-width: 700px;
+  max-width: 720px;
   margin: auto;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.7;
+  color: #1f1f1f;
   padding: 0 1rem;
 }
 
@@ -51,15 +53,15 @@
 .filter-buttons {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 2rem;
-  flex-wrap: wrap;
 }
 
 .filter-buttons button {
   padding: 0.6rem 1.2rem;
   border: none;
-  background: #1f2937;
+  background: #111827;
   color: white;
   border-radius: 10px;
   font-weight: bold;
@@ -69,7 +71,7 @@
 
 .filter-buttons button.active,
 .filter-buttons button:hover {
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
   transform: scale(1.05);
 }
 
@@ -83,46 +85,33 @@
 
 /* === Glass Card === */
 .glass-card {
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.4);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .glass-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
 }
 
 /* === Card Content === */
 .card-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: black;
+  color: #0f0f0f;
 }
 
-.glass-card p,
-.glass-card li {
-  color: black;
+.glass-card p {
+  color: #1b1b1b;
   font-size: 1rem;
   line-height: 1.6;
-}
-
-/* === Workshop List === */
-.workshop-list {
-  list-style: none;
-  margin-top: 1rem;
-  padding-left: 1rem;
-}
-
-.workshop-list li::before {
-  content: '✔️';
-  margin-right: 0.5rem;
-  color: #00bcd4;
+  margin-top: 0.5rem;
 }
 
 /* === Button Group === */
@@ -138,14 +127,14 @@
   text-decoration: none;
   color: white;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  background: linear-gradient(135deg, #fc466b, #3f5efb);
   border-radius: 8px;
   font-weight: bold;
   transition: 0.3s ease;
 }
 
 .view-button:hover {
-  background: linear-gradient(135deg, #ff7eb3, #ff758c);
+  background: linear-gradient(135deg, #3f5efb, #fc466b);
   transform: scale(1.05);
 }
 
@@ -159,8 +148,12 @@
 
 /* === Shimmer Animation === */
 @keyframes shimmer {
-  0% { background-position: -100% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* === Responsive Design === */

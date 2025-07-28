@@ -22,6 +22,7 @@ import Education from "./pages/Education";
 import MySkills from "./pages/MySkills";
 import PersonalDetails from "./pages/PersonalDetails";
 import Internships from "./pages/Internships";
+import Hackathons from "./pages/Hackathons";
 
 // 🔄 Scroll to top on route change
 const ScrollToTop = () => {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/myskills" element={<MySkills />} />
           <Route path="/personal-details" element={<PersonalDetails />} />
           <Route path="/internships" element={<Internships />} />
+          <Route path="/hackathons" element={<Hackathons />} />
 
           {/* Optional fallback route */}
           <Route path="*" element={<h1 className="text-center text-3xl">404 - Page Not Found</h1>} />

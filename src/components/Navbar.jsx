@@ -21,7 +21,8 @@ const Navbar = () => {
     { label: "Skills", path: "myskills" },
     { label: "Internships", path: "Internships" },
     { label: "Projects", path: "projects" },
-    { label: "Workshops&Hackthons", path: "workshops" },// ✅ Custom label but actual path is workshops.jsx
+    { label: "Workshops", path: "workshops" },
+    { label: "Hackathons", path: "Hackathons" },// ✅ Custom label but actual path is workshops.jsx
     { label: "Resume", path: "resume" },
     { label: "Certifications", path: "certifications" },
     { label: "Contact", path: "contact" },
