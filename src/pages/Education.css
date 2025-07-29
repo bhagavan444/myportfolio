@@ -26,7 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: radial-gradient(circle, #FF4500, #FF1493, #FFFF00, #00FF7F);
+  background:transparent;
   background-size: 300% 300%;
   animation: gradientWaves 25s linear infinite;
   z-index: 1;

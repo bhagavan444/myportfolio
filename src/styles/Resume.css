@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #00FFC6, #FF00B3, #00B2FF, #FFF700);
+   background: linear-gradient(135deg, #1a2a44, #2e4060, #3a5570);
 background-size: 1000% 1000%;
 animation: gradientMove 13s linear infinite;
 
@@ -204,7 +204,7 @@ animation: gradientMove 13s linear infinite;
 
 .resume-modal-content {
   position: relative;
-  background: linear-gradient(135deg, #111827, #1f2937);
+  background: linear-gradient(135deg, #1a2a44, #2e4060, #3a5570);
   border-radius: 20px;
   padding: 2rem;
   max-width: 95vw;

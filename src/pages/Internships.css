@@ -1,188 +1,258 @@
 /* ==== Internship Container ==== */
 .internships-container {
   min-height: 100vh;
-  padding: 4rem 2rem;
-  background: linear-gradient(to right, #84DE02, #FF00FF, #FFFF00, #007FFF);
+  padding: 5rem 3rem;
+  background: linear-gradient(135deg, #1a2a44, #2e4060, #3a5570);
+  background-size: 200% 200%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Poppins', sans-serif;
   overflow: hidden;
-  animation: fadeIn 2s ease-in-out;
+  position: relative;
+  animation: professionalFade 2.5s ease-in-out;
+  z-index: 1;
+}
+
+@keyframes professionalFade {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ==== Background Particles & Overlay ==== */
+.internships-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1), transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1), transparent 40%),
+              radial-gradient(circle at 50% 50%, rgba(202, 138, 4, 0.05), transparent 60%);
+  z-index: -1;
+  animation: subtlePulse 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes subtlePulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.5; }
+}
+
+/* ==== Light Overlay ==== */
+.internships-container::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+  top: -250px;
+  right: -250px;
+  animation: lightShift 20s linear infinite;
+  z-index: -1;
+  filter: blur(60px);
+}
+
+@keyframes lightShift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(100px, 100px); }
+  100% { transform: translate(0, 0); }
 }
 
 /* ==== Section Heading ==== */
 .internship-title {
-  font-size: 3.2rem;
+  font-size: 3.8rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-align: center;
-  margin-bottom: 3.5rem;
-  background: linear-gradient(90deg, #ff00cc, #3333ff, #00f5c4);
-  background-size: 300% 300%;
+  margin-bottom: 4rem;
+  color: transparent;
+  background: linear-gradient(90deg, #60a5fa, #9333ea, #facc15);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 6s ease infinite, bounceIn 1.5s ease;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.internship-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 6px;
+  background: linear-gradient(90deg, #60a5fa, #9333ea);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+  animation: titlePulse 3s infinite;
+}
+
+@keyframes titlePulse {
+  0% { transform: translateX(-50%) scaleX(1); }
+  50% { transform: translateX(-50%) scaleX(1.1); }
+  100% { transform: translateX(-50%) scaleX(1); }
 }
 
 /* ==== Internship Grid ==== */
 .internship-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
+  z-index: 2;
 }
 
 /* ==== Internship Card ==== */
 .internship-card {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  color: black;
-  transition: all 0.4s ease;
+  border-radius: 2rem;
+  padding: 2.5rem;
+  color: #e0e7ff;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.15);
-  animation: bounceIn 1s ease;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(96, 165, 250, 0.1);
+  animation: cardEnter 1.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.internship-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 45deg, #60a5fa33, #9333ea33, transparent);
+  animation: rotateGlow 20s linear infinite;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+@keyframes cardEnter {
+  0% { opacity: 0; transform: scale(0.9) translateY(30px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .internship-card:hover {
-  transform: rotateX(5deg) rotateY(5deg) scale(1.03);
-  box-shadow: 0 12px 40px rgba(0, 255, 255, 0.3),
-              0 0 30px rgba(0, 255, 255, 0.2);
+  transform: translateY(-20px) rotateX(5deg) scale(1.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(96, 165, 250, 0.2);
 }
 
 /* ==== Role ==== */
 .internship-role {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  margin-bottom: 1rem;
-  background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ADEDE, #C4E759);
-  background-size: 600% 600%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 5s linear infinite, pulse 2s ease-in-out infinite;
-}
-
-/* ==== Company ==== */
-.internship-company {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(270deg, #f9d423, #ff4e50);
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 4s ease infinite;
-}
-
-/* ==== Duration ==== */
-.internship-duration {
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(270deg, #24c6dc, #514a9d);
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 5s ease infinite;
-}
-
-/* ==== Description ==== */
-.internship-description {
-  font-size: 1rem;
-  line-height: 1.6;
   margin-bottom: 1.5rem;
-  background: linear-gradient(270deg, #00c9ff, #92fe9d);
-  background-size: 600% 600%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 7s linear infinite;
+  color: #60a5fa;
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+/* ==== Internship Details ==== */
+.internship-details {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  color: #d1d5db;
+}
+
+.internship-details strong {
+  color: #93c5fd;
+  font-weight: 600;
 }
 
 /* ==== View Certificate Button ==== */
 .internship-btn {
   align-self: flex-start;
-  padding: 0.6rem 1.4rem;
-  font-size: 1rem;
+  padding: 0.7rem 1.6rem;
+  font-size: 1.1rem;
   font-weight: 700;
   border-radius: 999px;
-  background: linear-gradient(90deg, #00f260, #0575e6);
+  background: linear-gradient(90deg, #60a5fa, #9333ea);
   color: #fff;
   text-decoration: none;
-  box-shadow: 0 10px 20px rgba(0, 242, 96, 0.4);
-  transition: all 0.35s ease;
+  box-shadow: 0 10px 25px rgba(96, 165, 250, 0.4);
+  transition: all 0.4s ease;
   display: inline-flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.internship-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: buttonShine 3s infinite;
+  z-index: -1;
+}
+
+@keyframes buttonShine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
 }
 
 .internship-btn:hover,
 .internship-btn:focus {
-  background: linear-gradient(90deg, #fc466b, #3f5efb);
-  box-shadow: 0 15px 30px rgba(252, 70, 107, 0.6);
-  transform: scale(1.08);
+  background: linear-gradient(90deg, #4f46e5, #a855f7);
+  box-shadow: 0 15px 35px rgba(79, 70, 229, 0.6);
+  transform: scale(1.1);
   outline: none;
 }
 
-/* ==== Animations ==== */
-@keyframes shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.internship-btn svg {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.015); }
-  100% { transform: scale(1); }
+.internship-btn:hover svg {
+  transform: translateX(5px);
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
+/* ==== Responsive Adjustments ==== */
+@media (max-width: 1024px) {
+  .internships-container { padding: 4rem 2.5rem; }
+  .internship-title { font-size: 3.2rem; margin-bottom: 3.5rem; }
+  .internship-grid { gap: 2.5rem; }
+  .internship-card { padding: 2rem; }
+  .internship-role { font-size: 1.6rem; }
+  .internship-btn { font-size: 1rem; padding: 0.6rem 1.4rem; }
 }
 
-@keyframes bounceIn {
-  0% { transform: scale(0.9) translateY(30px); opacity: 0; }
-  60% { transform: scale(1.05) translateY(-10px); opacity: 1; }
-  100% { transform: scale(1) translateY(0); }
-}
-
-/* ==== Responsive ==== */
 @media (max-width: 768px) {
-  .internship-title {
-    font-size: 2.25rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .internship-role {
-    font-size: 1.2rem;
-  }
-
-  .internship-btn {
-    font-size: 0.95rem;
-    padding: 0.5rem 1.2rem;
-  }
+  .internships-container { padding: 3rem 2rem; }
+  .internship-title { font-size: 2.5rem; margin-bottom: 3rem; }
+  .internship-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .internship-card { padding: 1.8rem; }
+  .internship-role { font-size: 1.4rem; }
+  .internship-btn { font-size: 0.95rem; padding: 0.5rem 1.2rem; }
+  .internships-container::after { width: 400px; height: 400px; top: -200px; right: -200px; }
 }
 
-@media (max-width: 450px) {
-  .internships-container {
-    padding: 2rem 1rem;
-  }
-
-  .internship-title {
-    font-size: 1.9rem;
-  }
-
-  .internship-role {
-    font-size: 1rem;
-  }
-
-  .internship-btn {
-    font-size: 0.85rem;
-    padding: 0.45rem 1rem;
-  }
+@media (max-width: 480px) {
+  .internships-container { padding: 2.5rem 1.5rem; }
+  .internship-title { font-size: 2rem; margin-bottom: 2.5rem; }
+  .internship-card { padding: 1.5rem; }
+  .internship-role { font-size: 1.2rem; }
+  .internship-btn { font-size: 0.9rem; padding: 0.45rem 1rem; }
+  .internships-container::after { width: 300px; height: 300px; top: -150px; right: -150px; }
 }

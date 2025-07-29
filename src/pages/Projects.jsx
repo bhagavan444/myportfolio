@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   SiMongodb,
@@ -142,6 +142,16 @@ const projectData = [
 ];
 
 const Projects = () => {
+  const [filter, setFilter] = useState("All");
+  const techOptions = [
+    "All",
+    ...new Set(projectData.flatMap((project) => project.tech.split(", "))),
+  ];
+
+  const filteredProjects = filter === "All"
+    ? projectData
+    : projectData.filter((project) => project.tech.includes(filter));
+
   return (
     <div className="projects-container">
       <motion.h2
@@ -153,8 +163,20 @@ const Projects = () => {
         🚀 My Technical Projects
       </motion.h2>
 
+      <div className="filter-bar">
+        {techOptions.map((tech) => (
+          <button
+            key={tech}
+            className={`filter-btn ${filter === tech ? "active" : ""}`}
+            onClick={() => setFilter(tech)}
+          >
+            {tech}
+          </button>
+        ))}
+      </div>
+
       <div className="projects-grid">
-        {projectData.map((project, index) => (
+        {filteredProjects.map((project, index) => (
           <motion.div
             key={index}
             className="project-card"

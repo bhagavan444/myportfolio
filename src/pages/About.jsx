@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import "./About.css";
 import {
   FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs,
@@ -14,33 +14,39 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { when: "beforeChildren", staggerChildren: 0.25 },
+    transition: { when: "beforeChildren", staggerChildren: 0.2 },
   },
 };
 
 const floatIn = {
-  hidden: { opacity: 0, y: -30 },
+  hidden: { opacity: 0, y: -40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 1, ease: "easeOut" },
+    transition: { duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] },
   },
 };
 
 const badgeVariants = {
-  hidden: { opacity: 0, scale: 0.6, y: 20, rotate: -10 },
+  hidden: { opacity: 0, scale: 0.5, y: 30, rotate: -15 },
   visible: (i) => ({
     opacity: 1,
     scale: 1,
     y: 0,
     rotate: 0,
     transition: {
-      delay: i * 0.04,
-      duration: 0.5,
+      delay: i * 0.05,
+      duration: 0.6,
       type: "spring",
-      stiffness: 120,
+      stiffness: 100,
+      damping: 10,
     },
   }),
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, x: ({ isEven }) => (isEven ? -200 : 200) },
+  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeOut" } },
 };
 
 // Data
@@ -106,62 +112,70 @@ const sections = [
 ];
 
 const About = () => {
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
   return (
     <div className="about-wrapper">
-      <div className="orbiting-circle" />
+      <motion.div
+        className="orbiting-circle"
+        style={{ scale }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      />
 
-      {[null, ...sections].map((section, index) => {
+      {/* Intro Section */}
+      <motion.section
+        key="intro"
+        className="fullscreen-card"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <motion.div
+          className="beast-about-container"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h2 className="beast-about-title" variants={floatIn}>
+            👋 Hi, I'm <span className="highlight">Siva Satya Sai Bhagavan</span>
+          </motion.h2>
+          <motion.p className="beast-about-subtitle" variants={floatIn}>
+            Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
+          </motion.p>
+        </motion.div>
+      </motion.section>
+
+      {/* Info Sections */}
+      {sections.map((section, index) => {
         const ref = useRef(null);
-        const isInView = useInView(ref, {
-          margin: "-40% 0px -40% 0px",
-          once: false,
-        });
-
-        if (index === 0) {
-          return (
-            <motion.section
-              key="intro"
-              className="fullscreen-card"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-            >
-              <motion.div
-                className="beast-about-container"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <motion.h2 className="beast-about-title" variants={floatIn}>
-                  👋 Hi, I'm <span className="highlight">Siva Satya Sai Bhagavan</span>
-                </motion.h2>
-
-                <motion.p className="beast-about-subtitle" variants={floatIn}>
-                  Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
-                </motion.p>
-              </motion.div>
-            </motion.section>
-          );
-        }
-
+        const isInView = useInView(ref, { margin: "-50% 0px -50% 0px", once: false });
         const isEven = index % 2 === 0;
-        const fromX = isEven ? -150 : 150;
-        const toX = isEven ? 150 : -150;
 
         return (
           <motion.section
             ref={ref}
             key={section.title}
             className="fullscreen-card"
-            initial={{ opacity: 0, x: fromX }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: toX }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            custom={{ isEven }}
+            variants={sectionVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            whileHover={{ scale: 1.02 }}
           >
             <motion.div className="beast-about-section" whileHover={{ scale: 1.015 }}>
               <h3>{section.title}</h3>
               <ul>
                 {section.items.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: isEven ? -20 : 20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? -20 : 20 }}
+                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                  >
+                    {item}
+                  </motion.li>
                 ))}
               </ul>
             </motion.div>
@@ -174,7 +188,7 @@ const About = () => {
         className="fullscreen-card"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1.2 }}
       >
         <motion.div className="tech-stack-section" variants={floatIn}>
           <h4>🚀 Core Technologies</h4>
@@ -188,6 +202,7 @@ const About = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false }}
+                whileHover={{ scale: 1.15, rotate: 5 }}
               >
                 <div className="icon">{tech.icon}</div>
                 <div className="tech-label">{tech.name}</div>
@@ -197,12 +212,12 @@ const About = () => {
         </motion.div>
       </motion.section>
 
-      {/* Tools & Skills */}
+      {/* Skills & Tools */}
       <motion.section
         className="fullscreen-card"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1.2 }}
       >
         <motion.div className="beast-about-badges">
           <h4>📚 Other Tools & Skills</h4>
@@ -216,6 +231,7 @@ const About = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false }}
+                whileHover={{ scale: 1.1, y: -5 }}
               >
                 {badge}
               </motion.span>

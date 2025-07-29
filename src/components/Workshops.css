@@ -3,215 +3,273 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 /* === Container === */
 .workshops-container {
-  padding: 4rem 2rem;
   min-height: 100vh;
-  background: linear-gradient(to right, #BFFF00, #FF00FF, #00FFFF, #FF4500);
-  color: black;
-  font-family: "Segoe UI", sans-serif;
-  overflow-x: hidden;
+  padding: 5rem 3rem;
+  background: linear-gradient(135deg, #1a2a44, #2e4060, #3a5570);
+  background-size: 200% 200%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  position: relative;
+  animation: professionalFade 2.5s ease-in-out;
+  z-index: 1;
+}
+
+@keyframes professionalFade {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* === Background Particles & Overlay === */
+.workshops-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1), transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1), transparent 40%),
+              radial-gradient(circle at 50% 50%, rgba(202, 138, 4, 0.05), transparent 60%);
+  z-index: -1;
+  animation: subtlePulse 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes subtlePulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.5; }
+}
+
+/* === Light Overlay === */
+.workshops-container::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+  top: -250px;
+  right: -250px;
+  animation: lightShift 20s linear infinite;
+  z-index: -1;
+  filter: blur(60px);
+}
+
+@keyframes lightShift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(100px, 100px); }
+  100% { transform: translate(0, 0); }
 }
 
 /* === Header === */
 .workshops-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: linear-gradient(to right, #f953c6, #b91d73);
+  font-size: 3.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #60a5fa, #9333ea, #facc15);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 4s linear infinite;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
 }
 
-.underline {
-  width: 80px;
-  height: 4px;
-  background: #ff758c;
-  margin: 0.5rem auto 1rem;
-  border-radius: 2px;
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 6px;
+  background: linear-gradient(90deg, #60a5fa, #9333ea);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+  animation: titlePulse 3s infinite;
+}
+
+@keyframes titlePulse {
+  0% { transform: translateX(-50%) scaleX(1); }
+  50% { transform: translateX(-50%) scaleX(1.1); }
+  100% { transform: translateX(-50%) scaleX(1); }
 }
 
 .intro-text {
-  font-size: 1.1rem;
-  max-width: 700px;
-  margin: auto;
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 1.5rem auto 2.5rem;
   text-align: center;
-  line-height: 1.6;
-  padding: 0 1rem;
+  line-height: 1.8;
+  color: #d1d5db;
 }
 
 /* === Filter Buttons === */
 .filter-buttons {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
   flex-wrap: wrap;
 }
 
 .filter-buttons button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.5rem;
   border: none;
-  background: #1f2937;
-  color: white;
-  border-radius: 10px;
-  font-weight: bold;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e0e7ff;
+  border-radius: 999px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .filter-buttons button.active,
 .filter-buttons button:hover {
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #60a5fa, #9333ea);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 5px 20px rgba(96, 165, 250, 0.5);
 }
 
 /* === Card Layout === */
 .cards-grid {
-  margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  width: 100%;
+  max-width: 1300px;
+  z-index: 2;
 }
 
 /* === Glass Card === */
 .glass-card {
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  padding: 2.5rem;
+  color: #e0e7ff;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(96, 165, 250, 0.1);
+  animation: cardEnter 1.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 45deg, #60a5fa33, #9333ea33, transparent);
+  animation: rotateGlow 20s linear infinite;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+@keyframes cardEnter {
+  0% { opacity: 0; transform: scale(0.9) translateY(30px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .glass-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(-20px) rotateX(5deg) scale(1.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(96, 165, 250, 0.2);
 }
 
 /* === Card Content === */
 .card-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: black;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #60a5fa;
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.2);
+  position: relative;
+  z-index: 1;
 }
 
 .glass-card p,
 .glass-card li {
-  color: black;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #d1d5db;
 }
 
-/* === Workshop List === */
-.workshop-list {
+.glass-card ul {
   list-style: none;
   margin-top: 1rem;
-  padding-left: 1rem;
+  padding-left: 1.5rem;
 }
 
-.workshop-list li::before {
-  content: '✔️';
-  margin-right: 0.5rem;
-  color: #00bcd4;
-}
-
-/* === Button Group === */
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1.2rem;
-}
-
-/* === View Button === */
-.view-button {
-  text-decoration: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  border-radius: 8px;
+.glass-card li::before {
+  content: '✔';
+  margin-right: 0.7rem;
+  color: #10b981;
   font-weight: bold;
-  transition: 0.3s ease;
-}
-
-.view-button:hover {
-  background: linear-gradient(135deg, #ff7eb3, #ff758c);
-  transform: scale(1.05);
 }
 
 /* === Tags === */
 .tag {
-  margin-top: 1rem;
-  font-size: 0.85rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
   font-style: italic;
-  color: #6b7280;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* === Shimmer Animation === */
-@keyframes shimmer {
-  0% { background-position: -100% 0; }
-  100% { background-position: 200% 0; }
+/* === Responsive Adjustments === */
+@media (max-width: 1024px) {
+  .workshops-container { padding: 4rem 2.5rem; }
+  .section-title { font-size: 3.2rem; margin-bottom: 3.5rem; }
+  .cards-grid { gap: 2.5rem; }
+  .glass-card { padding: 2rem; }
+  .card-title { font-size: 1.6rem; }
+  .filter-buttons button { padding: 0.6rem 1.3rem; }
 }
 
-/* === Responsive Design === */
 @media (max-width: 768px) {
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .intro-text {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-
-  .filter-buttons button {
-    padding: 0.5rem 1rem;
-    font-size: 0.95rem;
-  }
-
-  .card-title {
-    font-size: 1.2rem;
-  }
-
-  .view-button {
-    font-size: 0.95rem;
-    padding: 0.5rem 0.9rem;
-  }
+  .workshops-container { padding: 3rem 2rem; }
+  .section-title { font-size: 2.5rem; margin-bottom: 3rem; }
+  .cards-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .glass-card { padding: 1.8rem; }
+  .card-title { font-size: 1.4rem; }
+  .glass-card p, .glass-card li { font-size: 1rem; }
+  .filter-buttons { gap: 1rem; margin-bottom: 2.5rem; }
+  .filter-buttons button { font-size: 0.95rem; padding: 0.5rem 1.1rem; }
+  .workshops-container::after { width: 400px; height: 400px; top: -200px; right: -200px; }
 }
 
-@media (max-width: 450px) {
-  .workshops-container {
-    padding: 2rem 1rem;
-  }
-
-  .section-title {
-    font-size: 1.6rem;
-  }
-
-  .intro-text {
-    font-size: 0.95rem;
-  }
-
-  .glass-card {
-    padding: 1.5rem;
-  }
-
-  .filter-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 480px) {
+  .workshops-container { padding: 2.5rem 1.5rem; }
+  .section-title { font-size: 2rem; margin-bottom: 2.5rem; }
+  .glass-card { padding: 1.5rem; }
+  .card-title { font-size: 1.2rem; }
+  .glass-card p, .glass-card li { font-size: 0.95rem; }
+  .filter-buttons { flex-direction: column; align-items: center; }
+  .filter-buttons button { font-size: 0.9rem; padding: 0.45rem 1rem; }
+  .workshops-container::after { width: 300px; height: 300px; top: -150px; right: -150px; }
 }

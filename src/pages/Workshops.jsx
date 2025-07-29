@@ -35,8 +35,12 @@ const data = [
 const Workshops = () => {
   const [filter, setFilter] = useState("all");
 
-  const filteredCards =
-    filter === "all" ? data : data.filter((card) => card.type === filter);
+  // Extract unique filter options from type and tags
+  const filterOptions = ["all", ...new Set(data.flatMap((item) => [item.type, ...item.tag.split(" ").map(t => t.replace("#", ""))]))];
+
+  const filteredCards = filter === "all"
+    ? data
+    : data.filter((card) => card.type === filter || card.tag.includes(`#${filter}`));
 
   return (
     <motion.div
@@ -59,7 +63,15 @@ const Workshops = () => {
 
         {/* Filter Buttons */}
         <div className="filter-buttons">
-          
+          {filterOptions.map((option) => (
+            <button
+              key={option}
+              className={`filter-btn ${filter === option ? "active" : ""}`}
+              onClick={() => setFilter(option)}
+            >
+              {option.charAt(0).toUpperCase() + option.slice(1).replace("#", "")}
+            </button>
+          ))}
         </div>
       </motion.div>
 

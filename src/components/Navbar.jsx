@@ -18,11 +18,12 @@ const Navbar = () => {
     { label: "Home", path: "home" },
     { label: "About", path: "about" },
     { label: "Education", path: "education" },
-    { label: "Skills", path: "myskills" },
     { label: "Internships", path: "Internships" },
-    { label: "Projects", path: "projects" },
     { label: "Workshops", path: "workshops" },
-    { label: "Hackathons", path: "Hackathons" },// ✅ Custom label but actual path is workshops.jsx
+     { label: "Hackathons", path: "Hackathons" },
+    { label: "Skills", path: "myskills" },
+     { label: "Projects", path: "projects" },
+     // ✅ Custom label but actual path is workshops.jsx
     { label: "Resume", path: "resume" },
     { label: "Certifications", path: "certifications" },
     { label: "Contact", path: "contact" },
@@ -37,7 +38,7 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link to="/home"></Link>
+          <Link to="/home">Bhagavan's Portfolio</Link>
         </motion.div>
 
         <div className="hamburger" onClick={toggleMenu}>
@@ -78,6 +79,7 @@ const Navbar = () => {
               >
                 <a href="https://github.com/bhagavan444" target="_blank" rel="noreferrer"><FaGithub /></a>
                 <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
+                <a href="mailto:satyasaibhagavan444@gmail.com"><FaEnvelope /></a>
               </motion.div>
             </motion.div>
           )}

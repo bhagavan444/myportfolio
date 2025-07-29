@@ -8,110 +8,97 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
-  color: black;
+  background: #0e0e0e;
+  color: #ffffff;
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
-/* ==== About Section Container ==== */
+/* ==== About Wrapper with Dynamic Background ==== */
 .about-wrapper {
   position: relative;
   width: 100vw;
-  min-height: 100vh;
-  background: radial-gradient(circle, #8A2BE2, #00FF7F, #FF1493, #1E90FF);
+  height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   background-size: 400% 400%;
-  animation: gradientBackground 20s ease infinite;
-  padding: 60px 20px;
-  overflow: hidden;
+  animation: bgShift 15s ease infinite;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 }
 
-@keyframes gradientBackground {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* ==== Section Cards ==== */
 .fullscreen-card {
-  background: rgba(255, 255, 255, 0.07);
+  scroll-snap-align: start;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  animation: fadeInSmooth 0.8s ease forwards;
+  opacity: 0;
+}
+
+.about-card {
+  background: rgba(26, 28, 44, 0.85);
   border-radius: 2rem;
   padding: 2.5rem;
-  margin: 2rem auto;
+  width: 100%;
   max-width: 900px;
-  backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  color:black;
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* ==== Intro Section ==== */
+.about-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 14px 45px rgba(0, 204, 255, 0.35);
+}
+
 .beast-about-title {
-  font-size: 2.5rem;
-  color: #0f2027;
-  font-weight: 700;
-  background: linear-gradient(90deg, #f953c6, #b91d73, #fa709a);
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  background: linear-gradient(90deg, #00dbde, #fc00ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  animation: bounceText 2s infinite;
-  text-align: center;
+  margin-bottom: 1.2rem;
+  animation: bounceText 2.2s infinite;
 }
 
 .beast-about-subtitle {
-  font-size: 1.2rem;
-  max-width: 700px;
-  margin: 0 auto;
-  color: black;
+  font-size: 1.3rem;
+  max-width: 720px;
+  margin: 0 auto 1.8rem;
+  color: #e0e0e0;
   opacity: 0;
-  animation: fadeInUp 2s ease forwards;
+  animation: fadeSlideUp 2s ease forwards;
   animation-delay: 1s;
   text-align: center;
 }
 
-@keyframes bounceText {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==== Section Content ==== */
 .beast-about-section h3,
 .tech-stack-section h4,
 .beast-about-badges h4 {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  color: #00e6e6;
   margin-bottom: 1rem;
   text-align: center;
-  color: black;
+  letter-spacing: 1px;
 }
 
 .beast-about-section ul {
-  list-style-type: "✔ ";
+  list-style-type: none;
   padding-left: 1rem;
-  line-height: 1.6;
-  color: black;
+  line-height: 1.9;
+  color: #f1f1f1;
 }
 
-/* ==== Tech Stack Icons ==== */
+.beast-about-section ul li::before {
+  content: "\2713";
+  margin-right: 10px;
+  color: #00e6e6;
+}
+
 .tech-stack-grid {
   display: flex;
   flex-wrap: wrap;
@@ -125,22 +112,25 @@ body {
   flex-direction: column;
   align-items: center;
   font-size: 2.5rem;
-  transition: transform 0.3s ease;
-  color: black;
+  transition: transform 0.3s ease, color 0.3s ease;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.8rem;
+  border-radius: 1rem;
 }
 
 .tech-icon-with-label:hover {
-  transform: scale(1.2);
-  color: #00c6ff;
+  transform: scale(1.25);
+  color: #00e6e6;
+  background: rgba(0, 198, 255, 0.1);
 }
 
 .tech-label {
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: black;
+  color: #cccccc;
 }
 
-/* ==== Badges ==== */
 .badge-grid {
   display: flex;
   flex-wrap: wrap;
@@ -150,32 +140,79 @@ body {
 }
 
 .badge {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,198,255,0.2));
+  padding: 0.5rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color:black;
-  transition: all 0.3s ease;
+  color: #ffffff;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .badge:hover {
-  background: rgba(0, 198, 255, 0.25);
-  transform: scale(1.05);
+  background: rgba(0, 198, 255, 0.4);
+  transform: scale(1.1);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .beast-about-title {
-    font-size: 2rem;
+@media screen and (max-width: 768px) {
+  .beast-about-cards {
+    flex-direction: column;
+    align-items: center;
   }
+
+  .beast-about-card {
+    width: 100%;
+    max-width: 95%;
+  }
+
+  .beast-about-title {
+    font-size: 2.2rem;
+  }
+
   .beast-about-subtitle {
     font-size: 1rem;
   }
-  .tech-stack-grid {
-    gap: 1rem;
+}
+
+@keyframes bgShift {
+  0% {
+    background-position: 0% 50%;
   }
-  .badge {
-    font-size: 0.75rem;
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeInSmooth {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceText {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }
