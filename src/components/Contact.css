@@ -5,7 +5,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 2rem 1rem;
-  background: linear-gradient(to right, #00FFB2, #FF3CAC, #FFAA00, #00F0FF);
+  background: transparent;
   background-size: 400% 400%;
   animation: gradientMove 15s ease infinite;
   overflow-x: hidden;

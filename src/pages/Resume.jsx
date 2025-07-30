@@ -64,7 +64,7 @@ const Resume = () => {
         </div>
       </motion.article>
 
-      {/* Modal Viewer */}
+      {/* 🪟 Modal Viewer */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div

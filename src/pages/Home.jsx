@@ -10,16 +10,18 @@ const Home = () => {
   const navigate = useNavigate();
   const [motionPermission, setMotionPermission] = useState("default");
 
+  // Handle device orientation for 3D tilt effect
   const handleOrientation = (event) => {
     const { beta, gamma } = event;
-    const rotateX = (beta - 45) / 15;
+    const rotateX = (beta - 45) / 15; // Adjusted for natural tilt
     const rotateY = gamma / 15;
     const card = document.querySelector(".hero-glass-card");
     if (card) {
-      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-${Math.abs(rotateX) + Math.abs(rotateY)}px)`;
     }
   };
 
+  // Request motion permission and add event listener
   const requestMotionPermission = () => {
     if (typeof DeviceOrientationEvent?.requestPermission === "function") {
       DeviceOrientationEvent.requestPermission()
@@ -38,6 +40,15 @@ const Home = () => {
     }
   };
 
+  // Clean up event listener on unmount
+  useEffect(() => {
+    return () => {
+      if (motionPermission === "granted") {
+        window.removeEventListener("deviceorientation", handleOrientation, true);
+      }
+    };
+  }, [motionPermission]);
+
   return (
     <motion.div
       className="portfolio-home-wrapper"
@@ -46,8 +57,30 @@ const Home = () => {
       transition={{ duration: 1.5 }}
     >
       <Navbar />
-
       <section id="home">
+        {/* Wave Overlay */}
+        <div className="wave-overlay"></div>
+        {/* Holographic Grid */}
+        <div className="holo-grid"></div>
+        {/* Particle Field */}
+        <div className="particle-field">
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="particle" />
+          ))}
+        </div>
+        {/* Rotating Shapes */}
+        <div className="rotating-shape hexagon"></div>
+        <div className="rotating-shape triangle"></div>
+        <div className="rotating-shape circle"></div>
+        <div className="rotating-shape square"></div>
+        {/* Floating Objects */}
+        <div className="floating-object one"></div>
+        <div className="floating-object two"></div>
+        <div className="floating-object three"></div>
+        {/* Orbiting Lights */}
+        <div className="orbiting-light one"></div>
+        <div className="orbiting-light two"></div>
+
         <motion.div
           className="hero-glass-card"
           initial={{ opacity: 0, y: 50 }}
@@ -58,6 +91,8 @@ const Home = () => {
             src={profile}
             alt="G Bhagavan Profile"
             className="profile-pic"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.98 }}
           />
 
           <motion.h1
@@ -66,7 +101,7 @@ const Home = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            I'm Bhagavan ~ 
+            👋 Hi I'm Bhagavan
           </motion.h1>
 
           <motion.p
@@ -75,7 +110,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1 }}
           >
-            🚀 Creative Technologist | Full-Stack Engineer | Data Science Enthusiast| AI&ML Developer
+            🚀 Creative Technologist | Full-Stack Engineer | Data Science Enthusiast | AI&ML Developer
           </motion.p>
 
           <motion.div
@@ -86,8 +121,8 @@ const Home = () => {
             <motion.button
               className="hero-btn"
               whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/Internships")}
+              whileTap={{ scale: 0.95, rotate: -5 }}
+              onClick={() => navigate("/Projects")}
             >
               View My Experience →
             </motion.button>
@@ -97,13 +132,13 @@ const Home = () => {
           <div className="section about-me">
             <h2>About Me</h2>
             <p>
-              Final Year B.Tech AI&DS Student with a strong foundation in Full Stack Development, Data Science, and Python.
-              Passionate about solving real-world problems with innovative and scalable tech solutions.
+              Final Year B.Tech AI&DS Student with a strong foundation in Full Stack Development, Data Science, and
+              Python. Passionate about solving real-world problems with innovative and scalable tech solutions.
             </p>
             <motion.button
               className="hero-btn"
               whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.95, rotate: -5 }}
               onClick={() => navigate("/about")}
             >
               Learn More →
@@ -120,15 +155,21 @@ const Home = () => {
             <motion.button
               className="hero-btn"
               whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/projects")}
+              whileTap={{ scale: 0.95, rotate: -5 }}
+              onClick={() => navigate("/Internships")}
             >
-              View Projects →
+              View Internships →
             </motion.button>
           </div>
 
           {/* Skills Section */}
-          
+          <div className="section my-skills">
+            <h2>My Skills</h2>
+            <p>
+              Proficient in JavaScript, Python, React, Node.js, MongoDB, TensorFlow, and more. Experienced in building
+              AI-driven applications and scalable web solutions.
+            </p>
+          </div>
 
           {/* Achievements Section */}
           <div className="section my-achievements">
@@ -137,27 +178,26 @@ const Home = () => {
               <li>🏆 Built a Resume Builder with 90%+ ATS Score Support</li>
               <li>🥇 Won Hackathon in RCE with Brainovision</li>
               <li>📜 Completed multiple workshops in AI, Web Development, and Mobile App Development</li>
-              <li>💡 Developed Fruit & Vegetable Rot Detection App using MobileNetV2</li>
+              <li>💡 Developed AI Chatbot and Career Recommendation System Using MERN Stack</li>
             </ul>
           </div>
 
           {/* Contact Section */}
-<div className="section contact-me">
-  <h2>Let's Connect</h2>
-  <p>
-    I’m open to freelance projects, internships, and collaboration opportunities.
-    Feel free to reach out on any of the platforms below!
-  </p>
-  <motion.button
-    className="hero-btn"
-    whileHover={{ scale: 1.08 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => navigate("/contact")}
-  >
-    Let's Connect →
-  </motion.button>
-</div>
-
+          <div className="section contact-me">
+            <h2>Let's Connect</h2>
+            <p>
+              I’m open to freelance projects, internships, and collaboration opportunities. Feel free to reach out on any
+              of the platforms below!
+            </p>
+            <motion.button
+              className="hero-btn"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95, rotate: -5 }}
+              onClick={() => navigate("/contact")}
+            >
+              Let's Connect →
+            </motion.button>
+          </div>
 
           <motion.div
             className="scroll-indicator"
@@ -171,12 +211,25 @@ const Home = () => {
 
           {/* Social Icons */}
           <div className="hero-socials">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+            {[
+              { icon: FaFacebookF, href: "https://facebook.com" },
+              { icon: FaTwitter, href: "https://twitter.com" },
+              { icon: FaInstagram, href: "https://instagram.com" },
+              { icon: FaLinkedin, href: "https://linkedin.com" },
+              { icon: FaYoutube, href: "https://youtube.com" },
+              { icon: FaGithub, href: "https://github.com" },
+            ].map((social, index) => (
+              <motion.a
+                key={index}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <social.icon />
+              </motion.a>
+            ))}
           </div>
         </motion.div>
       </section>

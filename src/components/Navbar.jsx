@@ -9,10 +9,12 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    setMenuOpen(false);
+    setMenuOpen(false); // Close menu on route change
   }, [location.pathname]);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev); // Toggle state
+  };
 
   const navLinks = [
     { label: "Home", path: "home" },
@@ -20,10 +22,9 @@ const Navbar = () => {
     { label: "Education", path: "education" },
     { label: "Internships", path: "Internships" },
     { label: "Workshops", path: "workshops" },
-     { label: "Hackathons", path: "Hackathons" },
+    { label: "Hackathons", path: "Hackathons" },
     { label: "Skills", path: "myskills" },
-     { label: "Projects", path: "projects" },
-     // ✅ Custom label but actual path is workshops.jsx
+    { label: "Projects", path: "projects" },
     { label: "Resume", path: "resume" },
     { label: "Certifications", path: "certifications" },
     { label: "Contact", path: "contact" },
@@ -34,11 +35,11 @@ const Navbar = () => {
       <div className="nav-container">
         <motion.div
           className="nav-logo"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <Link to="/home">Bhagavan's Portfolio</Link>
+          <Link to="/home">Bhagavan</Link>
         </motion.div>
 
         <div className="hamburger" onClick={toggleMenu}>
@@ -51,16 +52,18 @@ const Navbar = () => {
               className={`nav-links ${menuOpen ? "open" : ""}`}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -20 }} // Added exit animation
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              {navLinks.map((link, i) => (
+              {navLinks.map((link, index) => (
                 <motion.div
                   key={link.label}
                   className="nav-link"
-                  whileHover={{ scale: 1.15 }}
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.1 }}
+                  style={{ '--index': index }} // For staggered animation
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }} // Added exit animation
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <Link
                     to={`/${link.path}`}
@@ -73,13 +76,34 @@ const Navbar = () => {
 
               <motion.div
                 className="nav-icons"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
+                style={{ '--icon-count': navLinks.length }} // For staggered animation
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }} // Added exit animation
+                transition={{ duration: 0.3, delay: navLinks.length * 0.1 + 0.1 }}
               >
-                <a href="https://github.com/bhagavan444" target="_blank" rel="noreferrer"><FaGithub /></a>
-                <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
-                <a href="mailto:satyasaibhagavan444@gmail.com"><FaEnvelope /></a>
+                <motion.a
+                  href="https://github.com/bhagavan444"
+                  target="_blank"
+                  rel="noreferrer"
+                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                >
+                  <FaGithub />
+                </motion.a>
+                <motion.a
+                  href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/"
+                  target="_blank"
+                  rel="noreferrer"
+                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                >
+                  <FaLinkedin />
+                </motion.a>
+                <motion.a
+                  href="mailto:satyasaibhagavan444@gmail.com"
+                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                >
+                  <FaEnvelope />
+                </motion.a>
               </motion.div>
             </motion.div>
           )}

@@ -8,211 +8,324 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: #0e0e0e;
-  color: #ffffff;
+  background: #1a0033;
+  color: #e0e0e0;
   overflow-x: hidden;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ==== About Wrapper with Dynamic Background ==== */
 .about-wrapper {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0033, #2a004d, #3a0066);
   background-size: 400% 400%;
-  animation: bgShift 15s ease infinite;
-  overflow-y: scroll;
+  animation: bgShift 12s ease infinite; /* Faster for dynamic feel */
+  overflow-y: auto;
   scroll-snap-type: y mandatory;
+  padding-top: 60px; /* Account for fixed Navbar */
 }
 
+/* Particle Background Effect */
+.about-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><circle cx="5" cy="5" r="2" fill="rgba(0,204,255,0.2)"/></svg>') repeat;
+  opacity: 0.1;
+  animation: particleDrift 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Fullscreen Card */
 .fullscreen-card {
   scroll-snap-align: start;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  animation: fadeInSmooth 0.8s ease forwards;
+  padding: 3.5rem 1rem; /* Increased padding */
+  animation: fadeInDynamic 1.2s ease-out forwards;
   opacity: 0;
+  position: relative;
+  z-index: 1;
 }
 
+/* About Card */
 .about-card {
-  background: rgba(26, 28, 44, 0.85);
-  border-radius: 2rem;
-  padding: 2.5rem;
+  background: rgba(26, 10, 44, 0.9);
+  border-radius: 3rem; /* Smoother corners */
+  padding: 3.5rem; /* More spacious */
   width: 100%;
-  max-width: 900px;
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+  max-width: 1100px; /* Wider for desktop */
+  backdrop-filter: blur(35px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 50px rgba(0, 0, 0, 0.7);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .about-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 14px 45px rgba(0, 204, 255, 0.35);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 18px 60px rgba(0, 204, 255, 0.5);
+  animation: pulseGlow 2s ease-in-out infinite;
 }
 
+/* About Title */
 .beast-about-title {
-  font-size: 3rem;
+  font-size: 4rem; /* Larger for impact */
   font-weight: 900;
   text-align: center;
-  background: linear-gradient(90deg, #00dbde, #fc00ff);
+  background: linear-gradient(90deg, #00ccff, #ffcc00, #00ccff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.2rem;
-  animation: bounceText 2.2s infinite;
+  background-size: 200%;
+  margin-bottom: 1.8rem;
+  animation: gradientFlow 4s linear infinite, neonFlicker 1.8s infinite;
+  text-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
 }
 
+/* About Subtitle */
 .beast-about-subtitle {
-  font-size: 1.3rem;
-  max-width: 720px;
-  margin: 0 auto 1.8rem;
-  color: #e0e0e0;
+  font-size: 1.5rem; /* Larger for readability */
+  max-width: 850px;
+  margin: 0 auto 2.5rem;
+  background: linear-gradient(90deg, #e0e0e0, #cccccc); /* Subtle gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   opacity: 0;
-  animation: fadeSlideUp 2s ease forwards;
-  animation-delay: 1s;
+  animation: fadeSlideUp 1.5s ease-out forwards;
+  animation-delay: 0.3s;
   text-align: center;
+  line-height: 1.9;
+  text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
 }
 
+/* Section Headings */
 .beast-about-section h3,
 .tech-stack-section h4,
 .beast-about-badges h4 {
-  font-size: 2rem;
-  color: #00e6e6;
-  margin-bottom: 1rem;
+  font-size: 2.4rem; /* Larger for emphasis */
+  background: linear-gradient(90deg, #00ccff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200%;
+  margin-bottom: 1.5rem;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  animation: gradientFlow 4s linear infinite, fadeInDynamic 1s ease-out forwards;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
 }
 
+/* About Section List */
 .beast-about-section ul {
   list-style-type: none;
-  padding-left: 1rem;
-  line-height: 1.9;
+  padding-left: 2rem;
+  line-height: 2.2;
   color: #f1f1f1;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.beast-about-section ul li {
+  opacity: 0;
+  animation: fadeSlideUp 1s ease-out forwards;
+  animation-delay: calc(0.2s * var(--index)); /* Staggered entrance */
 }
 
 .beast-about-section ul li::before {
   content: "\2713";
-  margin-right: 10px;
-  color: #00e6e6;
+  margin-right: 15px;
+  color: #00ccff;
+  font-weight: bold;
 }
 
+/* Tech Stack Grid */
 .tech-stack-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 2fr));
+  gap: 2.5rem; /* More spacing */
   justify-content: center;
-  gap: 1.5rem;
-  padding-top: 1rem;
+  padding: 2rem 0;
 }
 
 .tech-icon-with-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 2.5rem;
-  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 3.5rem; /* Larger icons */
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 0.8rem;
-  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1.2rem;
+  border-radius: 1.5rem;
+  transition: transform 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0;
+  animation: fadeInDynamic 1s ease-out forwards;
+  animation-delay: calc(0.15s * var(--index)); /* Staggered entrance */
 }
 
 .tech-icon-with-label:hover {
-  transform: scale(1.25);
-  color: #00e6e6;
-  background: rgba(0, 198, 255, 0.1);
+  transform: scale(1.35) rotate(5deg); /* Added rotation for fun */
+  background: rgba(0, 204, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.6);
 }
 
+/* Tech Label */
 .tech-label {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  margin-top: 0.8rem;
+  font-size: 1.1rem; /* Larger for readability */
   color: #cccccc;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
 }
 
+/* Badge Grid */
 .badge-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.2rem;
   justify-content: center;
-  padding-top: 1rem;
+  padding: 2rem 0;
 }
 
 .badge {
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,198,255,0.2));
-  padding: 0.5rem 1.2rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 204, 255, 0.3));
+  padding: 0.7rem 1.8rem;
+  border-radius: 35px;
+  font-size: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #ffffff;
-  transition: transform 0.3s ease, background 0.3s ease;
+  text-align: center;
+  transition: transform 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0;
+  animation: fadeInDynamic 1s ease-out forwards;
+  animation-delay: calc(0.15s * var(--index)); /* Staggered entrance */
 }
 
 .badge:hover {
-  background: rgba(0, 198, 255, 0.4);
-  transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.5), rgba(255, 0, 255, 0.5));
+  transform: scale(1.2) rotate(3deg); /* Added rotation for fun */
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
 }
 
+/* Responsive Design */
 @media screen and (max-width: 768px) {
-  .beast-about-cards {
-    flex-direction: column;
-    align-items: center;
+  .about-wrapper {
+    padding-top: 80px; /* Adjusted for mobile Navbar */
   }
 
-  .beast-about-card {
-    width: 100%;
+  .fullscreen-card {
+    padding: 2.5rem 0.8rem;
+  }
+
+  .about-card {
+    width: 95%;
     max-width: 95%;
+    padding: 2.5rem;
+    border-radius: 2rem;
   }
 
   .beast-about-title {
-    font-size: 2.2rem;
+    font-size: 3rem;
   }
 
   .beast-about-subtitle {
+    font-size: 1.2rem;
+    max-width: 90%;
+    line-height: 1.7;
+  }
+
+  .beast-about-section h3,
+  .tech-stack-section h4,
+  .beast-about-badges h4 {
+    font-size: 2rem;
+  }
+
+  .beast-about-section ul {
+    padding-left: 1.5rem;
+  }
+
+  .tech-stack-grid {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 1.8rem;
+  }
+
+  .tech-icon-with-label {
+    font-size: 3rem;
+    padding: 1rem;
+  }
+
+  .tech-label {
     font-size: 1rem;
   }
+
+  .badge-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+
+  .badge {
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+  }
 }
 
+/* Animations */
 @keyframes bgShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@keyframes fadeInSmooth {
+@keyframes fadeInDynamic {
   0% {
     opacity: 0;
-    transform: scale(0.95) translateY(20px);
+    transform: scale(0.9) translateY(30px) rotate(-2deg);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateY(0) rotate(0deg);
   }
 }
 
 @keyframes fadeSlideUp {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(50px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes bounceText {
+@keyframes neonFlicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: 0 0 10px rgba(0, 204, 255, 0.6), 0 0 20px rgba(0, 204, 255, 0.4);
+  }
+  20%, 24%, 55% {
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.3), 0 0 10px rgba(0, 204, 255, 0.2);
+  }
+}
+
+@keyframes pulseGlow {
   0%, 100% {
-    transform: translateY(0);
+    box-shadow: 0 14px 50px rgba(0, 204, 255, 0.5);
   }
   50% {
-    transform: translateY(-8px);
+    box-shadow: 0 18px 70px rgba(0, 204, 255, 0.7);
   }
+}
+
+@keyframes particleDrift {
+  from { background-position: 0 0; }
+  to { background-position: 10px 10px; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
 }

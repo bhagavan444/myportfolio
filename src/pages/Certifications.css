@@ -1,128 +1,268 @@
-/* 🌠 Certifications Section - Modern Neon UI */
+/* 🌠 Certifications Section - Futuristic Cyberpunk UI */
 .certifications-container {
   position: relative;
-  padding: 4rem 1.5rem;
+  padding: 5rem 2rem;
   min-height: 100vh;
-  background:radial-gradient(circle, #4B0082, #8A2BE2, #9370DB, #00BFFF);
+  background: radial-gradient(circle at 50% 50%, #1e003a, #2a0a5e, #3b1a8c, #00a1d6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Orbitron', 'Segoe UI', sans-serif;
   overflow: hidden;
-  color: #f0f9ff;
+  color: #e6f3ff;
   box-sizing: border-box;
+  z-index: 1;
 }
 
-/* ✨ Background glow effect */
+/* ✨ Dynamic Holographic Background */
 .certifications-container::before {
   content: "";
   position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 0, 255, 0.1), transparent);
-  z-index: 0;
-  animation: rotateBG 40s linear infinite;
+  top: -150px;
+  left: -150px;
+  width: 250%;
+  height: 250%;
+  background: 
+    radial-gradient(circle at 30%, rgba(0, 255, 255, 0.15), transparent 60%),
+    radial-gradient(circle at 70% 80%, rgba(255, 0, 255, 0.12), transparent 50%);
+  z-index: -1;
+  animation: rotateHolo 30s linear infinite, pulseGlow 8s ease-in-out infinite;
+  pointer-events: none;
 }
 
-@keyframes rotateBG {
+@keyframes rotateHolo {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* 🎓 Section Title */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
+
+/* 🌌 Particle Network Overlay */
+.certifications-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path d="M10,10 L90,90 M90,10 L10,90" stroke="rgba(0,255,255,0.05)" stroke-width="1"/></svg>') repeat;
+  opacity: 0.1;
+  z-index: -1;
+  animation: matrixFlow 20s linear infinite;
+}
+
+@keyframes matrixFlow {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* 🎓 Section Title with Neon Flicker */
 .cert-title {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(90deg, #00ffe7, #ff00cc);
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #00f7ff, #ff00e6, #00f7ff);
+  background-size: 200%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  text-shadow: 0 0 20px #00ffee44;
-  margin-bottom: 3rem;
+  text-shadow: 0 0 25px rgba(0, 247, 255, 0.5), 0 0 50px rgba(255, 0, 230, 0.3);
+  margin-bottom: 4rem;
   z-index: 2;
+  animation: neonFlicker 3s infinite, gradientFlow 6s linear infinite;
 }
 
-/* 🗂️ Certificate Grid */
+@keyframes neonFlicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.7; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+
+/* 🗂️ Certificate Grid with Staggered Animation */
 .cert-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2.5rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   z-index: 2;
+  perspective: 1000px;
 }
 
-/* 📜 Certificate Card */
+.cert-grid .cert-card {
+  animation: cardEntry 0.8s ease-out forwards;
+  animation-delay: calc(var(--order) * 0.1s);
+}
+
+@keyframes cardEntry {
+  from { opacity: 0; transform: translateY(50px) rotateX(-10deg); }
+  to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+}
+
+/* 📜 Certificate Card with Cyberpunk Aesthetics */
 .cert-card {
-  background: rgba(255, 255, 255, 0.06);
-  padding: 1.8rem 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 0 18px rgba(0, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  --order: 0;
+  background: rgba(30, 10, 60, 0.15);
+  padding: 2rem 1.8rem;
+  border-radius: 25px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.15),
+    inset 0 0 10px rgba(255, 0, 255, 0.1);
+  backdrop-filter: blur(20px);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
   position: relative;
   overflow: hidden;
   text-align: left;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.cert-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.3),
+    inset 0 0 15px rgba(255, 0, 255, 0.2);
 }
 
 .cert-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #00ffff44, #ff00ff33);
-  filter: blur(25px);
+  inset: -10px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.15));
+  filter: blur(30px);
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.6;
+  transition: opacity 0.5s ease;
 }
 
+.cert-card:hover::before {
+  opacity: 1;
+}
+
+.cert-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.cert-card:hover::after {
+  left: 100%;
+}
+
+/* 🔖 Certificate Name with Glow */
 .cert-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #e0f2f1;
-  margin-bottom: 1rem;
-  line-height: 1.5;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #d6f5ff;
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
   word-wrap: break-word;
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+  position: relative;
 }
 
+.cert-name::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #00f7ff, #ff00e6);
+  transition: width 0.4s ease;
+}
+
+.cert-card:hover .cert-name::after {
+  width: 100%;
+}
+
+/* 🔗 Download Button with Pulse Effect */
 .cert-download-btn {
-  display: inline-block;
-  padding: 0.55rem 1.2rem;
-  background: linear-gradient(to right, #6366f1, #ec4899);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(90deg, #00d4ff, #ff00d4);
+  color: #1e003a;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-radius: 12px;
   text-decoration: none;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.cert-download-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #00f7ff, #ff00e6);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.cert-download-btn:hover::before {
+  opacity: 1;
 }
 
 .cert-download-btn:hover {
-  background: linear-gradient(to right, #8b5cf6, #f43f5e);
-  transform: scale(1.05);
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
+}
+
+.cert-download-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+  animation: pulseBorder 2s infinite;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.05); opacity: 0.8; }
 }
 
 /* 📱 Responsive Design */
 @media (max-width: 768px) {
   .cert-title {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
   }
 
   .cert-name {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
   }
 
   .cert-download-btn {
     font-size: 0.95rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.2rem;
+  }
+
+  .cert-grid {
+    gap: 1.8rem;
+  }
+
+  .cert-card {
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .cert-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .cert-name {
@@ -130,7 +270,17 @@
   }
 
   .cert-card {
-    padding: 1.3rem;
-    margin-right: 20px;
+    padding: 1.2rem;
+    margin-right: 0;
+  }
+
+  .cert-download-btn {
+    font-size: 0.9rem;
+    padding: 0.45rem 1rem;
+  }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
 }
