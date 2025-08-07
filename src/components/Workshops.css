@@ -1,4 +1,4 @@
-/* === Base Reset === */
+/* === 🔄 Reset === */
 * {
   margin: 0;
   padding: 0;
@@ -6,106 +6,100 @@
   scroll-behavior: smooth;
 }
 
-/* === Container === */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0d0026;
+  color: #f0f0f5;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* === 📚 Workshops Container === */
 .workshops-container {
+  position: relative;
   min-height: 100vh;
-  padding: 5rem 3rem;
-  background: linear-gradient(135deg, #1a2a44, #2e4060, #3a5570);
-  background-size: 200% 200%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
-  overflow: hidden;
-  position: relative;
-  animation: professionalFade 2.5s ease-in-out;
+  padding: 5rem 3rem;
+  width: 100%;
+  background: linear-gradient(135deg, #1e003b, #003366);
+  background-size: 300% 300%;
+  animation: gradientFlow 15s ease-in-out infinite;
   z-index: 1;
 }
 
-@keyframes professionalFade {
-  0% { opacity: 0; transform: translateY(40px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* === Background Particles & Overlay === */
+/* === 🌌 Background Effects === */
 .workshops-container::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1), transparent 40%),
-              radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1), transparent 40%),
-              radial-gradient(circle at 50% 50%, rgba(202, 138, 4, 0.05), transparent 60%);
-  z-index: -1;
-  animation: subtlePulse 15s ease-in-out infinite;
+  inset: -150px;
+  width: 250%;
+  height: 250%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 255, 204, 0.25), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 51, 153, 0.25), transparent 50%);
+  z-index: 0;
+  animation: rotateGlow 20s linear infinite;
   pointer-events: none;
 }
 
-@keyframes subtlePulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 0.7; }
-  100% { opacity: 0.5; }
+@keyframes rotateGlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* === Light Overlay === */
-.workshops-container::after {
-  content: "";
+/* === 🌊 Wave Overlay === */
+.wave-overlay {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
-  top: -250px;
-  right: -250px;
-  animation: lightShift 20s linear infinite;
-  z-index: -1;
-  filter: blur(60px);
+  inset: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(0,255,204,0.1)" fill-opacity="0.3" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,117.3C672,107,768,117,864,122.7C960,128,1056,128,1152,122.7C1248,117,1344,107,1392,101.3L1440,96V320H1392C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320H0V96Z"/></svg>') repeat-x bottom;
+  height: 100%;
+  animation: waveFlow 12s linear infinite;
+  z-index: 0;
+  pointer-events: none;
 }
 
-@keyframes lightShift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(100px, 100px); }
-  100% { transform: translate(0, 0); }
+@keyframes waveFlow {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+  100% { transform: translateY(0); }
 }
 
-/* === Header === */
+/* === 🌟 Header === */
 .workshops-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 4.5rem;
   position: relative;
   z-index: 2;
 }
 
 .section-title {
-  font-size: 3.8rem;
+  font-size: 4rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  text-align: center;
-  color: transparent;
-  background: linear-gradient(90deg, #60a5fa, #9333ea, #facc15);
+  background: linear-gradient(90deg, #00ffcc, #ff33cc, #00ffcc);
+  background-size: 200%;
+  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+  color: transparent;
+  text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+  animation: gradientFlow 3s linear infinite, titleFloat 2s ease-in-out infinite;
 }
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 6px;
-  background: linear-gradient(90deg, #60a5fa, #9333ea);
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
-  animation: titlePulse 3s infinite;
-}
-
-@keyframes titlePulse {
-  0% { transform: translateX(-50%) scaleX(1); }
-  50% { transform: translateX(-50%) scaleX(1.1); }
-  100% { transform: translateX(-50%) scaleX(1); }
+@keyframes titleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .intro-text {
@@ -115,9 +109,15 @@
   text-align: center;
   line-height: 1.8;
   color: #d1d5db;
+  animation: fadeIn 1.5s ease-out;
 }
 
-/* === Filter Buttons === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === 🔧 Filter Buttons === */
 .filter-buttons {
   display: flex;
   justify-content: center;
@@ -127,46 +127,47 @@
 }
 
 .filter-buttons button {
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 1.6rem;
   border: none;
-  background: rgba(255, 255, 255, 0.06);
-  color: #e0e7ff;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  color: #f0f0f5;
   border-radius: 999px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .filter-buttons button.active,
 .filter-buttons button:hover {
-  background: linear-gradient(135deg, #60a5fa, #9333ea);
-  color: #fff;
+  background: linear-gradient(135deg, #00ffcc, #ff33cc);
+  color: #0d0026;
   transform: scale(1.1);
-  box-shadow: 0 5px 20px rgba(96, 165, 250, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 255, 204, 0.5);
 }
 
-/* === Card Layout === */
+/* === 🌐 Cards Grid === */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 3rem;
+  gap: 3.5rem;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1400px;
   z-index: 2;
 }
 
-/* === Glass Card === */
+/* === 🛡️ Glass Card === */
 .glass-card {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2rem;
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(0, 255, 204, 0.1);
+  border-radius: 20px;
   padding: 2.5rem;
-  color: #e0e7ff;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: #f0f0f5;
+  transition: all 0.5s ease;
   transform-style: preserve-3d;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(96, 165, 250, 0.1);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 255, 204, 0.1);
   animation: cardEnter 1.2s ease-out;
   position: relative;
   overflow: hidden;
@@ -179,7 +180,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 45deg, #60a5fa33, #9333ea33, transparent);
+  background: conic-gradient(from 45deg, #00ffcc33, #ff33cc33, transparent);
   animation: rotateGlow 20s linear infinite;
   z-index: -1;
   opacity: 0.3;
@@ -190,25 +191,22 @@
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@keyframes rotateGlow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .glass-card:hover {
-  transform: translateY(-20px) rotateX(5deg) scale(1.05);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(96, 165, 250, 0.2);
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 255, 204, 0.2);
 }
 
-/* === Card Content === */
+/* === 🚀 Card Content === */
 .card-title {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: #60a5fa;
-  text-shadow: 0 0 10px rgba(96, 165, 250, 0.2);
-  position: relative;
-  z-index: 1;
+  background: linear-gradient(90deg, #00ffcc, #ff33cc);
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
 }
 
 .glass-card p,
@@ -227,20 +225,19 @@
 .glass-card li::before {
   content: '✔';
   margin-right: 0.7rem;
-  color: #10b981;
+  color: #00ff99;
   font-weight: bold;
 }
 
-/* === Tags === */
+/* === 🏷️ Tags === */
 .tag {
   margin-top: 1.5rem;
   font-size: 0.9rem;
   font-style: italic;
-  color: #9ca3af;
+  color: #a3bffa;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 /* === Responsive Adjustments === */
 @media (max-width: 1024px) {
   .workshops-container { padding: 4rem 2.5rem; }

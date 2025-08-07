@@ -1,6 +1,7 @@
 /* 🌌 Container with animated gradient background */
 .beast-contact-container {
   display: flex;
+  margin-top:70px;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
