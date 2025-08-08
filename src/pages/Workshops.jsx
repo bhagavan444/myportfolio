@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../components/Workshops.css";
 import { motion } from "framer-motion";
 
@@ -6,7 +6,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.2,
     },
   },
 };
@@ -16,32 +16,41 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-const data = [
+// Each workshop as its own card with a unique title and summary
+const workshops = [
   {
-    type: "workshop",
-    title: "📚 Technical Workshops Attended",
-    list: [
-      "🔍 **Machine Learning (ML)** – Gained practical experience with supervised and unsupervised algorithms, explored model training, validation, and evaluation using Scikit-learn.",
-      "🧠 **Deep Learning (DL)** – Hands-on sessions on building Convolutional Neural Networks (CNNs) for image classification using TensorFlow & Keras.",
-      "📱 **Mobile App Development** – Designed cross-platform mobile applications using Flutter, with a focus on UI/UX principles and integration with APIs.",
-      "🌐 **Web Development** – Developed responsive web applications using HTML, CSS, JavaScript, and React. Covered frontend best practices and performance optimization.",
-      "🤖 **Introduction to Artificial Intelligence** – Understood AI fundamentals, real-time use cases, and ethics in AI through interactive sessions.",
-      "💻 **Full Stack Development Bootcamp** – Participated in a structured program on MERN stack development, including REST API design, MongoDB integration, and deployment practices.",
-    ],
-    tag: "#ML #DL #AI #Flutter #React #FullStack",
+    title: "🔍 Machine Learning (ML)",
+    description:
+      "Hands-on experience with supervised and unsupervised learning techniques. Explored model building, evaluation, and tuning using Scikit-learn.",
+  },
+  {
+    title: "🧠 Deep Learning (DL)",
+    description:
+      "Built CNNs for image classification using TensorFlow and Keras. Understood backpropagation, activation functions, and optimization techniques.",
+  },
+  {
+    title: "📱 Mobile App Development",
+    description:
+      "Developed cross-platform mobile apps using Flutter. Focused on UI/UX principles, navigation, state management, and REST API integration.",
+  },
+  {
+    title: "🌐 Web Development",
+    description:
+      "Created responsive web applications using HTML, CSS, JavaScript, and React. Gained experience in component-based architecture and frontend optimization.",
+  },
+  {
+    title: "🤖 Introduction to Artificial Intelligence",
+    description:
+      "Explored AI fundamentals, real-world use cases, ethical considerations, and logic-based AI systems through interactive sessions.",
+  },
+  {
+    title: "💻 Full Stack Development Bootcamp",
+    description:
+      "Completed a comprehensive MERN stack bootcamp. Built and deployed full-stack apps with Express.js, MongoDB, React, and Node.js.",
   },
 ];
 
 const Workshops = () => {
-  const [filter, setFilter] = useState("all");
-
-  // Extract unique filter options from type and tags
-  const filterOptions = ["all", ...new Set(data.flatMap((item) => [item.type, ...item.tag.split(" ").map(t => t.replace("#", ""))]))];
-
-  const filteredCards = filter === "all"
-    ? data
-    : data.filter((card) => card.type === filter || card.tag.includes(`#${filter}`));
-
   return (
     <motion.div
       className="workshops-container"
@@ -58,43 +67,21 @@ const Workshops = () => {
         <h2 className="section-title">📖 Technical Workshops</h2>
         <div className="underline"></div>
         <p className="intro-text">
-          I actively participate in workshops to build practical knowledge and stay updated with emerging technologies. Here’s a summary of the most impactful ones I've attended.
+          I’ve attended various technical workshops to strengthen my practical skills and stay updated with evolving technologies. Here are a few impactful ones:
         </p>
-
-        {/* Filter Buttons */}
-        <div className="filter-buttons">
-          {filterOptions.map((option) => (
-            <button
-              key={option}
-              className={`filter-btn ${filter === option ? "active" : ""}`}
-              onClick={() => setFilter(option)}
-            >
-              {option.charAt(0).toUpperCase() + option.slice(1).replace("#", "")}
-            </button>
-          ))}
-        </div>
       </motion.div>
 
       {/* Cards Grid */}
       <div className="cards-grid">
-        {filteredCards.map((item, index) => (
+        {workshops.map((item, index) => (
           <motion.div
             className="glass-card"
             key={index}
             variants={cardVariants}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.05 }}
           >
             <h3 className="card-title">{item.title}</h3>
-
-            {item.list && (
-              <ul className="workshop-list">
-                {item.list.map((point, idx) => (
-                  <li key={idx}>{point}</li>
-                ))}
-              </ul>
-            )}
-
-            <p className="tag">{item.tag}</p>
+            <p className="card-description">{item.description}</p>
           </motion.div>
         ))}
       </div>

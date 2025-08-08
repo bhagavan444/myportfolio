@@ -3,80 +3,99 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #0d1117;
-  font-family: 'Poppins', sans-serif;
-  color: #f9fafb;
-  line-height: 1.6;
+  background: #0a0e14;
+  font-family: 'Inter', 'Poppins', sans-serif;
+  color: #f1f5f9;
+  line-height: 1.7;
   overflow-x: hidden;
 }
 
 /* === 🌌 Container with Gradient Glow === */
 .resume-container {
   min-height: 100vh;
-  padding: 5rem 1.5rem;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top left, #0f172a, #1e293b 60%, #0d1117 100%);
-  animation: fadeIn 1.2s ease-in-out both;
+  background: radial-gradient(circle at top left, #111827, #1f2a44 60%, #0a0e14 100%);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 1s ease-out;
+  z-index: 1;
+}
+
+/* === 🌠 Dynamic Background Particles === */
+.resume-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.18), transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.15), transparent 50%);
+  z-index: 0;
+  animation: pulseGlow 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.85; }
 }
 
 /* === 🔮 Glass Card === */
 .resume-card {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   border-radius: 2rem;
-  padding: 3rem 3rem;
-  max-width: 850px;
+  padding: clamp(2rem, 4vw, 3rem);
+  max-width: 950px;
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.55);
   position: relative;
   overflow: hidden;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  z-index: 1;
-}
-
-.resume-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  z-index: 2;
 }
 
 /* === ✨ Shine Animation Overlay === */
 .resume-card::before {
   content: '';
   position: absolute;
-  top: -70%;
-  left: -70%;
-  width: 250%;
-  height: 250%;
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.15), transparent 70%);
-  transform: rotate(25deg);
-  animation: shine 5s linear infinite;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 60%);
+  transform: rotate(30deg);
+  animation: shine 3.5s linear infinite;
   pointer-events: none;
   z-index: 0;
 }
 
 @keyframes shine {
-  0% { transform: translateX(-100%) rotate(25deg); }
-  100% { transform: translateX(100%) rotate(25deg); }
+  0% { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
 }
 
 /* === 🎯 Title with Aurora Effect === */
 .resume-title {
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 900;
   text-align: center;
-  margin-bottom: 1.6rem;
-  background: linear-gradient(270deg, #3b82f6, #10b981, #8b5cf6, #ec4899, #3b82f6);
-  background-size: 800% auto;
+  margin-bottom: 2rem;
+  background: linear-gradient(270deg, #3b82f6, #22c55e, #a855f7, #f43f5e, #3b82f6);
+  background-size: 600% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: auroraShift 8s linear infinite;
+  animation: auroraShift 5s linear infinite;
+  text-shadow: 0 0 18px rgba(59, 130, 246, 0.35);
   position: relative;
   z-index: 2;
 }
@@ -89,11 +108,11 @@ body {
 
 /* === 📘 Description === */
 .resume-description {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
   color: #d1d5db;
   text-align: center;
-  max-width: 700px;
-  margin: 0 auto 2.5rem auto;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
   z-index: 2;
 }
 
@@ -102,76 +121,176 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1.2rem;
+  gap: 1.8rem;
   z-index: 2;
 }
 
-/* === ⚡ Buttons === */
+/* === ⚡ Buttons with Ripple Effect === */
 .resume-btn {
-  padding: 1rem 2.4rem;
+  padding: clamp(0.8rem, 2vw, 1.1rem) clamp(2rem, 3vw, 2.8rem);
   border-radius: 14px;
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
   font-weight: 600;
   cursor: pointer;
   border: none;
   color: #fff;
-  background: linear-gradient(135deg, #6366f1, #3b82f6, #06b6d4);
-  background-size: 250% auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+  background-size: 300% auto;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  z-index: 2;
+}
+
+.resume-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+  z-index: -1;
+}
+
+.resume-btn:hover::before {
+  width: 350px;
+  height: 350px;
 }
 
 .resume-btn:hover {
-  transform: scale(1.1) translateY(-4px);
   background-position: right center;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
-/* === ✅ Fade In Animation === */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.resume-btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 3px;
+}
+
+/* === 🪟 Modal Styles === */
+.resume-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.resume-modal-content {
+  position: relative;
+  width: clamp(300px, 90vw, 900px);
+  height: clamp(400px, 80vh, 600px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.resume-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.resume-close-btn:hover {
+  background: #ef4444;
+  transform: scale(1.1);
+}
+
+.resume-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.resume-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #f1f5f9;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 /* === 📱 Responsive Styling === */
 @media (max-width: 768px) {
+  .resume-container {
+    padding: clamp(2rem, 4vw, 3rem) clamp(0.8rem, 2vw, 1rem);
+  }
+
   .resume-card {
-    padding: 2rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
     border-radius: 1.5rem;
   }
 
   .resume-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
   }
 
   .resume-description {
-    font-size: 1.05rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
   }
 
   .resume-btn {
     width: 100%;
-    padding: 1rem;
+    padding: clamp(0.7rem, 1.5vw, 0.9rem);
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+  }
+
+  .resume-modal-content {
+    width: 95vw;
+    height: 85vh;
   }
 }
 
 @media (max-width: 480px) {
+  .resume-container {
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(0.5rem, 1.5vw, 0.8rem);
+  }
+
+  .resume-card {
+    padding: clamp(1.2rem, 2.5vw, 1.5rem);
+  }
+
   .resume-title {
-    font-size: 1.8rem;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
   }
 
   .resume-description {
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
   }
 
-  .resume-container {
-    padding: 3rem 1rem;
+  .resume-btn {
+    padding: clamp(0.6rem, 1.2vw, 0.8rem);
+    font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+  }
+
+  .resume-close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
   }
 }

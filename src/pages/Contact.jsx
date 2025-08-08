@@ -7,7 +7,7 @@ import {
   FaEnvelope,
   FaTwitter,
 } from "react-icons/fa";
-import "../components/Contact.css"; // Make sure CSS is correctly styled
+import "../components/Contact.css";
 
 const Contact = () => {
   const form = useRef();
@@ -17,86 +17,111 @@ const Contact = () => {
 
     emailjs
       .sendForm(
-        "service_8pg8cek",         // ✅ Your EmailJS service ID
-        "template_1ys1isn",        // ✅ Your EmailJS template ID
+        "service_8pg8cek",
+        "template_1ys1isn",
         form.current,
-        "GOTwySQukEpQEuRa5"        // ✅ Your new public key
+        "GOTwySQukEpQEuRa5"
       )
       .then(
         () => {
-          alert("✅ Message sent!");
+          alert("✅ Message sent successfully!");
           e.target.reset();
         },
         () => {
-          alert("❌ Failed to send.");
+          alert("❌ Oops! Failed to send message.");
         }
       );
   };
 
   return (
-    <motion.div
-      className="beast-contact-container"
+    <motion.section
+      className="contact-section"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2 }}
+      transition={{ duration: 1 }}
     >
       <motion.div
-        className="beast-contact-card"
-        initial={{ y: 50, opacity: 0 }}
+        className="contact-card"
+        initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h2 className="beast-contact-title">🌈 Let's Connect in Globally</h2>
+        <h2 className="contact-title">🌐 Let's Connect Globally</h2>
 
-        <form ref={form} onSubmit={sendEmail}>
+        <form ref={form} onSubmit={sendEmail} className="contact-form">
           <motion.input
-            name="user_name"
             type="text"
-            placeholder="Your Name"
-            className="beast-contact-input"
+            name="user_name"
+            placeholder="Full Name"
+            className="contact-input"
             required
             whileFocus={{ scale: 1.05 }}
           />
+
           <motion.input
-            name="user_email"
             type="email"
-            placeholder="Your Email"
-            className="beast-contact-input"
+            name="user_email"
+            placeholder="Email Address"
+            className="contact-input"
             required
             whileFocus={{ scale: 1.05 }}
           />
+
           <motion.textarea
             name="message"
             placeholder="Your Message"
-            className="beast-contact-textarea"
+            className="contact-textarea"
+            rows="6"
             required
-            rows="5"
-            whileFocus={{ scale: 1.05 }}
-          ></motion.textarea>
+            whileFocus={{ scale: 1.03 }}
+          />
 
           <motion.button
             type="submit"
-            className="beast-contact-button"
-            whileHover={{ scale: 1.1 }}
+            className="contact-button"
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
           >
-            Send 🌟
+            🚀 Send Message
           </motion.button>
         </form>
 
         <motion.div
-          className="beast-contact-icons"
-          initial={{ scale: 0.8, opacity: 0 }}
+          className="contact-socials"
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <a href="mailto:g.sivasatyasaibhagavan@gmail.com"><FaEnvelope /></a>
-          <a href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
-          <a href="https://github.com/bhagavan444" target="_blank" rel="noreferrer"><FaGithub /></a>
-          
+          <a href="mailto:g.sivasatyasaibhagavan@gmail.com" aria-label="Email">
+            <FaEnvelope />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin />
+          </a>
+          <a
+            href="https://github.com/bhagavan444"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
+            <FaGithub />
+          </a>
+          <a
+            href="https://twitter.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Twitter"
+          >
+            <FaTwitter />
+          </a>
         </motion.div>
       </motion.div>
-    </motion.div>
+    </motion.section>
   );
 };
 

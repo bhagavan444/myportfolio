@@ -28,7 +28,7 @@
 .nav-logo a {
   font-size: 1.2rem;
   font-weight: 900;
-  background: linear-gradient(to right, #d9a7c7, #fffcdc);
+  background: linear-gradient(to right,orange, pink, cyan); /* Neon green to cyan */ /* Bright orange to hot pink */ /* Peach pastel */ /* Neon cyan to pink */
   background-size: 200%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -53,7 +53,7 @@
 .nav-link a {
   font-size: 1rem;
   font-weight: 600;
-  background:white; /* Neon green to cyan */ /* Bright orange to hot pink */ /* Peach pastel */ /* Neon cyan to pink */
+    background: linear-gradient(90deg, #3b82f6, #a855f7, #facc15); /* Neon green to cyan */ /* Bright orange to hot pink */ /* Peach pastel */ /* Neon cyan to pink */
   background-size: 200%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -170,7 +170,7 @@
   .nav-container {
     max-width: 900px;
     padding: 0 2rem;
-    height: 55px;
+    height: 30px;
   }
 
   .nav-logo a {

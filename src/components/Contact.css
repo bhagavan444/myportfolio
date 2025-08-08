@@ -1,173 +1,290 @@
-/* 🌌 Container with animated gradient background */
-.beast-contact-container {
-  display: flex;
-  margin-top:70px;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 2rem 1rem;
-  background: transparent;
-  background-size: 400% 400%;
-  animation: gradientMove 15s ease infinite;
-  overflow-x: hidden;
-  width: 100vw;
-  height: 100vh;
+/* === 🔁 Base Reset === */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  padding-top: 6rem; /* 🛠️ Push content below navbar */
+  scroll-behavior: smooth;
 }
 
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* 🧊 Glass card with layered glow */
-.beast-contact-card {
-  width: 100%;
-  max-width: 520px;
-  padding: 2.5rem 2rem;
-  border-radius: 1.5rem;
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(24px);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.5),
-    0 0 60px rgba(255, 255, 255, 0.05),
-    inset 0 0 12px rgba(147, 51, 234, 0.25);
-  color: white;
+/* === 🌌 Contact Section === */
+.contact-section {
+  width: 100vw;
+  min-height: 100vh;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 1.5rem);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  animation: pulseCard 6s ease-in-out infinite alternate;
-  transition: transform 0.4s ease;
+  justify-content: center;
+  background: linear-gradient(135deg, #0d1117, #1e293b, #334155);
+  background-size: 300% 300%;
+  animation: premiumGradient 20s ease infinite;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
-@keyframes pulseCard {
-  0% {
-    box-shadow: 0 0 25px rgba(20, 184, 166, 0.6), 0 0 50px rgba(147, 51, 234, 0.3);
-  }
-  100% {
-    box-shadow: 0 0 40px rgba(147, 51, 234, 0.6), 0 0 60px rgba(20, 184, 166, 0.4);
-  }
+@keyframes premiumGradient {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
 }
 
-/* ✨ Header styling */
-.beast-contact-title {
-  font-size: 2.2rem;
+/* === 🌠 Dynamic Background Particles === */
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.2), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.18), transparent 40%);
+  z-index: -1;
+  animation: pulseGlow 15s ease-in-out infinite;
+  pointer-events: none;
+  filter: blur(6px);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.08); }
+}
+
+/* === 🔮 Contact Card === */
+.contact-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 2rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+}
+
+/* === ✨ Shine Animation Overlay === */
+.contact-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 60%);
+  transform: rotate(30deg);
+  animation: shine 4s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* === 🎯 Contact Title === */
+.contact-title {
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 900;
+  text-align: center;
   margin-bottom: 2rem;
-  margin-top: 1rem;
-  background: linear-gradient(to right, #4ade80, #22d3ee, #9333ea);
+  background: linear-gradient(270deg, #3b82f6, #22c55e, #a855f7, #f43f5e, #3b82f6);
+  background-size: 600% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-align: center;
+  animation: auroraShift 6s linear infinite;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  position: relative;
+  z-index: 2;
 }
 
-/* 🔹 Input and textarea styles */
-.beast-contact-input,
-.beast-contact-textarea {
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 1.2rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: none;
-  font-size: 1rem;
-  box-shadow: inset 0 0 8px rgba(14, 165, 233, 0.4);
-  transition: 0.3s ease;
+@keyframes auroraShift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
 }
 
-.beast-contact-input:focus,
-.beast-contact-textarea:focus {
-  background: rgba(255, 255, 255, 0.15);
+/* === 📝 Contact Form === */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 2;
+}
+
+.contact-input,
+.contact-textarea {
+  padding: clamp(0.8rem, 2vw, 1rem);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  resize: none;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
   outline: none;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.beast-contact-input::placeholder,
-.beast-contact-textarea::placeholder {
-  color: #cbd5e1;
+.contact-input::placeholder,
+.contact-textarea::placeholder {
+  color: #9ca3af;
+  opacity: 0.8;
 }
 
-/* 🌟 Button styling */
-.beast-contact-button {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 1rem;
-  background: linear-gradient(135deg, #4ade80, #0ea5e9);
-  color: white;
+/* === ⚡ Contact Button === */
+.contact-button {
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.8rem, 3vw, 2.5rem);
+  border-radius: 12px;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 0 25px rgba(14, 165, 233, 0.6);
-  transition: 0.3s ease;
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+  background-size: 300% auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
 }
 
-.beast-contact-button:hover {
-  background: linear-gradient(135deg, #22d3ee, #9333ea);
-  box-shadow: 0 0 35px rgba(93, 188, 252, 0.8);
-  transform: scale(1.03);
+.contact-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+  z-index: -1;
 }
 
-/* 🌐 Social icons */
-.beast-contact-icons {
+.contact-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.contact-button:hover {
+  transform: scale(1.1) translateY(-3px);
+  background-position: right center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.contact-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* === 🌐 Social Icons === */
+.contact-socials {
   display: flex;
   justify-content: center;
-  gap: 1.8rem;
+  gap: 1.5rem;
   margin-top: 2rem;
-  flex-wrap: wrap;
+  z-index: 2;
 }
 
-.beast-contact-icons a {
-  font-size: 2rem;
-  color: #fff;
-  transition: transform 0.3s ease, color 0.3s ease;
+.contact-socials a {
+  color: #d1d5db;
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  transition: all 0.3s ease;
 }
 
-.beast-contact-icons a:hover {
-  transform: scale(1.2);
-  color: #4ade80;
-  text-shadow: 0 0 10px #22d3ee;
+.contact-socials a:hover {
+  color: #3b82f6;
+  transform: scale(1.2) translateY(-3px);
+  text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
-/* 📱 Responsive Styles */
+.contact-socials a:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* === 📱 Responsive Styling === */
 @media (max-width: 768px) {
-  .beast-contact-card {
-    padding: 2rem 1.5rem;
+  .contact-section {
+    padding: clamp(2rem, 4vw, 3rem) clamp(0.8rem, 2vw, 1rem);
   }
 
-  .beast-contact-title {
-    font-size: 1.8rem;
+  .contact-card {
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: 1.5rem;
   }
 
-  .beast-contact-input,
-  .beast-contact-textarea {
-    padding: 0.9rem;
-    font-size: 0.95rem;
+  .contact-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
   }
 
-  .beast-contact-button {
-    font-size: 1rem;
-    padding: 0.9rem;
+  .contact-input,
+  .contact-textarea {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    padding: clamp(0.7rem, 1.5vw, 0.9rem);
   }
 
-  .beast-contact-icons a {
-    font-size: 1.7rem;
+  .contact-button {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.5rem, 2.5vw, 2rem);
+  }
+
+  .contact-socials {
+    gap: 1.2rem;
+  }
+
+  .contact-socials a {
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
   }
 }
 
 @media (max-width: 480px) {
-  .beast-contact-title {
-    font-size: 1.5rem;
+  .contact-section {
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(0.5rem, 1.5vw, 0.8rem);
   }
 
-  .beast-contact-button {
-    font-size: 0.95rem;
+  .contact-card {
+    padding: clamp(1.2rem, 2.5vw, 1.5rem);
   }
 
-  .beast-contact-icons a {
-    font-size: 1.5rem;
+  .contact-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+  }
+
+  .contact-input,
+  .contact-textarea {
+    font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+    padding: clamp(0.6rem, 1.2vw, 0.8rem);
+  }
+
+  .contact-button {
+    font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+    padding: clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.5rem);
+  }
+
+  .contact-socials {
+    gap: 1rem;
+  }
+
+  .contact-socials a {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   }
 }
