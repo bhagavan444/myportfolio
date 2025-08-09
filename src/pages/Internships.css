@@ -17,7 +17,7 @@ body {
 /* === 📚 Internships Container === */
 .internships-container {
   position: relative;
-  min-height: 100vh;
+  min-height:20vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;

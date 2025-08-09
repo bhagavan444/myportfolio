@@ -13,7 +13,7 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const toggleMenu = () => {
-    setMenuOpen((prev) => !prev); // Toggle state
+    setMenuOpen((prev) => !prev);
   };
 
   const navLinks = [
@@ -30,40 +30,68 @@ const Navbar = () => {
     { label: "Contact", path: "contact" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+      },
+    },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+  };
+
   return (
     <nav className="animated-navbar">
       <div className="nav-container">
         <motion.div
           className="nav-logo"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.1 }}
         >
-          <Link to="/home">Bhagavan</Link>
+          <Link to="/home" className="logo-text">BhagavanG</Link>
         </motion.div>
 
         <div className="hamburger" onClick={toggleMenu}>
-          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          <motion.div
+            initial={false}
+            animate={{ rotate: menuOpen ? 360 : 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {menuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
+          </motion.div>
         </div>
 
         <AnimatePresence>
           {(menuOpen || window.innerWidth > 768) && (
             <motion.div
               className={`nav-links ${menuOpen ? "open" : ""}`}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }} // Added exit animation
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
             >
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.label}
                   className="nav-link"
-                  style={{ '--index': index }} // For staggered animation
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }} // Added exit animation
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  variants={itemVariants}
+                  custom={index}
                 >
                   <Link
                     to={`/${link.path}`}
@@ -76,33 +104,35 @@ const Navbar = () => {
 
               <motion.div
                 className="nav-icons"
-                style={{ '--icon-count': navLinks.length }} // For staggered animation
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }} // Added exit animation
-                transition={{ duration: 0.3, delay: navLinks.length * 0.1 + 0.1 }}
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
               >
                 <motion.a
                   href="https://github.com/bhagavan444"
                   target="_blank"
                   rel="noreferrer"
-                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                  whileHover={{ scale: 1.3, color: "#00f7ff", textShadow: "0 0 15px rgba(0, 247, 255, 0.9)" }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaGithub />
+                  <FaGithub size={24} />
                 </motion.a>
                 <motion.a
                   href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/"
                   target="_blank"
                   rel="noreferrer"
-                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                  whileHover={{ scale: 1.3, color: "#00f7ff", textShadow: "0 0 15px rgba(0, 247, 255, 0.9)" }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaLinkedin />
+                  <FaLinkedin size={24} />
                 </motion.a>
                 <motion.a
                   href="mailto:satyasaibhagavan444@gmail.com"
-                  whileHover={{ scale: 1.2, color: "#00f7ff", textShadow: "0 0 10px rgba(0, 247, 255, 0.7)" }}
+                  whileHover={{ scale: 1.3, color: "#00f7ff", textShadow: "0 0 15px rgba(0, 247, 255, 0.9)" }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaEnvelope />
+                  <FaEnvelope size={24} />
                 </motion.a>
               </motion.div>
             </motion.div>

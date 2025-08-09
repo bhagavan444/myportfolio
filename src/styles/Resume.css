@@ -1,296 +1,353 @@
-/* === 🔁 Base Reset === */
+/* Resume.css */
+
+/* Global Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scroll-behavior: smooth;
 }
 
-body {
-  background: #0a0e14;
-  font-family: 'Inter', 'Poppins', sans-serif;
-  color: #f1f5f9;
-  line-height: 1.7;
-  overflow-x: hidden;
-}
-
-/* === 🌌 Container with Gradient Glow === */
+/* Resume Container */
 .resume-container {
+  position: relative;
   min-height: 100vh;
-  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 1.5rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at top left, #111827, #1f2a44 60%, #0a0e14 100%);
-  position: relative;
+  background: linear-gradient(135deg, #0a001a, #1a0040, #2a0060);
+  padding: 5rem 3rem;
   overflow: hidden;
-  animation: fadeIn 1s ease-out;
-  z-index: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* === 🌠 Dynamic Background Particles === */
-.resume-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.18), transparent 50%),
-    radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.15), transparent 50%);
-  z-index: 0;
-  animation: pulseGlow 10s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.85; }
-}
-
-/* === 🔮 Glass Card === */
+/* Resume Card */
 .resume-card {
-  background: rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border-radius: 2rem;
-  padding: clamp(2rem, 4vw, 3rem);
-  max-width: 950px;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.55);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  background: rgba(20, 10, 40, 0.95);
+  border: 3px solid rgba(0, 191, 255, 0.6);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  backdrop-filter: blur(12px);
   transform-style: preserve-3d;
-  z-index: 2;
+  will-change: transform, box-shadow;
+  animation: cardPulse 5s ease-in-out infinite;
+  transition: box-shadow 0.6s ease, transform 0.6s ease;
 }
 
-/* === ✨ Shine Animation Overlay === */
-.resume-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 60%);
-  transform: rotate(30deg);
-  animation: shine 3.5s linear infinite;
-  pointer-events: none;
-  z-index: 0;
+/* Card Pulse Animation */
+@keyframes cardPulse {
+  0%, 100% {
+    box-shadow: 0 20px 50px rgba(0, 191, 255, 0.4), 0 0 30px rgba(255, 105, 180, 0.3);
+  }
+  50% {
+    box-shadow: 0 30px 70px rgba(0, 191, 255, 0.6), 0 0 50px rgba(255, 105, 180, 0.5);
+  }
 }
 
-@keyframes shine {
-  0% { transform: translateX(-100%) rotate(30deg); }
-  100% { transform: translateX(100%) rotate(30deg); }
-}
-
-/* === 🎯 Title with Aurora Effect === */
+/* Resume Title */
 .resume-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: 3rem;
+  color: #00bfff;
+  text-shadow: 0 0 25px rgba(0, 191, 255, 0.9), 0 0 40px rgba(255, 105, 180, 0.7);
   font-weight: 900;
-  text-align: center;
   margin-bottom: 2rem;
-  background: linear-gradient(270deg, #3b82f6, #22c55e, #a855f7, #f43f5e, #3b82f6);
-  background-size: 600% auto;
+  background: linear-gradient(45deg, #00bfff, #ff69b4);
+  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: auroraShift 5s linear infinite;
-  text-shadow: 0 0 18px rgba(59, 130, 246, 0.35);
-  position: relative;
-  z-index: 2;
+  animation: gradientFlow 6s linear infinite;
 }
 
-@keyframes auroraShift {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
+/* Gradient Flow Animation */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
-/* === 📘 Description === */
+/* Resume Description */
 .resume-description {
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
-  color: #d1d5db;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 3rem auto;
-  z-index: 2;
+  font-size: 1.3rem;
+  color: #d0d8e8;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+  line-height: 1.7;
+  background: linear-gradient(90deg, #d0d8e8, #a3bffa);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
-/* === 🎯 Button Group === */
+/* Resume Button Group */
 .resume-btn-group {
   display: flex;
+  gap: 2rem;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.8rem;
-  z-index: 2;
+  perspective: 1000px;
 }
 
-/* === ⚡ Buttons with Ripple Effect === */
+/* Resume Buttons */
 .resume-btn {
-  padding: clamp(0.8rem, 2vw, 1.1rem) clamp(2rem, 3vw, 2.8rem);
-  border-radius: 14px;
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
-  font-weight: 600;
-  cursor: pointer;
+  padding: 1.2rem 3rem;
   border: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 800;
   color: #fff;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
-  background-size: 300% auto;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
 }
 
-.resume-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.5s ease, height 0.5s ease;
-  z-index: -1;
+.preview-btn {
+  background: linear-gradient(90deg, #0ea5e9, #1d4ed8);
 }
 
-.resume-btn:hover::before {
-  width: 350px;
-  height: 350px;
+.download-btn {
+  background: linear-gradient(90deg, #10b981, #047857);
 }
 
-.resume-btn:hover {
-  background-position: right center;
-}
-
-.resume-btn:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 3px;
-}
-
-/* === 🪟 Modal Styles === */
+/* Modal Overlay */
 .resume-modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  z-index: 3000;
+  will-change: opacity, backdrop-filter;
 }
 
+/* Modal Content */
 .resume-modal-content {
+  background: rgba(20, 10, 40, 0.98);
+  border: 3px solid rgba(0, 191, 255, 0.7);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 95vw;
+  max-height: 95vh;
+  overflow: auto;
   position: relative;
-  width: clamp(300px, 90vw, 900px);
-  height: clamp(400px, 80vh, 600px);
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 191, 255, 0.6), 0 0 40px rgba(255, 105, 180, 0.5);
+  backdrop-filter: blur(8px);
+  transform-style: preserve-3d;
 }
 
+/* Close Button */
 .resume-close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 2rem;
+  color: #00bfff;
   cursor: pointer;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+/* Zoom Indicator */
+.resume-modal-content > div {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1.2rem;
-  transition: all 0.3s ease;
-  z-index: 3;
+  color: #d0d8e8;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
 }
 
-.resume-close-btn:hover {
-  background: #ef4444;
-  transform: scale(1.1);
-}
-
-.resume-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+/* Loading Spinner Animation */
+@keyframes loadingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .resume-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #f1f5f9;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  color: #00bfff;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
+  animation: loadingSpin 1.5s linear infinite;
 }
 
-/* === 📱 Responsive Styling === */
-@media (max-width: 768px) {
-  .resume-container {
-    padding: clamp(2rem, 4vw, 3rem) clamp(0.8rem, 2vw, 1rem);
-  }
+/* Iframe */
+.resume-iframe {
+  width: 100%;
+  height: 75vh;
+  border: none;
+  border-radius: 12px;
+  box-shadow: inset 0 0 25px rgba(0, 191, 255, 0.4);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
 
+/* Responsive Design */
+
+/* Large Screens (Desktops) */
+@media (max-width: 1200px) {
   .resume-card {
-    padding: clamp(1.5rem, 3vw, 2rem);
-    border-radius: 1.5rem;
+    padding: 2.5rem;
+    max-width: 800px;
   }
 
   .resume-title {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-size: 2.8rem;
   }
 
   .resume-description {
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-size: 1.2rem;
+    max-width: 600px;
   }
 
   .resume-btn {
-    width: 100%;
-    padding: clamp(0.7rem, 1.5vw, 0.9rem);
-    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .resume-container {
+    padding: 4rem 2rem;
+  }
+
+  .resume-card {
+    padding: 2rem;
+    max-width: 700px;
+  }
+
+  .resume-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .resume-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .resume-btn-group {
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .resume-modal-content {
-    width: 95vw;
-    height: 85vh;
+    padding: 2rem;
+    max-width: 90vw;
+  }
+
+  .resume-iframe {
+    height: 70vh;
   }
 }
 
+/* Mobile Devices */
 @media (max-width: 480px) {
   .resume-container {
-    padding: clamp(1.5rem, 3vw, 2rem) clamp(0.5rem, 1.5vw, 0.8rem);
+    padding: 3rem 1rem;
   }
 
   .resume-card {
-    padding: clamp(1.2rem, 2.5vw, 1.5rem);
+    padding: 1.5rem;
+    max-width: 100%;
+    border-radius: 15px;
   }
 
   .resume-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
 
   .resume-description {
-    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .resume-btn {
-    padding: clamp(0.6rem, 1.2vw, 0.8rem);
-    font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+  }
+
+  .resume-modal-content {
+    padding: 1.5rem;
+    max-width: 85vw;
+  }
+
+  .resume-iframe {
+    height: 60vh;
   }
 
   .resume-close-btn {
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* Accessibility Enhancements */
+.resume-card:focus-within {
+  outline: 3px solid #00bfff;
+  outline-offset: 5px;
+}
+
+.resume-btn:focus {
+  outline: 3px solid #00bfff;
+  outline-offset: 2px;
+}
+
+.resume-close-btn:focus {
+  outline: 2px solid #ff69b4;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .resume-card {
+    background: #000;
+    border: 3px solid #fff;
+  }
+
+  .resume-title,
+  .resume-description,
+  .resume-btn,
+  .resume-close-btn,
+  .resume-modal-content > div,
+  .resume-loading {
+    color: #fff;
+    text-shadow: none;
+  }
+
+  .resume-btn {
+    background: #000;
+    border: 2px solid #fff;
+  }
+
+  .resume-iframe {
+    box-shadow: none;
+  }
+}
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .resume-card,
+  .resume-btn,
+  .resume-title,
+  .resume-description,
+  .resume-modal-overlay,
+  .resume-modal-content,
+  .resume-loading,
+  .resume-iframe,
+  .resume-container > div {
+    animation: none;
+    transition: none;
   }
 }

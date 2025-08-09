@@ -18,7 +18,7 @@ body {
 /* === 📚 Workshops Container === */
 .workshops-container {
   position: relative;
-  min-height: 100vh;
+  min-height: 50vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;

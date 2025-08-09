@@ -20,6 +20,7 @@ import {
 } from "react-icons/si";
 import "../styles/Projects.css";
 
+// Tech icon mapping function
 const getTechIcons = (tech) => {
   const iconMap = {
     MongoDB: { icon: <SiMongodb />, label: "MongoDB" },
@@ -54,7 +55,7 @@ const getTechIcons = (tech) => {
     Socket: { icon: <SiSocketdotio />, label: "Socket.io" },
     "Socket.io": { icon: <SiSocketdotio />, label: "Socket.io" },
     Cloudinary: { icon: <SiCloudinary />, label: "Cloudinary" },
-    TFIDF: { icon26: null, label: "TF-IDF" },
+    TFIDF: { icon: null, label: "TF-IDF" },
     "TF-IDF": { icon: null, label: "TF-IDF" },
     NLTK: { icon: null, label: "NLTK" },
     Keras: { icon: null, label: "Keras" },
@@ -65,33 +66,31 @@ const getTechIcons = (tech) => {
     <motion.span
       key={i}
       className="tech-badge"
-      whileHover={{ scale: 1.1, rotate: 3 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 200 }}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "6px",
-      }}
+      whileHover={{ scale: 1.15, rotate: 5, boxShadow: "0 0 15px rgba(0, 255, 204, 0.7)" }}
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      style={{ display: "inline-flex", alignItems: "center", gap: "8px", margin: "4px" }}
     >
       {iconMap[t] ? (
         <>
           <motion.span
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.1 }}
+            style={{ color: "#00ffcc", textShadow: "0 0 10px rgba(0, 255, 204, 0.5)" }}
           >
             {iconMap[t].icon}
           </motion.span>
-          <span>{iconMap[t].label}</span>
+          <span style={{ color: "#f0f0f5" }}>{iconMap[t].label}</span>
         </>
       ) : (
-        <span>{t}</span>
+        <span style={{ color: "#d1d5db" }}>{t}</span>
       )}
     </motion.span>
   ));
 };
 
+// Project data
 const projectData = [
   {
     title: "🧠 Enhance Resume Builder",
@@ -151,6 +150,83 @@ const projectData = [
   },
 ];
 
+// Inline styles for a stylish design
+const styles = {
+  container: {
+    padding: "3rem 2rem",
+    background: "linear-gradient(135deg, #0d0026, #1e003b)",
+    minHeight: "100vh",
+    color: "#f0f0f5",
+    overflowX: "hidden",
+  },
+  title: {
+    fontSize: "1.5rem",
+    textAlign: "center",
+    color: "#00ffcc",
+    textShadow: "0 0 25px rgba(0, 255, 204, 0.8)",
+    marginBottom: "2rem",
+    animation: "pulseGlow 2s ease-in-out infinite alternate",
+  },
+  filterBar: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "1rem",
+    marginBottom: "2.5rem",
+    flexWrap: "wrap",
+  },
+  filterBtn: {
+    padding: "0.6rem 1.4rem",
+    background: "rgba(0, 255, 204, 0.2)",
+    border: "none",
+    borderRadius: "20px",
+    color: "#00ffcc",
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "all 0.3s ease",
+  },
+  card: {
+    background: "rgba(255, 255, 255, 0.1)",
+    backdropFilter: "blur(12px)",
+    border: "1px solid rgba(0, 255, 204, 0.3)",
+    borderRadius: "15px",
+    padding: "1.8rem",
+    margin: "1rem",
+    textAlign: "left",
+    transition: "all 0.4s ease",
+    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.6)",
+  },
+  cardTitle: {
+    fontSize: "1.8rem",
+    color: "#00ffcc",
+    marginBottom: "0.8rem",
+    textShadow: "0 0 12px rgba(0, 255, 204, 0.5)",
+  },
+  cardDescription: {
+    fontSize: "1rem",
+    color: "#d1d5db",
+    marginBottom: "1rem",
+    lineHeight: "1.5",
+  },
+  visitBtn: {
+    display: "inline-block",
+    padding: "0.7rem 1.5rem",
+    background: "linear-gradient(90deg, #00ffcc, #ff33cc)",
+    color: "#0d0026",
+    borderRadius: "10px",
+    textDecoration: "none",
+    fontWeight: "600",
+    transition: "all 0.3s ease",
+  },
+};
+
+// Animation keyframes (to be added to Projects.css)
+const animationStyles = `
+  @keyframes pulseGlow {
+    from { text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); }
+    to { text-shadow: 0 0 30px rgba(0, 255, 204, 0.9), 0 0 40px rgba(255, 51, 153, 0.5); }
+  }
+`;
+
 const Projects = () => {
   const [filter, setFilter] = useState("All");
   const [isMounted, setIsMounted] = useState(false);
@@ -172,22 +248,26 @@ const Projects = () => {
   return (
     <motion.div
       className="projects-container"
+      style={styles.container}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.9 }}
     >
+      <style>{animationStyles}</style>
       <motion.h2
         className="projects-title"
-        initial={{ opacity: 0, y: -50 }}
+        style={styles.title}
+        initial={{ opacity: 0, y: -60 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, type: "spring", stiffness: 120 }}
+        transition={{ duration: 0.8, type: "spring", stiffness: 120 }}
       >
         🚀 My Technical Projects
       </motion.h2>
 
       <motion.div
         className="filter-bar"
-        initial={{ opacity: 0, y: 20 }}
+        style={styles.filterBar}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
@@ -196,12 +276,13 @@ const Projects = () => {
             <motion.button
               key={tech}
               className={`filter-btn ${filter === tech ? "active" : ""}`}
+              style={styles.filterBtn}
               onClick={() => setFilter(tech)}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ delay: index * 0.05, duration: 0.3 }}
-              whileHover={{ scale: 1.15, boxShadow: "0 6px 25px rgba(96, 165, 250, 0.6)" }}
+              transition={{ delay: index * 0.06, duration: 0.4 }}
+              whileHover={{ scale: 1.2, background: "rgba(0, 255, 204, 0.4)" }}
               whileTap={{ scale: 0.95 }}
               aria-label={`Filter by ${tech}`}
             >
@@ -222,65 +303,68 @@ const Projects = () => {
             <motion.div
               key={project.title}
               className="project-card"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6, type: "spring" }}
+              style={styles.card}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: index * 0.12, duration: 0.7, type: "spring" }}
               viewport={{ once: true }}
               whileHover={{
-                scale: 1.06,
-                rotateX: 2,
-                rotateY: 2,
-                boxShadow: "0 30px 90px rgba(0, 0, 0, 0.75)",
+                scale: 1.08,
+                rotateX: 3,
+                rotateY: 3,
+                boxShadow: "0 20px 60px rgba(0, 255, 204, 0.5)",
               }}
             >
               <motion.h3
-                initial={{ opacity: 0, x: -20 }}
+                style={styles.cardTitle}
+                initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 + 0.2, duration: 0.5 }}
+                transition={{ delay: index * 0.12 + 0.2, duration: 0.5 }}
               >
                 {project.title}
               </motion.h3>
               <motion.p
-                initial={{ opacity: 0, x: 20 }}
+                style={styles.cardDescription}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
+                transition={{ delay: index * 0.12 + 0.3, duration: 0.5 }}
               >
                 {project.description}
               </motion.p>
               <motion.p
-                className="tech-used"
+                style={{ fontWeight: "bold", color: "#00ffcc", marginTop: "1rem" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: index * 0.1 + 0.4, duration: 0.5 }}
+                transition={{ delay: index * 0.12 + 0.4, duration: 0.5 }}
               >
-                <b>🔧 Tech:</b>
+                🔧 Tech Used:
               </motion.p>
               <motion.div
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  gap: "10px",
-                  marginTop: "6px",
+                  gap: "12px",
+                  marginTop: "0.8rem",
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: index * 0.1 + 0.5, duration: 0.5 }}
+                transition={{ delay: index * 0.12 + 0.5, duration: 0.5 }}
               >
                 {getTechIcons(project.tech)}
               </motion.div>
               <motion.a
                 href={project.link}
-                className="visit-btn"
+                style={styles.visitBtn}
                 target="_blank"
                 rel="noreferrer"
                 whileHover={{
-                  scale: 1.12,
-                  boxShadow: "0 15px 45px rgba(79, 70, 229, 0.8)",
+                  scale: 1.15,
+                  boxShadow: "0 15px 50px rgba(255, 51, 153, 0.6)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 + 0.6, duration: 0.5 }}
+                transition={{ delay: index * 0.12 + 0.6, duration: 0.5 }}
               >
                 View Project
               </motion.a>
