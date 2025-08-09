@@ -48,23 +48,17 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
-      whileHover={{
-        scale: 1.1,
-        boxShadow: "0 30px 80px rgba(0, 191, 255, 0.7), 0 0 90px rgba(255, 105, 180, 0.6)",
-        transition: { duration: 0.5 },
-      }}
-      whileTap={{ scale: 0.95, rotateZ: -5 }}
+      whileHover={{ scale: 1.05, boxShadow: "0 20px 60px rgba(0, 191, 255, 0.5)" }}
+      whileTap={{ scale: 0.95 }}
       viewport={{ once: true }}
       style={{
         background: "rgba(20, 10, 40, 0.95)",
         border: "2px solid rgba(0, 191, 255, 0.6)",
-        borderRadius: "20px",
-        padding: "2.5rem",
+        borderRadius: "1.25rem",
+        padding: "1.5rem",
         textAlign: "center",
-        backdropFilter: "blur(12px)",
+        backdropFilter: "blur(10px)",
         transformStyle: "preserve-3d",
-        willChange: "transform, box-shadow",
-        animation: "cardPulse 6s ease-in-out infinite",
       }}
     >
       <header>
@@ -73,15 +67,11 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
           variants={textVariants}
           transition={{ delay: 0.2 }}
           style={{
-            fontSize: "1.8rem",
+            fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
             color: "#00ffcc",
-            textShadow: "0 0 25px rgba(0, 255, 204, 0.7)",
-            marginBottom: "1.5rem",
-            background: "linear-gradient(45deg, #00ffcc, #ff69b4)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
+            marginBottom: "1rem",
             textTransform: "uppercase",
-            letterSpacing: "1.5px",
+            letterSpacing: "1px",
           }}
         >
           {title}
@@ -93,10 +83,9 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
           variants={textVariants}
           transition={{ delay: 0.3 }}
           style={{
-            fontSize: "1.1rem",
+            fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
             color: "#d0d8e8",
-            margin: "0.8rem 0",
-            textShadow: "0 0 15px rgba(0, 191, 255, 0.4)",
+            margin: "0.6rem 0",
           }}
         >
           <strong style={{ color: "#00ffcc" }}>Company:</strong> {company}
@@ -105,10 +94,9 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
           variants={textVariants}
           transition={{ delay: 0.4 }}
           style={{
-            fontSize: "1.1rem",
+            fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
             color: "#d0d8e8",
-            margin: "0.8rem 0",
-            textShadow: "0 0 15px rgba(0, 191, 255, 0.4)",
+            margin: "0.6rem 0",
           }}
         >
           <strong style={{ color: "#00ffcc" }}>Duration:</strong> {duration}
@@ -117,11 +105,10 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
           variants={textVariants}
           transition={{ delay: 0.5 }}
           style={{
-            fontSize: "1.1rem",
+            fontSize: "clamp(0.85rem, 1.6vw, 1rem)",
             color: "#d0d8e8",
-            margin: "0.8rem 0",
-            textShadow: "0 0 15px rgba(0, 191, 255, 0.4)",
-            lineHeight: "1.6",
+            margin: "0.6rem 0",
+            lineHeight: 1.5,
           }}
         >
           <strong style={{ color: "#00ffcc" }}>Description:</strong> {description}
@@ -135,35 +122,24 @@ const InternshipCard = ({ title, company, duration, description, certificateLink
         className="internship-btn"
         variants={textVariants}
         transition={{ delay: 0.7 }}
-        whileHover={{
-          scale: 1.15,
-          background: "linear-gradient(90deg, #ff33cc, #00ffcc, #00bfff)",
-          boxShadow: "0 20px 60px rgba(255, 51, 153, 0.8)",
-          color: "#0d0026",
-        }}
-        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.1, background: "#00bfff" }}
+        whileTap={{ scale: 0.9 }}
         style={{
           display: "inline-flex",
           alignItems: "center",
-          padding: "1rem 2.5rem",
-          background: "linear-gradient(90deg, #ff33cc, #1d4ed8)",
-          border: "none",
-          borderRadius: "30px",
-          fontSize: "1.2rem",
+          padding: "0.75rem 1.5rem",
+          background: "#1d4ed8",
+          borderRadius: "1.5rem",
+          fontSize: "clamp(0.9rem, 1.6vw, 1.2rem)",
           fontWeight: "700",
           color: "#fff",
           textDecoration: "none",
-          textShadow: "0 0 15px rgba(255, 51, 153, 0.7)",
-          transition: "all 0.5s ease",
-          transformStyle: "preserve-3d",
+          transition: "all 0.3s ease",
         }}
         aria-label={`View certificate for ${title}`}
       >
         View Certificate{" "}
-        <FaExternalLinkAlt
-          className="ml-2"
-          style={{ transition: "transform 0.3s", verticalAlign: "middle", color: "#0d0026" }}
-        />
+        <FaExternalLinkAlt className="ml-2" style={{ verticalAlign: "middle" }} />
       </motion.a>
     </motion.article>
   );
@@ -179,20 +155,12 @@ const Internships = () => {
 
   const sectionVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 1.2, type: "spring", stiffness: 60 },
-    },
+    visible: { opacity: 1, transition: { duration: 1.2, type: "spring", stiffness: 60 } },
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: -90, scale: 0.85 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 1, type: "spring", stiffness: 110 },
-    },
+    hidden: { opacity: 0, y: -60, scale: 0.85 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, type: "spring", stiffness: 110 } },
   };
 
   const gridVariants = {
@@ -208,34 +176,26 @@ const Internships = () => {
       animate="visible"
       style={{
         position: "relative",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "6rem 3rem",
+        background: "linear-gradient(135deg, #0a001a, #1a0040)",
+        padding: "clamp(2rem, 5vw, 6rem) clamp(1rem, 2vw, 3rem)",
         overflow: "hidden",
-        willChange: "background, transform",
       }}
     >
       {/* Background Particles */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(15)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: "absolute",
-            width: `${2 + i}px`,
-            height: `${2 + i}px`,
-            background: `radial-gradient(circle, rgba(0, 191, 255, 0.5), transparent)`,
+            width: `${1.5 + i * 0.2}rem`,
+            height: `${1.5 + i * 0.2}rem`,
+            background: "rgba(0, 191, 255, 0.3)",
             borderRadius: "50%",
-            boxShadow: "0 0 35px rgba(0, 191, 255, 0.9)",
-            top: `${5 + i * 4}%`,
-            left: `${5 + i * 4}%`,
-            willChange: "transform",
+            top: `${5 + i * 3}%`,
+            left: `${5 + i * 3}%`,
           }}
-          animate={{
-            y: [0, -60, 0],
-            opacity: [0.3, 0.9, 0.3],
-            rotate: [0, 360],
-          }}
-          transition={{ duration: 8 + i * 0.6, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, -40, 0], opacity: [0.2, 0.7, 0.2] }}
+          transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
@@ -243,16 +203,10 @@ const Internships = () => {
         className="internship-title"
         variants={titleVariants}
         style={{
-          fontSize: "2.5rem",
+          fontSize: "clamp(1.8rem, 4vw, 2.5rem)",
           color: "#00bfff",
-          textShadow: "0 0 60px rgba(0, 191, 255, 0.9), 0 0 80px rgba(255, 105, 180, 0.7)",
-          fontWeight: "900",
           textAlign: "center",
-          marginBottom: "4rem",
-          background: "linear-gradient(45deg, #00bfff, #ff69b4, #00ffcc)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          animation: "gradientFlow 10s linear infinite",
+          marginBottom: "clamp(1.5rem, 3vw, 4rem)",
         }}
       >
         My Internships
@@ -265,11 +219,11 @@ const Internships = () => {
         animate="visible"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-          gap: "3rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "clamp(1rem, 2vw, 3rem)",
           maxWidth: "1400px",
           margin: "0 auto",
-          perspective: "1200px",
+          perspective: "1000px",
         }}
       >
         {internshipData.map((intern, index) => (

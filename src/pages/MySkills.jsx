@@ -49,20 +49,12 @@ const MySkills = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 1.5, type: "spring", stiffness: 50 },
-    },
+    visible: { opacity: 1, transition: { duration: 1.5, type: "spring", stiffness: 50 } },
   };
 
   const titleVariants = {
     hidden: { opacity: 0, y: -80, rotateZ: -15 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateZ: 0,
-      transition: { delay: 0.3, duration: 1.2, type: "spring", stiffness: 80 },
-    },
+    visible: { opacity: 1, y: 0, rotateZ: 0, transition: { delay: 0.3, duration: 1.2, type: "spring", stiffness: 80 } },
   };
 
   const gridVariants = {
@@ -72,11 +64,7 @@ const MySkills = () => {
 
   const cardVariants = {
     hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, type: "spring", stiffness: 90 },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, type: "spring", stiffness: 90 } },
   };
 
   return (
@@ -87,34 +75,26 @@ const MySkills = () => {
       animate="visible"
       style={{
         position: "relative",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "6rem 3rem",
+        background: "linear-gradient(135deg, #0a001a, #1a0040)",
+        padding: "clamp(2rem, 5vw, 6rem) clamp(1rem, 2vw, 3rem)",
         overflow: "hidden",
-        willChange: "background, transform",
       }}
     >
       {/* Background Particles */}
-      {[...Array(18)].map((_, i) => (
+      {[...Array(12)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: "absolute",
-            width: `${2 + i}px`,
-            height: `${2 + i}px`,
-            background: `radial-gradient(circle, rgba(0, 191, 255, 0.5), transparent)`,
+            width: `${1.5 + i * 0.2}rem`,
+            height: `${1.5 + i * 0.2}rem`,
+            background: "rgba(0, 191, 255, 0.3)",
             borderRadius: "50%",
-            boxShadow: "0 0 30px rgba(0, 191, 255, 0.9)",
-            top: `${5 + i * 5}%`,
-            left: `${5 + i * 5}%`,
-            willChange: "transform",
+            top: `${5 + i * 3}%`,
+            left: `${5 + i * 3}%`,
           }}
-          animate={{
-            y: [0, -50, 0],
-            opacity: [0.3, 0.9, 0.3],
-            rotate: [0, 360],
-          }}
-          transition={{ duration: 7 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, -40, 0], opacity: [0.2, 0.7, 0.2] }}
+          transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
@@ -122,16 +102,10 @@ const MySkills = () => {
         className="skills-beast-title"
         variants={titleVariants}
         style={{
-          fontSize: "4.5rem",
+          fontSize: "clamp(2rem, 5vw, 4.5rem)",
           color: "#00bfff",
-          textShadow: "0 0 50px rgba(0, 191, 255, 0.9), 0 0 70px rgba(255, 105, 180, 0.7)",
-          fontWeight: "900",
           textAlign: "center",
-          marginBottom: "3.5rem",
-          background: "linear-gradient(45deg, #00bfff, #ff69b4, #00ffcc)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          animation: "gradientFlow 9s linear infinite",
+          marginBottom: "clamp(1.5rem, 3vw, 3.5rem)",
         }}
       >
         🚀 My Skill Set
@@ -141,15 +115,11 @@ const MySkills = () => {
         className="skills-intro"
         style={{
           textAlign: "center",
-          fontSize: "1.3rem",
+          fontSize: "clamp(1rem, 2vw, 1.3rem)",
           color: "#d0d8e8",
-          maxWidth: "800px",
-          margin: "0 auto 4rem",
-          lineHeight: "1.8",
-          textShadow: "0 0 20px rgba(0, 191, 255, 0.5)",
-          background: "linear-gradient(90deg, #d0d8e8, #a3bffa)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
+          maxWidth: "700px",
+          margin: "0 auto clamp(2rem, 4vw, 4rem)",
+          lineHeight: 1.6,
         }}
       >
         I bring a diverse arsenal of technical expertise paired with exceptional interpersonal skills to craft scalable solutions, empower teams, and thrive in dynamic tech ecosystems.
@@ -162,11 +132,11 @@ const MySkills = () => {
         animate="visible"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "2.5rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "clamp(1rem, 2vw, 2.5rem)",
           maxWidth: "1300px",
           margin: "0 auto",
-          perspective: "1200px",
+          perspective: "1000px",
         }}
       >
         {skillCategories.map((category, index) => (
@@ -174,33 +144,21 @@ const MySkills = () => {
             key={index}
             className="skills-beast-card"
             variants={cardVariants}
-            whileHover={{
-              scale: 1.12,
-              boxShadow: "0 25px 60px rgba(0, 191, 255, 0.8), 0 0 80px rgba(255, 105, 180, 0.7)",
-              transition: { duration: 0.6 },
-            }}
-            whileTap={{ scale: 0.95, rotateZ: -5 }}
+            whileHover={{ scale: 1.08, boxShadow: "0 15px 40px rgba(0, 191, 255, 0.6)" }}
+            whileTap={{ scale: 0.95 }}
             style={{
               background: "rgba(20, 10, 40, 0.95)",
               border: "2px solid rgba(0, 191, 255, 0.6)",
-              borderRadius: "20px",
-              padding: "2.2rem",
+              borderRadius: "1.25rem",
+              padding: "clamp(1rem, 2vw, 2.2rem)",
               textAlign: "center",
-              backdropFilter: "blur(12px)",
-              transformStyle: "preserve-3d",
-              willChange: "transform, box-shadow",
-              animation: "cardPulse 6s ease-in-out infinite",
             }}
           >
             <h2
               style={{
-                fontSize: "1.8rem",
+                fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
                 color: "#00ffcc",
-                marginBottom: "1.5rem",
-                textShadow: "0 0 20px rgba(0, 255, 204, 0.6)",
-                background: "linear-gradient(45deg, #00ffcc, #ff69b4)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
+                marginBottom: "1rem",
               }}
             >
               {category.title}
@@ -211,24 +169,23 @@ const MySkills = () => {
                 padding: 0,
                 display: "grid",
                 gridTemplateColumns: "1fr",
-                gap: "0.8rem",
+                gap: "0.6rem",
               }}
             >
               {category.skills.map((skill, idx) => (
                 <motion.li
                   key={idx}
-                  whileHover={{ scale: 1.1, color: "#00bfff", textShadow: "0 0 15px rgba(0, 191, 255, 0.7)" }}
+                  whileHover={{ scale: 1.05, color: "#00bfff" }}
                   transition={{ duration: 0.3 }}
                   style={{
-                    fontSize: "1.2rem",
+                    fontSize: "clamp(0.9rem, 1.8vw, 1.2rem)",
                     color: "#f0f0f5",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    transition: "all 0.3s ease",
                   }}
                 >
-                  <span style={{ color: "#00ffcc", marginRight: "0.7rem" }}>✅</span> {skill}
+                  <span style={{ color: "#00ffcc", marginRight: "0.5rem" }}>✅</span> {skill}
                 </motion.li>
               ))}
             </ul>

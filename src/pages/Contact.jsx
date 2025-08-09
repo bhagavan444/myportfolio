@@ -1,12 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
-import {
-  FaLinkedin,
-  FaGithub,
-  FaEnvelope,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaEnvelope, FaTwitter } from "react-icons/fa";
 
 const Contact = () => {
   const form = useRef();
@@ -14,7 +9,6 @@ const Contact = () => {
 
   const sendEmail = (e) => {
     e.preventDefault();
-
     emailjs
       .sendForm(
         "service_8pg8cek",
@@ -85,9 +79,8 @@ const Contact = () => {
         position: "relative",
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "6rem 3rem",
+        padding: "clamp(2rem, 5vw, 6rem) clamp(1rem, 3vw, 3rem)",
         overflow: "hidden",
-        willChange: "background, transform",
       }}
     >
       {/* Background Particles */}
@@ -96,21 +89,24 @@ const Contact = () => {
           key={i}
           style={{
             position: "absolute",
-            width: `${4 + i}px`,
-            height: `${4 + i}px`,
+            width: `${2 + i * 0.5}vw`,
+            height: `${2 + i * 0.5}vw`,
             background: `radial-gradient(circle, rgba(0, 191, 255, 0.6), transparent)`,
             borderRadius: "50%",
             boxShadow: "0 0 20px rgba(0, 191, 255, 0.9)",
-            top: `${5 + i * 7}%`,
-            left: `${5 + i * 7}%`,
-            willChange: "transform",
+            top: `${(i * 7) % 100}%`,
+            left: `${(i * 11) % 100}%`,
           }}
           animate={{
             y: [0, -30, 0],
             opacity: [0.5, 0.8, 0.5],
             rotate: [0, 360],
           }}
-          transition={{ duration: 5 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
+          transition={{
+            duration: 5 + i * 0.3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
       ))}
 
@@ -120,124 +116,111 @@ const Contact = () => {
         initial="hidden"
         animate="visible"
         whileHover={{
-          scale: 1.03,
-          boxShadow: "0 40px 120px rgba(0, 191, 255, 0.7), 0 0 60px rgba(255, 105, 180, 0.5)",
-          transition: { duration: 0.6 },
+          scale: 1.02,
+          boxShadow:
+            "0 20px 60px rgba(0, 191, 255, 0.5), 0 0 30px rgba(255, 105, 180, 0.4)",
         }}
         style={{
           background: "rgba(20, 10, 40, 0.95)",
-          border: "3px solid rgba(0, 191, 255, 0.6)",
-          borderRadius: "20px",
-          padding: "3.5rem",
+          border: "2px solid rgba(0, 191, 255, 0.6)",
+          borderRadius: "1.25rem",
+          padding: "clamp(1.5rem, 4vw, 3.5rem)",
           maxWidth: "900px",
+          width: "100%",
           margin: "0 auto",
           textAlign: "center",
           backdropFilter: "blur(12px)",
-          transformStyle: "preserve-3d",
-          willChange: "transform, box-shadow",
-          animation: "cardPulse 6s ease-in-out infinite",
         }}
       >
         <motion.h2
-          className="contact-title"
           style={{
-            fontSize: "3rem",
+            fontSize: "clamp(1.8rem, 4vw, 3rem)",
             color: "#00bfff",
-            textShadow: "0 0 30px rgba(0, 191, 255, 0.9), 0 0 50px rgba(255, 105, 180, 0.7)",
+            textShadow:
+              "0 0 20px rgba(0, 191, 255, 0.8), 0 0 30px rgba(255, 105, 180, 0.6)",
             fontWeight: "900",
-            marginBottom: "2.5rem",
-            background: "linear-gradient(45deg, #00bfff, #ff69b4, #00ffcc)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            animation: "gradientFlow 7s linear infinite",
+            marginBottom: "1.5rem",
           }}
         >
           🌐 Let's Connect Globally
         </motion.h2>
 
-        <form ref={form} onSubmit={sendEmail} className="contact-form" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "600px", margin: "0 auto" }}>
-          <motion.input
-            type="text"
-            name="user_name"
-            placeholder="Full Name"
-            className="contact-input"
-            required
-            whileFocus={{ scale: 1.1, boxShadow: "0 0 25px rgba(0, 191, 255, 0.8)" }}
-            style={{
-              padding: "1.2rem",
-              fontSize: "1.1rem",
-              border: "2px solid rgba(0, 191, 255, 0.5)",
-              borderRadius: "25px",
-              background: "rgba(255, 255, 255, 0.05)",
-              color: "#d0d8e8",
-              outline: "none",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 10px rgba(0, 191, 255, 0.4)",
-            }}
-          />
-
-          <motion.input
-            type="email"
-            name="user_email"
-            placeholder="Email Address"
-            className="contact-input"
-            required
-            whileFocus={{ scale: 1.1, boxShadow: "0 0 25px rgba(0, 191, 255, 0.8)" }}
-            style={{
-              padding: "1.2rem",
-              fontSize: "1.1rem",
-              border: "2px solid rgba(0, 191, 255, 0.5)",
-              borderRadius: "25px",
-              background: "rgba(255, 255, 255, 0.05)",
-              color: "#d0d8e8",
-              outline: "none",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 10px rgba(0, 191, 255, 0.4)",
-            }}
-          />
+        <form
+          ref={form}
+          onSubmit={sendEmail}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            width: "100%",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
+          {[
+            { type: "text", name: "user_name", placeholder: "Full Name" },
+            { type: "email", name: "user_email", placeholder: "Email Address" },
+          ].map((input, idx) => (
+            <motion.input
+              key={idx}
+              {...input}
+              required
+              whileFocus={{
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(0, 191, 255, 0.8)",
+              }}
+              style={{
+                padding: "1rem",
+                fontSize: "1rem",
+                border: "2px solid rgba(0, 191, 255, 0.5)",
+                borderRadius: "25px",
+                background: "rgba(255, 255, 255, 0.05)",
+                color: "#fff",
+                outline: "none",
+                width: "100%",
+              }}
+            />
+          ))}
 
           <motion.textarea
             name="message"
             placeholder="Your Message"
-            className="contact-textarea"
-            rows="6"
+            rows="5"
             required
-            whileFocus={{ scale: 1.05, boxShadow: "0 0 25px rgba(0, 191, 255, 0.8)" }}
+            whileFocus={{
+              scale: 1.02,
+              boxShadow: "0 0 20px rgba(0, 191, 255, 0.8)",
+            }}
             style={{
-              padding: "1.2rem",
-              fontSize: "1.1rem",
+              padding: "1rem",
+              fontSize: "1rem",
               border: "2px solid rgba(0, 191, 255, 0.5)",
               borderRadius: "20px",
               background: "rgba(255, 255, 255, 0.05)",
-              color: "#d0d8e8",
+              color: "#fff",
               outline: "none",
               resize: "vertical",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 10px rgba(0, 191, 255, 0.4)",
+              width: "100%",
             }}
           />
 
           <motion.button
             type="submit"
-            className="contact-button"
             whileHover={{
-              scale: 1.12,
-              boxShadow: "0 0 40px rgba(14, 165, 233, 0.9)",
-              background: "linear-gradient(90deg, #0ea5e9, #3b82f6)",
+              scale: 1.08,
+              boxShadow: "0 0 30px rgba(14, 165, 233, 0.8)",
             }}
-            whileTap={{ scale: 0.93, rotateZ: -5 }}
+            whileTap={{ scale: 0.95 }}
             style={{
-              padding: "1.3rem 3rem",
+              padding: "1rem",
               background: "linear-gradient(90deg, #0ea5e9, #1d4ed8)",
               border: "none",
               borderRadius: "30px",
-              fontSize: "1.2rem",
-              fontWeight: "800",
+              fontSize: "1rem",
+              fontWeight: "700",
               color: "#fff",
               cursor: "pointer",
-              textShadow: "0 0 15px rgba(14, 165, 233, 0.9)",
-              transition: "all 0.5s ease",
-              transformStyle: "preserve-3d",
+              width: "100%",
             }}
           >
             🚀 Send Message
@@ -245,93 +228,61 @@ const Contact = () => {
         </form>
 
         <motion.div
-          className="contact-socials"
           variants={socialVariants}
           initial="hidden"
           animate="visible"
-          style={{ display: "flex", gap: "2rem", justifyContent: "center", marginTop: "2.5rem" }}
+          style={{
+            display: "flex",
+            gap: "1.5rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginTop: "2rem",
+          }}
         >
-          <motion.a
-            href="mailto:g.sivasatyasaibhagavan@gmail.com"
-            aria-label="Email"
-            whileHover={{ scale: 1.2, rotate: 360, color: "#00bfff" }}
-            transition={{ duration: 0.5 }}
-            style={{
-              fontSize: "2rem",
-              color: "#d0d8e8",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 15px rgba(0, 191, 255, 0.6)",
-            }}
-          >
-            <FaEnvelope />
-          </motion.a>
-          <motion.a
-            href="https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="LinkedIn"
-            whileHover={{ scale: 1.2, rotate: 360, color: "#00bfff" }}
-            transition={{ duration: 0.5 }}
-            style={{
-              fontSize: "2rem",
-              color: "#d0d8e8",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 15px rgba(0, 191, 255, 0.6)",
-            }}
-          >
-            <FaLinkedin />
-          </motion.a>
-          <motion.a
-            href="https://github.com/bhagavan444"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            whileHover={{ scale: 1.2, rotate: 360, color: "#00bfff" }}
-            transition={{ duration: 0.5 }}
-            style={{
-              fontSize: "2rem",
-              color: "#d0d8e8",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 15px rgba(0, 191, 255, 0.6)",
-            }}
-          >
-            <FaGithub />
-          </motion.a>
-          <motion.a
-            href="https://twitter.com/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Twitter"
-            whileHover={{ scale: 1.2, rotate: 360, color: "#00bfff" }}
-            transition={{ duration: 0.5 }}
-            style={{
-              fontSize: "2rem",
-              color: "#d0d8e8",
-              transition: "all 0.4s ease",
-              textShadow: "0 0 15px rgba(0, 191, 255, 0.6)",
-            }}
-          >
-            <FaTwitter />
-          </motion.a>
+          {[
+            {
+              icon: <FaEnvelope />,
+              link: "mailto:g.sivasatyasaibhagavan@gmail.com",
+            },
+            {
+              icon: <FaLinkedin />,
+              link: "https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/",
+            },
+            { icon: <FaGithub />, link: "https://github.com/bhagavan444" },
+            { icon: <FaTwitter />, link: "https://twitter.com/" },
+          ].map((social, idx) => (
+            <motion.a
+              key={idx}
+              href={social.link}
+              target="_blank"
+              rel="noreferrer"
+              whileHover={{ scale: 1.2, rotate: 360, color: "#00bfff" }}
+              transition={{ duration: 0.5 }}
+              style={{
+                fontSize: "2rem",
+                color: "#d0d8e8",
+                textShadow: "0 0 10px rgba(0, 191, 255, 0.6)",
+              }}
+            >
+              {social.icon}
+            </motion.a>
+          ))}
         </motion.div>
 
         <AnimatePresence>
           {isSent && (
             <motion.div
-              className="contact-feedback"
               variants={feedbackVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
               style={{
-                marginTop: "1.5rem",
-                padding: "1rem 2rem",
+                marginTop: "1rem",
+                padding: "0.8rem 1.2rem",
                 background: "rgba(16, 185, 129, 0.9)",
-                borderRadius: "20px",
+                borderRadius: "15px",
                 color: "#fff",
-                fontSize: "1.2rem",
-                textShadow: "0 0 10px rgba(16, 185, 129, 0.7)",
-                willChange: "transform, opacity",
+                fontSize: "1rem",
               }}
             >
               ✅ Message sent successfully!

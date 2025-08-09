@@ -109,7 +109,7 @@ const Workshops = () => {
         }}
       >
         <h2 className="section-title" style={{
-          fontSize: "1.5rem",
+          fontSize: "1.7rem",
           color: "#00bfff",
           textShadow: "0 0 60px rgba(0, 191, 255, 0.9), 0 0 80px rgba(255, 105, 180, 0.7)",
           marginBottom: "1.5rem",

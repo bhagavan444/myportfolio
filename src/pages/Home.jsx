@@ -229,7 +229,7 @@ const Home = () => {
             style={styles.title}
             variants={fadeInUp}
           >
-            👋 Hi I'm <span className="highlight" style={{ color: "#ff69b4" }}>Siva Satya Sai Bhagavan</span>
+            👋 Hi I'm <span className="highlight" style={{ color: "#ff69b4" }}>Bhagavan</span>
           </motion.h1>
 
           <motion.p

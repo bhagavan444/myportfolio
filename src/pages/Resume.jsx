@@ -10,7 +10,7 @@ const Resume = () => {
   useEffect(() => {
     if (isModalOpen) {
       setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 1500); // Extended load simulation
+      const timer = setTimeout(() => setIsLoading(false), 1500);
       return () => clearTimeout(timer);
     }
   }, [isModalOpen]);
@@ -23,13 +23,7 @@ const Resume = () => {
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8, rotateY: -20, y: 80 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      y: 0,
-      transition: { duration: 1.2, type: "spring", stiffness: 70, damping: 12 },
-    },
+    visible: { opacity: 1, scale: 1, rotateY: 0, y: 0, transition: { duration: 1.2, type: "spring", stiffness: 70, damping: 12 } },
   };
 
   const titleVariants = {
@@ -70,34 +64,26 @@ const Resume = () => {
       className="resume-container"
       style={{
         position: "relative",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "5rem 3rem",
+        background: "linear-gradient(135deg, #0a001a, #1a0040)",
+        padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)",
         overflow: "hidden",
-        willChange: "background, transform",
       }}
     >
       {/* Background Particles */}
-      {[...Array(10)].map((_, i) => (
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: "absolute",
-            width: `${5 + i * 2}px`,
-            height: `${5 + i * 2}px`,
-            background: `radial-gradient(circle, rgba(0, 191, 255, 0.7), transparent)`,
+            width: `${3 + i * 1.5}rem`,
+            height: `${3 + i * 1.5}rem`,
+            background: "rgba(0, 191, 255, 0.4)",
             borderRadius: "50%",
-            boxShadow: "0 0 15px rgba(0, 191, 255, 0.8)",
-            top: `${10 + i * 8}%`,
-            left: `${10 + i * 8}%`,
-            willChange: "transform",
+            top: `${10 + i * 6}%`,
+            left: `${10 + i * 6}%`,
           }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.6, 0.9, 0.6],
-            rotate: [0, 360],
-          }}
-          transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, -20, 0], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
@@ -106,43 +92,28 @@ const Resume = () => {
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        whileHover={{
-          scale: 1.06,
-          rotateX: 5,
-          rotateY: 5,
-          boxShadow: "0 40px 100px rgba(0, 191, 255, 0.7), 0 0 50px rgba(255, 105, 180, 0.5)",
-          transition: { duration: 0.6 },
-        }}
-        whileTap={{ scale: 0.98, rotateZ: 2 }}
+        whileHover={{ scale: 1.04, boxShadow: "0 20px 60px rgba(0, 191, 255, 0.5)" }}
+        whileTap={{ scale: 0.98 }}
         role="article"
         aria-label="Resume Card"
         style={{
           background: "rgba(20, 10, 40, 0.95)",
-          border: "3px solid rgba(0, 191, 255, 0.6)",
-          borderRadius: "20px",
-          padding: "3rem",
-          maxWidth: "900px",
+          border: "2px solid rgba(0, 191, 255, 0.6)",
+          borderRadius: "1.25rem",
+          padding: "clamp(1.5rem, 3vw, 3rem)",
+          maxWidth: "800px",
           margin: "0 auto",
           textAlign: "center",
-          backdropFilter: "blur(12px)",
-          transformStyle: "preserve-3d",
-          willChange: "transform, box-shadow",
-          animation: "cardPulse 5s ease-in-out infinite",
+          backdropFilter: "blur(10px)",
         }}
       >
         <motion.h2
           className="resume-title"
           variants={titleVariants}
           style={{
-            fontSize: "2rem",
+            fontSize: "clamp(1.5rem, 3vw, 2rem)",
             color: "#00bfff",
-            textShadow: "0 0 25px rgba(0, 191, 255, 0.9), 0 0 40px rgba(255, 105, 180, 0.7)",
-            fontWeight: "900",
-            marginBottom: "2rem",
-            background: "linear-gradient(45deg, #00bfff, #ff69b4)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            animation: "gradientFlow 6s linear infinite",
+            marginBottom: "clamp(1rem, 2vw, 2rem)",
           }}
         >
           🚀 Bhagavan's Professional Resume
@@ -152,15 +123,11 @@ const Resume = () => {
           className="resume-description"
           variants={descVariants}
           style={{
-            fontSize: "1.3rem",
+            fontSize: "clamp(1rem, 2vw, 1.3rem)",
             color: "#d0d8e8",
-            maxWidth: "700px",
-            margin: "0 auto 2.5rem",
-            textShadow: "0 0 15px rgba(0, 191, 255, 0.5)",
-            lineHeight: "1.7",
-            background: "linear-gradient(90deg, #d0d8e8, #a3bffa)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
+            maxWidth: "600px",
+            margin: "0 auto clamp(1.5rem, 2vw, 2.5rem)",
+            lineHeight: 1.6,
           }}
         >
           Dive into my full-stack odyssey, highlighting groundbreaking projects, 
@@ -170,31 +137,24 @@ const Resume = () => {
 
         <div
           className="resume-btn-group"
-          style={{ display: "flex", gap: "2rem", justifyContent: "center", perspective: "1000px" }}
+          style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap" }}
         >
           <motion.button
             className="resume-btn preview-btn"
-            whileHover={{
-              scale: 1.2,
-              rotateX: 10,
-              boxShadow: "0 0 40px rgba(14, 165, 233, 1)",
-              background: "linear-gradient(90deg, #0ea5e9, #3b82f6, #1d4ed8)",
-            }}
-            whileTap={{ scale: 0.9, rotateZ: -5 }}
+            whileHover={{ scale: 1.1, background: "#1d4ed8" }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setIsModalOpen(true)}
             aria-label="Preview Resume"
             style={{
-              padding: "1.2rem 3rem",
-              background: "linear-gradient(90deg, #0ea5e9, #1d4ed8)",
+              padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2vw, 3rem)",
+              background: "#0ea5e9",
               border: "none",
-              borderRadius: "30px",
-              fontSize: "1.2rem",
-              fontWeight: "800",
+              borderRadius: "1.5rem",
+              fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
+              fontWeight: "700",
               color: "#fff",
               cursor: "pointer",
-              textShadow: "0 0 15px rgba(14, 165, 233, 0.9)",
-              transition: "all 0.5s ease",
-              transformStyle: "preserve-3d",
+              transition: "all 0.3s ease",
             }}
           >
             👁️‍🗨️ Preview Resume
@@ -204,28 +164,21 @@ const Resume = () => {
             href={resumePDF}
             download
             className="resume-btn download-btn"
-            whileHover={{
-              scale: 1.2,
-              rotateX: 10,
-              boxShadow: "0 0 40px rgba(16, 185, 129, 1)",
-              background: "linear-gradient(90deg, #10b981, #34d399, #047857)",
-            }}
-            whileTap={{ scale: 0.9, rotateZ: -5 }}
+            whileHover={{ scale: 1.1, background: "#047857" }}
+            whileTap={{ scale: 0.95 }}
             aria-label="Download Resume PDF"
             style={{
-              padding: "1.2rem 3rem",
-              background: "linear-gradient(90deg, #10b981, #047857)",
+              padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2vw, 3rem)",
+              background: "#10b981",
               border: "none",
-              borderRadius: "30px",
-              fontSize: "1.2rem",
-              fontWeight: "800",
+              borderRadius: "1.5rem",
+              fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
+              fontWeight: "700",
               color: "#fff",
               textDecoration: "none",
               textAlign: "center",
               cursor: "pointer",
-              textShadow: "0 0 15px rgba(16, 185, 129, 0.9)",
-              transition: "all 0.5s ease",
-              transformStyle: "preserve-3d",
+              transition: "all 0.3s ease",
             }}
           >
             📥 Download PDF
@@ -258,7 +211,6 @@ const Resume = () => {
               justifyContent: "center",
               alignItems: "center",
               zIndex: 3000,
-              willChange: "opacity, backdrop-filter",
             }}
           >
             <motion.div
@@ -270,35 +222,31 @@ const Resume = () => {
               onClick={(e) => e.stopPropagation()}
               style={{
                 background: "rgba(20, 10, 40, 0.98)",
-                border: "3px solid rgba(0, 191, 255, 0.7)",
-                borderRadius: "20px",
-                padding: "2.5rem",
-                maxWidth: "95vw",
-                maxHeight: "95vh",
+                border: "2px solid rgba(0, 191, 255, 0.7)",
+                borderRadius: "1.25rem",
+                padding: "clamp(1rem, 2vw, 2.5rem)",
+                maxWidth: "90vw",
+                maxHeight: "90vh",
                 overflow: "auto",
                 position: "relative",
-                boxShadow: "0 30px 80px rgba(0, 191, 255, 0.6), 0 0 40px rgba(255, 105, 180, 0.5)",
-                backdropFilter: "blur(8px)",
-                transformStyle: "preserve-3d",
               }}
             >
               <motion.button
                 className="resume-close-btn"
                 onClick={() => setIsModalOpen(false)}
                 aria-label="Close Resume Modal"
-                whileHover={{ scale: 1.3, rotate: 360, color: "#ff69b4", textShadow: "0 0 20px rgba(255, 105, 180, 0.9)" }}
-                whileTap={{ scale: 0.8 }}
+                whileHover={{ scale: 1.2, color: "#ff69b4" }}
+                whileTap={{ scale: 0.9 }}
                 style={{
                   position: "absolute",
-                  top: "1.5rem",
-                  right: "1.5rem",
+                  top: "1rem",
+                  right: "1rem",
                   background: "none",
                   border: "none",
-                  fontSize: "2rem",
+                  fontSize: "1.5rem",
                   color: "#00bfff",
                   cursor: "pointer",
-                  transition: "all 0.5s ease",
-                  transformStyle: "preserve-3d",
+                  transition: "all 0.3s ease",
                 }}
               >
                 ✖
@@ -309,9 +257,8 @@ const Resume = () => {
                   top: "1rem",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  fontSize: "1.2rem",
+                  fontSize: "clamp(0.9rem, 1.5vw, 1.2rem)",
                   color: "#d0d8e8",
-                  textShadow: "0 0 10px rgba(0, 191, 255, 0.5)",
                 }}
               >
                 Zoom: {Math.round(zoomLevel * 100)}% (Use +/- keys)
@@ -324,11 +271,9 @@ const Resume = () => {
                   animate="visible"
                   exit="exit"
                   style={{
-                    fontSize: "1.8rem",
+                    fontSize: "clamp(1.2rem, 2vw, 1.8rem)",
                     color: "#00bfff",
                     textAlign: "center",
-                    textShadow: "0 0 20px rgba(0, 191, 255, 0.7)",
-                    animation: "loadingSpin 1.5s linear infinite",
                   }}
                 >
                   Loading...
@@ -344,10 +289,9 @@ const Resume = () => {
                   animate={{ ...iframeVariants.visible, scale: zoomLevel }}
                   style={{
                     width: "100%",
-                    height: "75vh",
+                    height: "clamp(50vh, 70vw, 75vh)",
                     border: "none",
-                    borderRadius: "12px",
-                    boxShadow: "inset 0 0 25px rgba(0, 191, 255, 0.4)",
+                    borderRadius: "0.75rem",
                     transformOrigin: "center",
                     willChange: "transform, opacity",
                   }}

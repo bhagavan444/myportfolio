@@ -220,29 +220,71 @@ body {
   transform: translateX(5px);
 }
 
-/* === 📱 Responsive Design === */
+/* ----------- Mobile Responsiveness ----------- */
+
+/* Large tablets and below */
 @media (max-width: 1024px) {
-  .internships-container { padding: 4rem 2.5rem; }
-  .internship-title { font-size: 3.5rem; margin-bottom: 4rem; }
-  .internship-grid { gap: 3rem; }
-  .internship-card { padding: 2rem; }
-  .internship-role { font-size: 1.7rem; }
-  .internship-btn { font-size: 1rem; padding: 0.7rem 1.5rem; }
+  .internship-section {
+    padding: clamp(1.5rem, 3vw, 2rem);
+    gap: clamp(1.5rem, 2.5vw, 1.8rem);
+  }
+  .internship-card h2 {
+    font-size: clamp(1.4rem, 3vw, 1.6rem);
+  }
+  .internship-card p {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  }
 }
 
+/* Tablets and below */
 @media (max-width: 768px) {
-  .internships-container { padding: 3rem 2rem; }
-  .internship-title { font-size: 2.8rem; margin-bottom: 3.5rem; }
-  .internship-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .internship-card { padding: 1.8rem; }
-  .internship-role { font-size: 1.5rem; }
-  .internship-btn { font-size: 0.95rem; padding: 0.6rem 1.3rem; }
+  .internship-section {
+    padding: clamp(1.2rem, 2.5vw, 1.5rem);
+    gap: clamp(1.2rem, 2vw, 1.4rem);
+  }
+  .internship-card {
+    padding: clamp(1rem, 2vw, 1.2rem);
+  }
+  .internship-card h2 {
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  }
+  .internship-card p {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+  }
 }
 
+/* Mobile devices */
 @media (max-width: 480px) {
-  .internships-container { padding: 2.5rem 1.5rem; }
-  .internship-title { font-size: 2.2rem; margin-bottom: 3rem; }
-  .internship-card { padding: 1.5rem; }
-  .internship-role { font-size: 1.3rem; }
-  .internship-btn { font-size: 0.9rem; padding: 0.5rem 1.1rem; }
+  .internship-section {
+    padding: clamp(0.8rem, 2vw, 1rem);
+    gap: clamp(0.8rem, 1.5vw, 1rem);
+    min-width: 280px;
+  }
+  .internship-card {
+    padding: clamp(0.8rem, 1.8vw, 1rem);
+  }
+  .internship-card h2 {
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+  }
+  .internship-card p {
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 360px) {
+  .internship-section {
+    padding: clamp(0.6rem, 1.8vw, 0.8rem);
+    gap: clamp(0.6rem, 1.2vw, 0.8rem);
+    min-width: 240px;
+  }
+  .internship-card {
+    padding: clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+  .internship-card h2 {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+  }
+  .internship-card p {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  }
 }

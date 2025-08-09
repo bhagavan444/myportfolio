@@ -26,7 +26,8 @@ const certifications = [
 
 const Certifications = () => {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowX = "hidden";
+    document.body.style.overflowY = "auto"; // allow vertical scrolling
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -34,36 +35,16 @@ const Certifications = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 1.5, type: "spring", stiffness: 50 },
-    },
+    visible: { opacity: 1, transition: { duration: 1.5, type: "spring", stiffness: 50 } },
   };
 
   const titleVariants = {
     hidden: { opacity: 0, y: -60, rotateZ: -10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateZ: 0,
-      transition: { delay: 0.5, duration: 1, type: "spring", stiffness: 80 },
-    },
+    visible: { opacity: 1, y: 0, rotateZ: 0, transition: { delay: 0.5, duration: 1, type: "spring", stiffness: 80 } },
   };
 
-  const gridVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50, rotateY: -15 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateY: 0,
-      transition: { duration: 0.7, type: "spring", stiffness: 90 },
-    },
-  };
+  const gridVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } };
+  const cardVariants = { hidden: { opacity: 0, y: 50, rotateY: -15 }, visible: { opacity: 1, y: 0, rotateY: 0, transition: { duration: 0.7, type: "spring", stiffness: 90 } } };
 
   return (
     <motion.div
@@ -75,8 +56,7 @@ const Certifications = () => {
         position: "relative",
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "6rem 3rem",
-        overflow: "hidden",
+        padding: "6rem 1.5rem",
         willChange: "background, transform",
       }}
     >
@@ -86,20 +66,15 @@ const Certifications = () => {
           key={i}
           style={{
             position: "absolute",
-            width: `${3 + i}px`,
-            height: `${3 + i}px`,
+            width: `${2 + i}px`,
+            height: `${2 + i}px`,
             background: `radial-gradient(circle, rgba(0, 191, 255, 0.5), transparent)`,
             borderRadius: "50%",
             boxShadow: "0 0 25px rgba(0, 191, 255, 0.9)",
-            top: `${5 + i * 6}%`,
-            left: `${5 + i * 6}%`,
-            willChange: "transform",
+            top: `${(i * 7) % 100}%`,
+            left: `${(i * 13) % 100}%`,
           }}
-          animate={{
-            y: [0, -40, 0],
-            opacity: [0.4, 0.9, 0.4],
-            rotate: [0, 360],
-          }}
+          animate={{ y: [0, -40, 0], opacity: [0.4, 0.9, 0.4], rotate: [0, 360] }}
           transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
@@ -108,7 +83,7 @@ const Certifications = () => {
         className="cert-title"
         variants={titleVariants}
         style={{
-          fontSize: "2.5rem",
+          fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
           color: "#00bfff",
           textShadow: "0 0 40px rgba(0, 191, 255, 0.9), 0 0 60px rgba(255, 105, 180, 0.7)",
           fontWeight: "900",
@@ -117,7 +92,6 @@ const Certifications = () => {
           background: "linear-gradient(45deg, #00bfff, #ff69b4, #00ffcc)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
-          animation: "gradientFlow 8s linear infinite",
         }}
       >
         My Certifications
@@ -130,8 +104,8 @@ const Certifications = () => {
         animate="visible"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "2rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "1.5rem",
           maxWidth: "1200px",
           margin: "0 auto",
           perspective: "1000px",
@@ -143,29 +117,26 @@ const Certifications = () => {
             className="cert-card"
             variants={cardVariants}
             whileHover={{
-              scale: 1.1,
-              rotateX: 10,
-              rotateY: 10,
-              boxShadow: "0 20px 50px rgba(0, 191, 255, 0.7), 0 0 70px rgba(255, 105, 180, 0.6)",
-              transition: { duration: 0.5 },
+              scale: 1.05,
+              rotateX: 5,
+              rotateY: 5,
+              boxShadow: "0 15px 40px rgba(0, 191, 255, 0.7), 0 0 50px rgba(255, 105, 180, 0.6)",
             }}
             whileTap={{ scale: 0.96, rotateZ: -5 }}
             style={{
               background: "rgba(20, 10, 40, 0.95)",
-              border: "2px solid rgba(0, 191, 255, 0.6)",
-              borderRadius: "20px",
-              padding: "2rem",
+              border: "1.5px solid rgba(0, 191, 255, 0.6)",
+              borderRadius: "15px",
+              padding: "1.5rem",
               textAlign: "center",
               backdropFilter: "blur(10px)",
-              transformStyle: "preserve-3d",
-              willChange: "transform, box-shadow",
               animation: "cardPulse 5s ease-in-out infinite",
             }}
           >
             <p
               className="cert-name"
               style={{
-                fontSize: "1.3rem",
+                fontSize: "1rem",
                 color: "#d0d8e8",
                 marginBottom: "1rem",
                 textShadow: "0 0 15px rgba(0, 191, 255, 0.5)",
@@ -179,30 +150,25 @@ const Certifications = () => {
             </p>
             <motion.a
               href={cert.file}
-              download
               target="_blank"
               rel="noopener noreferrer"
               className="cert-download-btn"
               whileHover={{
-                scale: 1.15,
+                scale: 1.05,
                 background: "linear-gradient(90deg, #0ea5e9, #3b82f6)",
                 color: "#fff",
-                boxShadow: "0 0 30px rgba(14, 165, 233, 0.9)",
               }}
               whileTap={{ scale: 0.9 }}
               style={{
                 display: "inline-block",
-                padding: "0.8rem 2rem",
+                padding: "0.6rem 1.5rem",
                 background: "linear-gradient(90deg, #0ea5e9, #1d4ed8)",
-                border: "none",
-                borderRadius: "25px",
-                fontSize: "1.1rem",
+                borderRadius: "20px",
+                fontSize: "0.95rem",
                 fontWeight: "700",
                 color: "#d0d8e8",
                 textDecoration: "none",
                 textShadow: "0 0 10px rgba(14, 165, 233, 0.7)",
-                transition: "all 0.4s ease",
-                transformStyle: "preserve-3d",
               }}
               aria-label={`Download certificate: ${cert.name}`}
             >

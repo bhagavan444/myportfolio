@@ -262,7 +262,7 @@ body {
 
 @media (max-width: 480px) {
   .workshops-container { padding: 2.5rem 1.5rem; }
-  .section-title { font-size: 2rem; margin-bottom: 2.5rem; }
+  .section-title { font-size: 3rem; margin-bottom: 2.5rem; }
   .glass-card { padding: 1.5rem; }
   .card-title { font-size: 1.2rem; }
   .glass-card p, .glass-card li { font-size: 0.95rem; }

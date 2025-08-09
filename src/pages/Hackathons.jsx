@@ -5,31 +5,17 @@ import "./Hackathons.css";
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.25, delayChildren: 0.3 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.25, delayChildren: 0.3 } },
 };
 
 const headerVariants = {
   hidden: { opacity: 0, y: -70, rotateZ: -10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    rotateZ: 0,
-    transition: { duration: 1, type: "spring", stiffness: 100 },
-  },
+  visible: { opacity: 1, y: 0, rotateZ: 0, transition: { duration: 1, type: "spring", stiffness: 100 } },
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 70, scale: 0.85, rotateY: -15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    rotateY: 0,
-    transition: { duration: 0.9, type: "spring", stiffness: 90 },
-  },
+  visible: { opacity: 1, y: 0, scale: 1, rotateY: 0, transition: { duration: 0.9, type: "spring", stiffness: 90 } },
 };
 
 // Hackathon data
@@ -55,10 +41,7 @@ const Hackathons = () => {
     };
   }, []);
 
-  const filteredCards =
-    filter === "all"
-      ? hackathons
-      : hackathons.filter((card) => card.type === filter);
+  const filteredCards = filter === "all" ? hackathons : hackathons.filter((card) => card.type === filter);
 
   return (
     <motion.div
@@ -68,37 +51,26 @@ const Hackathons = () => {
       animate="visible"
       style={{
         position: "relative",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #0a001a, #1a0040, #2a0060)",
-        padding: "6rem 3rem",
+        background: "linear-gradient(135deg, #0a001a, #1a0040)",
+        padding: "clamp(2rem, 5vw, 6rem) clamp(1rem, 2vw, 3rem)",
         overflow: "hidden",
-        willChange: "background, transform",
       }}
     >
       {/* Floating Background Particles */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(12)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: "absolute",
-            width: `${2 + i}px`,
-            height: `${2 + i}px`,
-            background: `radial-gradient(circle, rgba(0, 255, 204, 0.5), transparent)`,
+            width: `${1.5 + i * 0.2}rem`,
+            height: `${1.5 + i * 0.2}rem`,
+            background: "rgba(0, 255, 204, 0.3)",
             borderRadius: "50%",
-            boxShadow: "0 0 40px rgba(0, 255, 204, 0.9)",
-            top: `${5 + i * 4}%`,
-            left: `${5 + i * 4}%`,
+            top: `${5 + i * 3}%`,
+            left: `${5 + i * 3}%`,
           }}
-          animate={{
-            y: [0, -70, 0],
-            opacity: [0.3, 0.9, 0.3],
-            rotate: [0, 360],
-          }}
-          transition={{
-            duration: 9 + i * 0.7,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, -40, 0], opacity: [0.2, 0.7, 0.2] }}
+          transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
@@ -108,59 +80,47 @@ const Hackathons = () => {
         variants={headerVariants}
         style={{
           textAlign: "center",
-          padding: "3rem",
+          padding: "clamp(1.5rem, 3vw, 3rem)",
           background: "rgba(20, 10, 40, 0.95)",
           border: "2px solid rgba(0, 255, 204, 0.6)",
-          borderRadius: "20px",
-          boxShadow:
-            "0 20px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(0, 255, 204, 0.4)",
-          backdropFilter: "blur(12px)",
+          borderRadius: "1.25rem",
+          boxShadow: "0 15px 40px rgba(0, 0, 0, 0.5)",
+          marginBottom: "clamp(2rem, 4vw, 4rem)",
         }}
       >
         <h2
           style={{
-            fontSize: "1.5rem",
+            fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)",
             color: "#00ffcc",
-            textShadow:
-              "0 0 60px rgba(0, 255, 204, 0.9), 0 0 80px rgba(255, 105, 180, 0.7)",
-            marginBottom: "1.5rem",
-            background:
-              "linear-gradient(45deg, #00ffcc, #ff69b4, #00bfff)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
+            marginBottom: "1rem",
           }}
         >
           ⚡ Hackathon Achievements
         </h2>
-        <div
-          className="underline"
-          style={{ borderBottom: "3px solid rgba(0, 255, 204, 0.7)" }}
-        ></div>
+        <div className="underline" style={{ borderBottom: "2px solid rgba(0, 255, 204, 0.7)" }}></div>
         <p
           style={{
             color: "#d0d8e8",
-            fontSize: "1.3rem",
-            maxWidth: "700px",
-            margin: "0 auto 2rem",
-            lineHeight: "1.8",
-            textShadow: "0 0 20px rgba(0, 255, 204, 0.5)",
+            fontSize: "clamp(0.9rem, 1.8vw, 1.3rem)",
+            maxWidth: "600px",
+            margin: "0 auto 1.5rem",
+            lineHeight: 1.6,
           }}
         >
-          Showcasing my ability to deliver cutting-edge solutions under
-          pressure, these hackathon successes highlight my technical expertise,
-          teamwork, and innovative mindset.
+          Showcasing my ability to deliver cutting-edge solutions under pressure, these hackathon successes highlight my technical expertise, teamwork, and innovative mindset.
         </p>
 
         {/* Filter Buttons */}
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+        <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" }}>
           <button
             style={{
-              padding: "0.6rem 1.5rem",
+              padding: "0.5rem 1rem",
               background: "rgba(0, 255, 204, 0.2)",
               border: "1px solid rgba(0, 255, 204, 0.4)",
-              borderRadius: "20px",
+              borderRadius: "1rem",
               color: "#00ffcc",
               cursor: "pointer",
+              fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
             }}
             onClick={() => setFilter("all")}
           >
@@ -168,12 +128,13 @@ const Hackathons = () => {
           </button>
           <button
             style={{
-              padding: "0.6rem 1.5rem",
+              padding: "0.5rem 1rem",
               background: "rgba(0, 255, 204, 0.2)",
               border: "1px solid rgba(0, 255, 204, 0.4)",
-              borderRadius: "20px",
+              borderRadius: "1rem",
               color: "#00ffcc",
               cursor: "pointer",
+              fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
             }}
             onClick={() => setFilter("hackathon")}
           >
@@ -187,11 +148,11 @@ const Hackathons = () => {
         className="cards-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "2.5rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "clamp(1rem, 2vw, 2.5rem)",
           maxWidth: "1300px",
-          margin: "4rem auto 2rem",
-          perspective: "1200px",
+          margin: "0 auto",
+          perspective: "1000px",
         }}
       >
         {filteredCards.map((item, index) => (
@@ -199,55 +160,35 @@ const Hackathons = () => {
             key={index}
             className="glass-card"
             variants={cardVariants}
-            whileHover={{
-              scale: 1.12,
-              rotateX: 10,
-              rotateY: 10,
-              boxShadow:
-                "0 25px 70px rgba(0, 255, 204, 0.8), 0 0 90px rgba(255, 105, 180, 0.7)",
-            }}
+            whileHover={{ scale: 1.08, boxShadow: "0 15px 40px rgba(0, 255, 204, 0.6)" }}
             style={{
               background: "rgba(20, 10, 40, 0.95)",
               border: "2px solid rgba(0, 255, 204, 0.6)",
-              borderRadius: "20px",
-              padding: "2rem",
+              borderRadius: "1.25rem",
+              padding: "clamp(1rem, 2vw, 2rem)",
               textAlign: "center",
-              backdropFilter: "blur(12px)",
-              animation: "cardPulse 6s ease-in-out infinite",
             }}
           >
-            <h3
-              style={{
-                fontSize: "1.8rem",
-                color: "#00ffcc",
-                marginBottom: "1rem",
-              }}
-            >
+            <h3 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)", color: "#00ffcc", marginBottom: "1rem" }}>
               {item.title}
             </h3>
-            <p
-              style={{
-                color: "#f0f0f5",
-                fontSize: "1.1rem",
-                marginBottom: "1.5rem",
-              }}
-            >
+            <p style={{ color: "#f0f0f5", fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)", marginBottom: "1.5rem" }}>
               {item.description}
             </p>
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" }}>
               {item.projLink && (
                 <a
                   href={item.projLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: "0.7rem 1.5rem",
-                    background:
-                      "linear-gradient(90deg, #00ffcc, #ff33cc)",
+                    padding: "0.6rem 1.2rem",
+                    background: "#00ffcc",
                     color: "#0d0026",
-                    borderRadius: "10px",
+                    borderRadius: "0.75rem",
                     textDecoration: "none",
                     fontWeight: "600",
+                    fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
                   }}
                 >
                   🔗 View Project
@@ -259,20 +200,20 @@ const Hackathons = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: "0.7rem 1.5rem",
-                    background:
-                      "linear-gradient(90deg, #00ffcc, #ff33cc)",
+                    padding: "0.6rem 1.2rem",
+                    background: "#00ffcc",
                     color: "#0d0026",
-                    borderRadius: "10px",
+                    borderRadius: "0.75rem",
                     textDecoration: "none",
                     fontWeight: "600",
+                    fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
                   }}
                 >
                   🎓 View Certificate
                 </a>
               )}
             </div>
-            <p style={{ color: "#d1d5db", marginTop: "1rem" }}>{item.tag}</p>
+            <p style={{ color: "#d1d5db", fontSize: "clamp(0.8rem, 1.5vw, 1rem)", marginTop: "1rem" }}>{item.tag}</p>
           </motion.div>
         ))}
       </motion.div>
