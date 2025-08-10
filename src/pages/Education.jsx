@@ -504,14 +504,7 @@ const EducationEnhanced = () => {
                     ...responsiveStyles.content,
                     ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
                   }}
-                  whileHover={{
-                    scale: 1.08,
-                    rotateX: 8,
-                    rotateY: 8,
-                    boxShadow: '0 30px 70px rgba(76, 29, 149, 0.6), 0 0 90px rgba(192, 38, 211, 0.5)',
-                    translateY: -12,
-                  }}
-                  whileTap={{ scale: 0.92, rotateZ: -5 }}
+                
                 >
                   <motion.div
                     style={{ ...styles.contentOverlay, animation: 'rotateGlow 10s linear infinite' }}
@@ -605,13 +598,7 @@ const EducationEnhanced = () => {
                       initial='hidden'
                       animate='visible'
                       transition={{ delay: index * 0.12 + 0.9 }}
-                      whileHover={{
-                        scale: 1.15,
-                        boxShadow: '0 15px 50px rgba(192, 38, 211, 0.6)',
-                        translateY: -3,
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      aria-label={`View certificate for ${edu.qualification}`}
+                  
                     >
                       <FaExternalLinkAlt style={{ fontSize: 'clamp(0.75rem, 1.4vw, 0.95rem)' }} />
                       View Certificate
