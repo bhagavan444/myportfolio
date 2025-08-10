@@ -1,329 +1,355 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
+import { FiEye, FiDownload, FiX } from "react-icons/fi";
 import resumePDF from "../assets/bhagavanresume.pdf";
+
+// --- COMPONENT: Animated Starfield Background ---
+const Starfield = ({ starCount = 100 }) => {
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+      {[...Array(starCount)].map((_, i) => {
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 2 + 1;
+        return (
+          <motion.div
+            key={`star-${i}`}
+            style={{
+              position: 'absolute',
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: size,
+              height: size,
+              background: 'white',
+              borderRadius: '50%',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{
+              duration: duration,
+              repeat: Infinity,
+              repeatType: 'loop',
+              delay: Math.random() * 3,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+
+// Custom styles object for cleaner JSX
+const styles = {
+  container: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)",
+    background: "#050214",
+    color: "#e0e7ff",
+    overflow: "hidden",
+    position: "relative",
+    perspective: "1200px",
+  },
+  card: {
+    background: "rgba(12, 5, 32, 0.6)",
+    backdropFilter: "blur(20px) saturate(180%)",
+    width: "clamp(300px, 90vw, 900px)",
+    borderRadius: "24px",
+    padding: "clamp(2rem, 4vw, 4rem)",
+    textAlign: "center",
+    position: "relative",
+    transformStyle: "preserve-3d",
+    border: "1px solid rgba(124, 58, 237, 0.2)",
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)",
+  },
+  cardBorder: {
+    position: "absolute",
+    inset: 0,
+    borderRadius: "24px",
+    padding: "1px",
+    background: "linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(91, 33, 182, 0.2))",
+    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+    WebkitMaskComposite: "xor",
+    maskComposite: "exclude",
+    pointerEvents: "none",
+  },
+  title: {
+    fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)",
+    fontWeight: "900",
+    marginBottom: "clamp(1rem, 2vw, 1.5rem)",
+    color: "transparent",
+    background: "linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)",
+    backgroundClip: "text",
+    WebkitBackgroundClip: "text",
+    textShadow: "0 0 30px rgba(167, 139, 250, 0.5)",
+  },
+  description: {
+    fontSize: "clamp(1.1rem, 2vw, 1.3rem)",
+    color: "#d1d5db",
+    maxWidth: "700px",
+    margin: "0 auto clamp(2rem, 4vw, 3rem)",
+    lineHeight: 1.8,
+  },
+  buttonGroup: {
+    display: "flex",
+    gap: "clamp(1rem, 3vw, 2rem)",
+    justifyContent: "center",
+    flexWrap: "wrap",
+  },
+  button: {
+    padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.5rem)",
+    border: "none",
+    borderRadius: "50px",
+    fontSize: "clamp(1rem, 2vw, 1.2rem)",
+    fontWeight: "600",
+    color: "#fff",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    position: "relative",
+    overflow: "hidden",
+  },
+  modalOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(5, 2, 20, 0.8)",
+    backdropFilter: "blur(8px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 5000,
+  },
+  modalContent: {
+    background: "rgba(12, 5, 32, 0.95)",
+    border: "1px solid rgba(124, 58, 237, 0.4)",
+    borderRadius: "16px",
+    padding: "clamp(1rem, 2vw, 2rem)",
+    width: "clamp(300px, 95vw, 1000px)",
+    height: "90vh",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.4)",
+  },
+  closeButton: {
+    position: "absolute",
+    top: "1rem",
+    right: "1rem",
+    background: "rgba(255, 255, 255, 0.1)",
+    border: "none",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#c4b5fd",
+    cursor: "pointer",
+    zIndex: 10,
+  },
+};
 
 const Resume = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1);
+
+  // Mouse tracking is kept for the background glow effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const backgroundGradient = useTransform(
+    [mouseX, mouseY],
+    ([latestX, latestY]) =>
+      `radial-gradient(circle at ${latestX + window.innerWidth / 2}px ${
+        latestY + window.innerHeight / 2
+      }px, rgba(0, 198, 255, 0.2), transparent 40%)`
+  );
+
+  const handleMouseMove = (e) => {
+    mouseX.set(e.clientX - window.innerWidth / 2);
+    mouseY.set(e.clientY - window.innerHeight / 2);
+  };
 
   useEffect(() => {
     if (isModalOpen) {
       setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 1500);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setIsLoading(false), 1200);
+      document.body.style.overflow = "hidden";
+      return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = "auto";
+      };
     }
   }, [isModalOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setIsModalOpen(false);
-      if (e.key === "+" && isModalOpen) setZoomLevel((prev) => Math.min(prev + 0.2, 2));
-      if (e.key === "-" && isModalOpen) setZoomLevel((prev) => Math.max(prev - 0.2, 1));
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isModalOpen]);
+  }, []);
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8, rotateY: -20, y: 80 },
-    visible: { opacity: 1, scale: 1, rotateY: 0, y: 0, transition: { duration: 1.2, type: "spring", stiffness: 70, damping: 12 } },
+    hidden: { opacity: 0, scale: 0.8, y: 100 },
+    visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.8, type: "spring", stiffness: 100, damping: 15 } },
   };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 50, rotate: -5 },
-    visible: { opacity: 1, y: 0, rotate: 0, transition: { delay: 0.4, duration: 1, type: "spring" } },
-  };
-
-  const descVariants = {
-    hidden: { opacity: 0, y: 40, skewX: 5 },
-    visible: { opacity: 1, y: 0, skewX: 0, transition: { delay: 0.6, duration: 1.1 } },
-  };
-
-  const modalOverlayVariants = {
-    hidden: { opacity: 0, backdropFilter: "blur(0px)" },
-    visible: { opacity: 0.95, backdropFilter: "blur(12px)", transition: { duration: 0.7 } },
-    exit: { opacity: 0, backdropFilter: "blur(0px)", transition: { duration: 0.5 } },
+  
+  const modalVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+    exit: { opacity: 0 }
   };
 
   const modalContentVariants = {
-    hidden: { scale: 0.6, opacity: 0, y: 100, rotateZ: -10 },
-    visible: { scale: 1, opacity: 1, y: 0, rotateZ: 0, transition: { duration: 0.8, type: "spring", stiffness: 90 } },
-    exit: { scale: 0.6, opacity: 0, y: -100, rotateZ: 10, transition: { duration: 0.6 } },
+    hidden: { scale: 0.8, y: 50, opacity: 0 },
+    visible: { scale: 1, y: 0, opacity: 1, transition: { duration: 0.6, type: "spring" } },
+    exit: { scale: 0.8, opacity: 0, transition: { duration: 0.4 } }
   };
 
-  const loadingVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.5 } },
-    exit: { opacity: 0, transition: { duration: 0.4 } },
-  };
-
-  const iframeVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { delay: 0.4, duration: 0.7 } },
-  };
-
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.85, 1]);
+  const LoadingIndicator = () => (
+    <motion.div
+      style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+      transition={{ staggerChildren: 0.15 }}
+      initial="start"
+      animate="end"
+    >
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={i}
+          style={{ width: "15px", height: "60px", background: `linear-gradient(to top, #7c3aed, #00c6ff)`, borderRadius: '5px' }}
+          variants={{ start: { y: "0%" }, end: { y: "100%" } }}
+          transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+        />
+      ))}
+    </motion.div>
+  );
+  
+  const ButtonShine = ({ isActive }) => (
+    <motion.div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: '-150%',
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.4) 50%, transparent 80%)',
+        transform: 'skewX(-25deg)',
+      }}
+      animate={{ left: isActive ? '150%' : '-150%' }}
+      transition={{ duration: 0.7, ease: 'easeInOut' }}
+    />
+  );
 
   return (
     <motion.section
-      className="resume-container"
-      style={{
-        position: "relative",
-        background: "linear-gradient(135deg, #0a001a, #1a0040)",
-        padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)",
-        overflow: "hidden",
-        opacity,
-        scale,
-      }}
+      style={styles.container}
+      onMouseMove={handleMouseMove}
       initial="hidden"
       animate="visible"
-      transition={{ duration: 1.5 }}
+      transition={{ duration: 1.0 }}
     >
-      {/* Enhanced Background Particles */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: "absolute",
-            width: `${1 + i * 0.5}rem`,
-            height: `${1 + i * 0.5}rem`,
-            background: "rgba(0, 191, 255, 0.6)",
-            borderRadius: "50%",
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0, 1, 0],
-            scale: [0, 1.5, 0],
-          }}
-          transition={{ duration: 2 + i * 0.2, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
-        />
-      ))}
+      <Starfield />
 
+      <motion.div
+        style={{ position: "absolute", inset: 0, background: backgroundGradient }}
+      />
+      
       <motion.article
-        className="resume-card"
+        style={styles.card} // Card rotation style removed here
         variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        whileHover={{ scale: 1.05, boxShadow: "0 25px 70px rgba(0, 191, 255, 0.6)", rotateY: 5 }}
-        whileTap={{ scale: 0.97 }}
-        role="article"
-        aria-label="Resume Card"
-        style={{
-          background: "rgba(20, 10, 40, 0.95)",
-          border: "2px solid rgba(0, 191, 255, 0.7)",
-          borderRadius: "1.5rem",
-          padding: "clamp(2rem, 4vw, 4rem)",
-          maxWidth: "900px",
-          margin: "0 auto",
-          textAlign: "center",
-          backdropFilter: "blur(12px)",
-        }}
+        whileHover={{ y: -10, boxShadow: "0 30px 70px rgba(0, 0, 0, 0.3)" }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
-        <motion.h2
-          className="resume-title"
-          variants={titleVariants}
-          initial="hidden"
-          animate="visible"
-          whileHover={{ scale: 1.1, color: "#00ff99", textShadow: "0 0 20px #00ff99" }}
-          style={{
-            fontSize: "clamp(2rem, 4vw, 3rem)",
-            color: "#00bfff",
-            marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
-          }}
-        >
-          🚀 Bhagavan's Professional Resume
+        <div style={styles.cardBorder} />
+        <motion.h2 style={styles.title} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { delay: 0.2, type: 'spring' } } }}>
+          My Digital Résumé
         </motion.h2>
 
-        <motion.p
-          className="resume-description"
-          variants={descVariants}
-          initial="hidden"
-          animate="visible"
-          whileHover={{ color: "#00ff99", textShadow: "0 0 15px #00ff99" }}
-          style={{
-            fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)",
-            color: "#d0d8e8",
-            maxWidth: "700px",
-            margin: "0 auto clamp(2rem, 4vw, 3rem)",
-            lineHeight: 1.7,
-          }}
-        >
-          Dive into my full-stack odyssey, highlighting groundbreaking projects, 
-          dynamic internships, and exceptional problem-solving prowess, engineered 
-          for delivering cutting-edge, scalable solutions in evolving tech landscapes.
+        <motion.p style={styles.description} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: 0.4, duration: 0.8 } } }}>
+          This is a curated look at my professional journey, showcasing key projects, technical skills, and the collaborative spirit I bring to every challenge.
         </motion.p>
 
-        <div
-          className="resume-btn-group"
-          style={{ display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}
-        >
+        <motion.div style={styles.buttonGroup} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: 0.6, duration: 0.8 } } }}>
           <motion.button
-            className="resume-btn preview-btn"
-            whileHover={{ scale: 1.15, background: "#1d4ed8", boxShadow: "0 0 30px #1d4ed8", rotate: 360 }}
-            whileTap={{ scale: 0.9 }}
+            style={{ ...styles.button, background: "linear-gradient(90deg, #7c3aed, #00c6ff)" }}
+            whileHover="hover"
+            whileTap={{ scale: 0.98 }}
             onClick={() => setIsModalOpen(true)}
             aria-label="Preview Resume"
-            transition={{ duration: 0.5 }}
-            style={{
-              padding: "clamp(1rem, 2vw, 1.5rem) clamp(2rem, 3vw, 3rem)",
-              background: "#0ea5e9",
-              border: "none",
-              borderRadius: "2rem",
-              fontSize: "clamp(1.2rem, 2.2vw, 1.4rem)",
-              fontWeight: "700",
-              color: "#fff",
-              cursor: "pointer",
-              transition: "all 0.4s ease",
-            }}
           >
-            👁️‍🗨️ Preview Resume
+             <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <FiEye /> Preview
+            </motion.span>
+            <ButtonShine isActive={true} />
           </motion.button>
 
           <motion.a
             href={resumePDF}
-            download
-            className="resume-btn download-btn"
-            whileHover={{ scale: 1.15, background: "#047857", boxShadow: "0 0 30px #047857", rotate: -360 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Download Resume PDF"
-            transition={{ duration: 0.5 }}
-            style={{
-              padding: "clamp(1rem, 2vw, 1.5rem) clamp(2rem, 3vw, 3rem)",
-              background: "#10b981",
-              border: "none",
-              borderRadius: "2rem",
-              fontSize: "clamp(1.2rem, 2.2vw, 1.4rem)",
-              fontWeight: "700",
-              color: "#fff",
-              textDecoration: "none",
-              textAlign: "center",
-              cursor: "pointer",
-              transition: "all 0.4s ease",
-            }}
+            download="Bhagavan-Resume.pdf"
+            style={{ ...styles.button, background: "rgba(255, 255, 255, 0.1)", textDecoration: 'none' }}
+            whileHover="hover"
+            whileTap={{ scale: 0.98 }}
+            aria-label="Download Resume"
           >
-            📥 Download PDF
+            <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <FiDownload /> Download
+            </motion.span>
+            <ButtonShine isActive={true} />
           </motion.a>
-        </div>
+        </motion.div>
       </motion.article>
 
-      {/* Enhanced Modal Viewer */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
-            className="resume-modal-overlay"
-            variants={modalOverlayVariants}
+            style={styles.modalOverlay}
+            variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             onClick={() => setIsModalOpen(false)}
-            role="dialog"
-            aria-label="Resume Preview Modal"
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              background: "rgba(0, 0, 0, 0.85)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 3000,
-            }}
           >
             <motion.div
-              className="resume-modal-content"
+              style={styles.modalContent}
               variants={modalContentVariants}
               onClick={(e) => e.stopPropagation()}
-              whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(0, 191, 255, 0.7)" }}
-              style={{
-                background: "rgba(20, 10, 40, 0.98)",
-                border: "2px solid rgba(0, 191, 255, 0.8)",
-                borderRadius: "1.5rem",
-                padding: "clamp(1.5rem, 3vw, 3rem)",
-                maxWidth: "95vw",
-                maxHeight: "95vh",
-                overflow: "auto",
-                position: "relative",
-              }}
             >
               <motion.button
-                className="resume-close-btn"
+                style={styles.closeButton}
                 onClick={() => setIsModalOpen(false)}
-                aria-label="Close Resume Modal"
-                whileHover={{ scale: 1.3, color: "#ff69b4", rotate: 180 }}
-                whileTap={{ scale: 0.8 }}
-                transition={{ duration: 0.4 }}
-                style={{
-                  position: "absolute",
-                  top: "1.5rem",
-                  right: "1.5rem",
-                  background: "none",
-                  border: "none",
-                  fontSize: "2rem",
-                  color: "#00bfff",
-                  cursor: "pointer",
-                }}
+                whileHover={{ scale: 1.1, background: "rgba(0, 198, 255, 0.2)", rotate: 90, color: '#00c6ff' }}
+                whileTap={{ scale: 0.9 }}
               >
-                ✖
+                <FiX size={24} />
               </motion.button>
-              <motion.div
-                style={{
-                  position: "absolute",
-                  top: "1.5rem",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  fontSize: "clamp(1rem, 1.8vw, 1.3rem)",
-                  color: "#d0d8e8",
-                }}
-                animate={{ y: [0, -5, 0], opacity: [1, 0.8, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                Zoom: {Math.round(zoomLevel * 100)}% (Use +/- keys)
-              </motion.div>
-              {isLoading ? (
-                <motion.div
-                  className="resume-loading"
-                  variants={loadingVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
-                    color: "#00bfff",
-                    textAlign: "center",
-                  }}
-                >
-                  Loading...
-                </motion.div>
-              ) : (
-                <motion.iframe
-                  src={resumePDF}
-                  title="Bhagavan's Resume Viewer"
-                  className="resume-iframe"
-                  frameBorder="0"
-                  variants={iframeVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover={{ scale: 1.02 }}
-                  style={{
-                    width: "100%",
-                    height: "clamp(60vh, 80vw, 80vh)",
-                    border: "none",
-                    borderRadius: "1rem",
-                    transformOrigin: "center",
-                    willChange: "transform, opacity",
-                  }}
-                />
-              )}
+              
+              <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', color: '#9ca3af', fontSize: '0.9rem', zIndex: 5 }}>
+                Press 'Esc' to close
+              </div>
+
+              <div style={{ flex: 1, marginTop: '3.5rem', borderRadius: '8px', overflow: 'hidden' }}>
+                {isLoading ? (
+                  <LoadingIndicator />
+                ) : (
+                  <motion.iframe
+                    src={`${resumePDF}#toolbar=0&navpanes=0&scrollbar=0`}
+                    title="Bhagavan's Resume Viewer"
+                    frameBorder="0"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } }}
+                  />
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}

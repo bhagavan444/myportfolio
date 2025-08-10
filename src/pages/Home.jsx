@@ -10,7 +10,6 @@ import {
   SiMongodb, SiTailwindcss, SiExpress, SiFlask, SiTensorflow
 } from 'react-icons/si';
 import profile from '../assets/profile.jpg';
-import Navbar from '../components/Navbar';
 
 // Tech/Skills icon mapping function
 const getTechIcons = (tech) => {
@@ -438,7 +437,7 @@ const Home = () => {
       aria-label='Home section'
     >
       <style>{animationStyles}</style>
-      <Navbar />
+      
       {/* Background Particles */}
       {[...Array(12)].map((_, i) => (
         <motion.div
@@ -492,11 +491,7 @@ const Home = () => {
           initial='hidden'
           animate='visible'
           transition={{ delay: 0.4 }}
-          whileHover={{
-            scale: 1.15,
-            boxShadow: '0 15px 50px rgba(192, 38, 211, 0.6)',
-            translateY: -3,
-          }}
+         
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate('/Projects')}
         >
@@ -532,11 +527,7 @@ const Home = () => {
                     ...responsiveStyles.content,
                     ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
                   }}
-                  whileHover={{
-                    scale: 1.08,
-                    boxShadow: '0 30px 70px rgba(76, 29, 149, 0.6), 0 0 90px rgba(192, 38, 211, 0.5)',
-                    translateY: -12,
-                  }}
+                  
                   whileTap={{ scale: 0.92 }}
                 >
                   <motion.div

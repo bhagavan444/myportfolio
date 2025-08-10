@@ -64,7 +64,7 @@ const Navbar = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.1 }}
         >
-          <Link to="/home" className="logo-text">BhagavanG</Link>
+          <Link to="/home" className="logo-text">MyPortfolio</Link>
         </motion.div>
 
         <div className="hamburger" onClick={toggleMenu}>
