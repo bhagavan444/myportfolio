@@ -1,373 +1,562 @@
-import React, { useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import "./About.css";
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { FaStar, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs,
   FaDatabase, FaGitAlt, FaGithub, FaPython
-} from "react-icons/fa";
+} from 'react-icons/fa';
 import {
   SiMongodb, SiTailwindcss, SiExpress, SiFlask, SiTensorflow
-} from "react-icons/si";
+} from 'react-icons/si';
 
-// Animation Variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { when: "beforeChildren", staggerChildren: 0.25 },
-  },
-};
+// Tech/Skills icon mapping function
+const getTechIcons = (tech) => {
+  const iconMap = {
+    HTML5: { icon: <FaHtml5 />, label: 'HTML5' },
+    CSS3: { icon: <FaCss3Alt />, label: 'CSS3' },
+    JavaScript: { icon: <FaJs />, label: 'JavaScript' },
+    React: { icon: <FaReact />, label: 'React' },
+    'Node.js': { icon: <FaNodeJs />, label: 'Node.js' },
+    Express: { icon: <SiExpress />, label: 'Express' },
+    MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
+    'Tailwind CSS': { icon: <SiTailwindcss />, label: 'Tailwind CSS' },
+    Python: { icon: <FaPython />, label: 'Python' },
+    Flask: { icon: <SiFlask />, label: 'Flask' },
+    TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow' },
+    Git: { icon: <FaGitAlt />, label: 'Git' },
+    GitHub: { icon: <FaGithub />, label: 'GitHub' },
+    Database: { icon: <FaDatabase />, label: 'Database' },
+    'React.js': { icon: <FaReact />, label: 'React.js' },
+    'Express.js': { icon: <SiExpress />, label: 'Express.js' },
+    Keras: { icon: null, label: 'Keras' },
+    'Scikit-Learn': { icon: null, label: 'Scikit-Learn' },
+    OpenCV: { icon: null, label: 'OpenCV' },
+    Numpy: { icon: null, label: 'Numpy' },
+    Pandas: { icon: null, label: 'Pandas' },
+    Matplotlib: { icon: null, label: 'Matplotlib' },
+    Seaborn: { icon: null, label: 'Seaborn' },
+    'AWS Lambda': { icon: null, label: 'AWS Lambda' },
+    'REST APIs': { icon: null, label: 'REST APIs' },
+    Bootstrap: { icon: null, label: 'Bootstrap' },
+    SQL: { icon: null, label: 'SQL' },
+    'VS Code': { icon: null, label: 'VS Code' },
+    Postman: { icon: null, label: 'Postman' },
+    Agile: { icon: null, label: 'Agile' },
+    'CI/CD': { icon: null, label: 'CI/CD' },
+  };
 
-const floatIn = {
-  hidden: { opacity: 0, y: -50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.4, ease: [0.43, 0.13, 0.23, 0.96] },
-  },
-};
-
-const badgeVariants = {
-  hidden: { opacity: 0, scale: 0.4, y: 40, rotate: -20 },
-  visible: (i) => ({
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    rotate: 0,
-    transition: {
-      delay: i * 0.06,
-      duration: 0.8,
-      type: "spring",
-      stiffness: 120,
-      damping: 12,
-    },
-  }),
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0, x: ({ isEven }) => (isEven ? -250 : 250) },
-  visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: "easeOut" } },
+  return tech.split(', ').map((t, i) => (
+    <motion.span
+      key={i}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 'clamp(6px, 1vw, 8px)',
+        margin: 'clamp(4px, 0.8vw, 6px)',
+        padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
+        background: 'rgba(76, 29, 149, 0.15)',
+        borderRadius: 'clamp(8px, 1.2vw, 10px)',
+        border: '1px solid rgba(76, 29, 149, 0.3)',
+      }}
+      whileHover={{
+        scale: 1.15,
+        boxShadow: '0 0 15px rgba(76, 29, 149, 0.7)',
+        background: 'rgba(76, 29, 149, 0.3)',
+      }}
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+    >
+      {iconMap[t] ? (
+        <>
+          <motion.span
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.08 }}
+            style={{ color: '#c026d3', textShadow: '0 0 10px rgba(76, 29, 149, 0.5)' }}
+          >
+            {iconMap[t].icon}
+          </motion.span>
+          <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
+            {iconMap[t].label}
+          </span>
+        </>
+      ) : (
+        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>{t}</span>
+      )}
+    </motion.span>
+  ));
 };
 
 // Data
-const techStack = [
-  { name: "HTML5", icon: <FaHtml5 /> },
-  { name: "CSS3", icon: <FaCss3Alt /> },
-  { name: "JavaScript", icon: <FaJs /> },
-  { name: "React", icon: <FaReact /> },
-  { name: "Node.js", icon: <FaNodeJs /> },
-  { name: "Express", icon: <SiExpress /> },
-  { name: "MongoDB", icon: <SiMongodb /> },
-  { name: "Tailwind CSS", icon: <SiTailwindcss /> },
-  { name: "Python", icon: <FaPython /> },
-  { name: "Flask", icon: <SiFlask /> },
-  { name: "TensorFlow", icon: <SiTensorflow /> },
-  { name: "Git", icon: <FaGitAlt /> },
-  { name: "GitHub", icon: <FaGithub /> },
-  { name: "Database", icon: <FaDatabase /> },
-];
-
-const badges = [
-  "React.js", "Node.js", "MongoDB", "Express.js", "Python", "Flask",
-  "TensorFlow", "Keras", "Scikit-Learn", "OpenCV", "Numpy", "Pandas",
-  "Matplotlib", "Seaborn", "AWS Lambda", "Git", "GitHub",
-  "REST APIs", "HTML5", "Tailwind CSS", "Bootstrap",
-  "SQL", "VS Code", "Postman", "Agile", "CI/CD"
-];
-
-const sections = [
+const aboutData = [
   {
-    title: "🚀 Real-World Projects",
+    title: '🚀 Real-World Projects',
     items: [
-      "Resume Builder (MERN + ATS) – Google/GitHub login, ATS scoring using NLP, PDF/Word export.",
-      "Career Recommendation System – ML + Flask app to suggest best-fit careers based on inputs.",
-      "Second-Hand Electronics Platform – Full MERN app with secure auth and MongoDB listings.",
-      "AI Chatbot (AWS Lex) – Voice/text bot with AWS Lambda integration and NLP logic.",
-      "OLX-Style Marketplace – Full-stack marketplace for electronics (search, auth, filters).",
+      'Resume Builder (MERN + ATS) – Google/GitHub login, ATS scoring using NLP, PDF/Word export.',
+      'Career Recommendation System – ML + Flask app to suggest best-fit careers based on inputs.',
+      'Second-Hand Electronics Platform – Full MERN app with secure auth and MongoDB listings.',
+      'AI Chatbot (AWS Lex) – Voice/text bot with AWS Lambda integration and NLP logic.',
+      'OLX-Style Marketplace – Full-stack marketplace for electronics (search, auth, filters).',
     ],
+    skills: 'React.js, Node.js, MongoDB, Express.js, Python, Flask, TensorFlow, AWS Lambda, REST APIs',
+    icon: FaStar,
   },
   {
-    title: "📜 Internship Experience",
+    title: '📜 Internship Experience',
     items: [
-      "AI/ML Intern @ Blackbucks Pvt Ltd – Developed a real-time ML prediction system.",
-      "SmartBridge x Eduskills – Created fruit & vegetable classifier with DL + TensorFlow + AWS.",
+      'AI/ML Intern @ Blackbucks Pvt Ltd – Developed a real-time ML prediction system.',
+      'SmartBridge x Eduskills – Created fruit & vegetable classifier with DL + TensorFlow + AWS.',
     ],
+    skills: 'Python, TensorFlow, Scikit-Learn, AWS Lambda',
+    icon: FaStar,
   },
   {
-    title: "🎯 Career Objectives",
+    title: '🎯 Career Objectives',
     items: [
-      "Seeking roles in Full Stack Development, Machine Learning, or Data Science.",
-      "Aim is to apply skills on real-world problems, work in agile teams, and grow as an engineer.",
+      'Seeking roles in Full Stack Development, Machine Learning, or Data Science.',
+      'Aim is to apply skills on real-world problems, work in agile teams, and grow as an engineer.',
     ],
+    skills: 'Agile, CI/CD',
+    icon: FaStar,
   },
   {
-    title: "🌟 Why Me?",
+    title: '🌟 Why Me?',
     items: [
-      "✔ End-to-end delivery (frontend, backend, ML)",
-      "✔ Git, GitHub, APIs, CI/CD experience",
-      "✔ Agile collaboration & documentation",
-      "✔ Fast learner & tech explorer",
+      '✔ End-to-end delivery (frontend, backend, ML)',
+      '✔ Git, GitHub, APIs, CI/CD experience',
+      '✔ Agile collaboration & documentation',
+      '✔ Fast learner & tech explorer',
     ],
+    skills: 'Git, GitHub, REST APIs, Agile, CI/CD',
+    icon: FaStar,
+  },
+  {
+    title: '🚀 Core Technologies',
+    skills: 'HTML5, CSS3, JavaScript, React, Node.js, Express, MongoDB, Tailwind CSS, Python, Flask, TensorFlow, Git, GitHub, Database',
+    items: [],
+    icon: FaStar,
+  },
+  {
+    title: '📚 Other Tools & Skills',
+    skills: 'React.js, Node.js, MongoDB, Express.js, Python, Flask, TensorFlow, Keras, Scikit-Learn, OpenCV, Numpy, Pandas, Matplotlib, Seaborn, AWS Lambda, Git, GitHub, REST APIs, HTML5, Tailwind CSS, Bootstrap, SQL, VS Code, Postman, Agile, CI/CD',
+    items: [],
+    icon: FaStar,
   },
 ];
 
-// Inline styles for a powerful design
+// Inline Styles (from EducationEnhanced.jsx)
 const styles = {
-  wrapper: {
-    position: "relative",
-    background: "linear-gradient(135deg, #0d0026, #1e003b)",
-    minHeight: "100vh",
-    overflowX: "hidden",
-    color: "#f0f0f5",
+  container: {
+    minHeight: '100vh',
+    padding: 'clamp(3rem, 8vw, 7rem) clamp(1.5rem, 3.5vw, 3rem)',
+    background: 'linear-gradient(155deg, #1a0033, #2a0055, #3b0088, #4c00bb)',
+    backgroundSize: '500% 500%',
+    color: '#f5f7fa',
+    overflowX: 'hidden',
+    position: 'relative',
+    fontFamily: "'Inter', 'Montserrat', sans-serif",
+    willChange: 'background',
   },
-  orbitingCircle: {
-    position: "absolute",
-    width: "200px",
-    height: "200px",
-    borderRadius: "50%",
-    background: "rgba(0, 255, 204, 0.1)",
-    border: "2px solid #00ffcc",
-    top: "10%",
-    left: "10%",
-    zIndex: 0,
-    boxShadow: "0 0 30px rgba(0, 255, 204, 0.5)",
+  overlay: {
+    position: 'absolute',
+    inset: 0,
+    background: `
+      radial-gradient(circle at 10% 15%, rgba(76, 29, 149, 0.3), transparent 50%),
+      radial-gradient(circle at 90% 85%, rgba(192, 38, 211, 0.3), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)
+    `,
+    zIndex: -1,
+    pointerEvents: 'none',
+  },
+  holographicGlow: {
+    position: 'absolute',
+    width: 'clamp(400px, 60vw, 700px)',
+    height: 'clamp(400px, 60vw, 700px)',
+    background: 'radial-gradient(circle, rgba(76, 29, 149, 0.35), transparent 60%)',
+    top: '-15%',
+    left: '-15%',
+    filter: 'blur(120px)',
+    zIndex: -1,
+  },
+  header: {
+    textAlign: 'center',
+    padding: 'clamp(2.5rem, 4.5vw, 4rem)',
+    background: 'rgba(10, 0, 30, 0.85)',
+    border: '1px solid rgba(76, 29, 149, 0.4)',
+    borderRadius: 'clamp(16px, 2.2vw, 20px)',
+    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(76, 29, 149, 0.3)',
+    backdropFilter: 'blur(16px)',
+    maxWidth: 'clamp(700px, 90vw, 1100px)',
+    margin: '0 auto clamp(3rem, 6vw, 5rem)',
   },
   title: {
-    fontSize: "3.5rem",
-    textAlign: "center",
-    color: "#00ffcc",
-    textShadow: "0 0 40px rgba(0, 255, 204, 0.9), 0 0 60px rgba(255, 51, 153, 0.4)",
-    marginBottom: "2rem",
-    animation: "pulseGlow 2.5s ease-in-out infinite alternate",
+    fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
+    fontWeight: 900,
+    color: 'transparent',
+    background: 'linear-gradient(90deg, #4c1d95, #c026d3, #3b82f6)',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    textShadow: '0 0 35px rgba(76, 29, 149, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
+    letterSpacing: '0.12em',
   },
-  subtitle: {
-    fontSize: "1.3rem",
-    textAlign: "center",
-    color: "#d1d5db",
-    maxWidth: "800px",
-    margin: "0 auto 3rem",
-    lineHeight: "1.6",
+  titleUnderline: {
+    width: 'clamp(160px, 30vw, 240px)',
+    height: '5px',
+    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
+    borderRadius: '5px',
+    margin: '0.6rem auto',
+    boxShadow: '0 0 20px rgba(76, 29, 149, 0.7)',
   },
-  section: {
-    background: "rgba(255, 255, 255, 0.05)",
-    backdropFilter: "blur(15px)",
-    border: "1px solid rgba(0, 255, 204, 0.3)",
-    borderRadius: "20px",
-    padding: "2.5rem",
-    margin: "2rem auto",
-    maxWidth: "900px",
-    boxShadow: "0 15px 50px rgba(0, 0, 0, 0.7)",
-    transition: "transform 0.4s ease",
+  introText: {
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    maxWidth: 'clamp(500px, 80vw, 800px)',
+    margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
   },
-  techGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
-    gap: "1.5rem",
-    justifyItems: "center",
-    marginTop: "2rem",
+  timeline: {
+    position: 'relative',
+    maxWidth: 'clamp(800px, 95vw, 1600px)',
+    margin: '0 auto',
+    padding: '0 clamp(0.5rem, 2vw, 1.5rem)',
   },
-  techItem: {
-    textAlign: "center",
-    padding: "1rem",
-    background: "rgba(0, 255, 204, 0.1)",
-    borderRadius: "12px",
-    transition: "all 0.3s ease",
+  timelineLine: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: '50%',
+    width: 'clamp(3px, 0.5vw, 7px)',
+    background: 'linear-gradient(to bottom, #4c1d95, #c026d3)',
+    transform: 'translateX(-50%)',
+    boxShadow: '0 0 20px rgba(76, 29, 149, 0.7)',
   },
-  badgeGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
-    gap: "1rem",
-    marginTop: "1.5rem",
+  item: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'relative',
+    marginBottom: 'clamp(1.8rem, 3.5vw, 3rem)',
   },
-  badge: {
-    display: "inline-block",
-    padding: "0.5rem 1rem",
-    background: "rgba(255, 255, 255, 0.08)",
-    borderRadius: "15px",
-    textAlign: "center",
-    transition: "all 0.3s ease",
+  content: {
+    background: 'rgba(10, 0, 30, 0.9)',
+    border: '1px solid rgba(76, 29, 149, 0.3)',
+    borderRadius: 'clamp(14px, 2.5vw, 20px)',
+    padding: 'clamp(2rem, 4vw, 3rem)',
+    width: 'clamp(300px, 45%, 600px)',
+    textAlign: 'left',
+    backdropFilter: 'blur(18px)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(76, 29, 149, 0.25)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  contentLeft: { marginRight: 'auto' },
+  contentRight: { marginLeft: 'auto' },
+  contentOverlay: {
+    position: 'absolute',
+    inset: 0,
+    borderRadius: 'inherit',
+    background: 'conic-gradient(from 45deg, rgba(76, 29, 149, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    zIndex: -1,
+    opacity: 0.45,
+  },
+  cardTitle: {
+    fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
+    color: '#4c1d95',
+    textShadow: '0 0 18px rgba(76, 29, 149, 0.6)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
+    fontWeight: '800',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
+  },
+  cardDescription: {
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    marginBottom: 'clamp(0.5rem, 1.5vw, 0.8rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+  },
+  techLabel: {
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    color: '#c026d3',
+    fontWeight: 'bold',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+  },
+  techContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 'clamp(10px, 2vw, 12px)',
+    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+  },
+  iconWrapper: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'linear-gradient(135deg, #4c1d95, #c026d3)',
+    borderRadius: '50%',
+    padding: 'clamp(0.5rem, 1.2vw, 1rem)',
+    boxShadow: '0 0 25px rgba(76, 29, 149, 0.9)',
+    zIndex: 3,
+  },
+  responsive: {
+    large: {
+      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4vw, 3.5rem)' },
+      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
+      timeline: { padding: '0 clamp(0.5rem, 1.8vw, 1.2rem)' },
+      content: { padding: 'clamp(2rem, 3.5vw, 2.8rem)', width: 'clamp(320px, 45%, 600px)' },
+      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
+      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(400px, 55vw, 700px)', height: 'clamp(400px, 55vw, 700px)', top: '-15%', left: '-15%' },
+    },
+    medium: {
+      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
+      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      timeline: { padding: '0 clamp(0.5rem, 1.5vw, 1rem)' },
+      content: { padding: 'clamp(1.8rem, 3vw, 2.5rem)', width: 'clamp(280px, 45%, 500px)' },
+      cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
+      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+    },
+    small: {
+      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
+      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
+      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
+      timeline: { padding: '0 clamp(0.5rem, 1.2vw, 0.8rem)' },
+      content: { padding: 'clamp(1.5rem, 2.5vw, 2rem)', width: 'clamp(260px, 80%, 400px)' },
+      cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
+      holographicGlow: { width: 'clamp(250px, 40vw, 400px)', height: 'clamp(250px, 40vw, 400px)', top: '-10%', left: '-10%' },
+    },
   },
 };
 
-// Animation keyframes (to be added to About.css)
+// Inline Animation Styles
 const animationStyles = `
-  @keyframes pulseGlow {
-    from { text-shadow: 0 0 20px rgba(0, 255, 204, 0.6); }
-    to { text-shadow: 0 0 50px rgba(0, 255, 204, 0.9), 0 0 70px rgba(255, 51, 153, 0.6); }
+  @keyframes holographicPulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  @keyframes glowShift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(70px, 70px) scale(1.12); }
   }
 `;
 
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0, scale: 0.88 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 1.8, ease: 'easeOut', staggerChildren: 0.25 },
+  },
+};
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -80, rotateX: -12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { duration: 1.2, type: 'spring', stiffness: 130, damping: 16 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 100, scale: 0.82 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.9, type: 'spring', stiffness: 120, damping: 15 },
+  },
+};
+
+const contentChildVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
 const About = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.88, 1]);
+
+  // Apply responsive styles based on window width
+  const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
+                         windowWidth <= 768 ? styles.responsive.medium :
+                         styles.responsive.large;
 
   return (
-    <div className="about-wrapper" style={styles.wrapper}>
+    <motion.section
+      style={{ ...styles.container, ...responsiveStyles.container, opacity, scale }}
+      variants={containerVariants}
+      initial='hidden'
+      animate='visible'
+      role='region'
+      aria-label='About section'
+    >
       <style>{animationStyles}</style>
+      {/* Background Particles */}
+      {[...Array(12)].map((_, i) => (
+        <motion.div
+          key={i}
+          style={{
+            position: 'absolute',
+            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
+            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
+            background: 'radial-gradient(circle, rgba(76, 29, 149, 0.4), rgba(192, 38, 211, 0.2))',
+            borderRadius: '50%',
+            top: `${5 + i * 4}%`,
+            left: `${5 + i * 3}%`,
+            pointerEvents: 'none',
+          }}
+          animate={{
+            y: [0, -50, 0],
+            opacity: [0.3, 0.8, 0.3],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      ))}
+      {/* Holographic Glow */}
       <motion.div
-        className="orbiting-circle"
-        style={{ ...styles.orbitingCircle, scale }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 15s ease-in-out infinite' }}
       />
-
-      {/* Intro Section */}
-      <motion.section
-        className="fullscreen-card"
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+      {/* Header Section */}
+      <motion.div
+        style={{ ...styles.header, ...responsiveStyles.header }}
+        variants={headerVariants}
+      >
+        <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate' }}>
+          👋 About Siva Satya Sai Bhagavan
+        </h2>
+        <div style={styles.titleUnderline} />
+        <p style={{ ...styles.introText, ...responsiveStyles.introText }}>
+          Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
+        </p>
+      </motion.div>
+      {/* Timeline Section */}
+      <motion.div
+        style={{ ...styles.timeline, ...responsiveStyles.timeline }}
+        variants={containerVariants}
       >
         <motion.div
-          className="beast-about-container"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.h2 className="beast-about-title" variants={floatIn} style={styles.title}>
-            👋 Hi, I'm <span className="highlight" style={{ color: "#ff33cc" }}>Siva Satya Sai Bhagavan</span>
-          </motion.h2>
-          <motion.p className="beast-about-subtitle" variants={floatIn} style={styles.subtitle}>
-            Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
-          </motion.p>
-        </motion.div>
-      </motion.section>
-
-      {/* Info Sections */}
-      {sections.map((section, index) => {
-        const ref = useRef(null);
-        const isInView = useInView(ref, { margin: "-50% 0px -50% 0px", once: false });
-        const isEven = index % 2 === 0;
-
-        return (
-          <motion.section
-            ref={ref}
-            key={section.title}
-            className="fullscreen-card"
-            custom={{ isEven }}
-            variants={sectionVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            whileHover={{ scale: 1.03, boxShadow: "0 20px 60px rgba(0, 255, 204, 0.8)" }}
-            style={styles.section}
-          >
-            <motion.div className="beast-about-section" whileHover={{ scale: 1.02 }}>
-              <motion.h3
-                initial={{ opacity: 0, y: -20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-                transition={{ delay: 0.2, duration: 0.7 }}
-                style={{ fontSize: "2.2rem", color: "#00ffcc", textShadow: "0 0 15px rgba(0, 255, 204, 0.6)" }}
-              >
-                {section.title}
-              </motion.h3>
-              <motion.ul
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ delay: 0.4, staggerChildren: 0.1 }}
-              >
-                {section.items.map((item, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? -30 : 30 }}
-                    transition={{ duration: 0.6 }}
-                    style={{ fontSize: "1.1rem", margin: "0.8rem 0", color: "#d1d5db" }}
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
-            </motion.div>
-          </motion.section>
-        );
-      })}
-
-      {/* Tech Stack */}
-      <motion.section
-        className="fullscreen-card"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1.4 }}
-      >
-        <motion.div className="tech-stack-section" variants={floatIn} style={styles.section}>
-          <motion.h4
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            style={{ fontSize: "2rem", color: "#00ffcc", textShadow: "0 0 15px rgba(0, 255, 204, 0.6)" }}
-          >
-            🚀 Core Technologies
-          </motion.h4>
-          <motion.div className="tech-stack-grid" style={styles.techGrid}>
-            {techStack.map((tech, i) => (
+          style={styles.timelineLine}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: '100%', opacity: 1 }}
+          transition={{ duration: 1.8, delay: 0.6 }}
+        />
+        <AnimatePresence>
+          {aboutData.map((section, index) => {
+            const IconComp = section.icon;
+            return (
               <motion.div
-                key={tech.name}
-                className="tech-icon-with-label"
-                custom={i}
-                variants={badgeVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false }}
-                whileHover={{
-                  scale: 1.2,
-                  boxShadow: "0 0 20px rgba(0, 255, 204, 0.8)",
-                  color: "#ff33cc",
-                }}
-                style={styles.techItem}
+                key={section.title}
+                style={styles.item}
+                variants={itemVariants}
+                initial='hidden'
+                whileInView='visible'
+                viewport={{ once: true, margin: '-50px' }}
               >
-                <div className="icon" style={{ fontSize: "2rem" }}>
-                  {React.cloneElement(tech.icon, { style: { color: "#00ffcc", textShadow: "0 0 10px rgba(0, 255, 204, 0.5)" } })}
-                </div>
-                <div className="tech-label" style={{ fontSize: "0.9rem", color: "#f0f0f5" }}>
-                  {tech.name}
-                </div>
+                <motion.div
+                  style={{
+                    ...styles.content,
+                    ...responsiveStyles.content,
+                    ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
+                  }}
+                  whileHover={{
+                    scale: 1.08,
+                    boxShadow: '0 30px 70px rgba(76, 29, 149, 0.6), 0 0 90px rgba(192, 38, 211, 0.5)',
+                    translateY: -12,
+                  }}
+                  whileTap={{ scale: 0.92 }}
+                >
+                  <motion.div
+                    style={{ ...styles.contentOverlay }}
+                  />
+                  <motion.h3
+                    style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
+                    variants={contentChildVariants}
+                    initial='hidden'
+                    animate='visible'
+                    transition={{ delay: index * 0.12 + 0.2 }}
+                  >
+                    <IconComp style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
+                    {section.title}
+                  </motion.h3>
+                  {section.items.length > 0 && (
+                    <motion.ul
+                      style={{ listStyle: 'disc', paddingLeft: '1.5rem' }}
+                      variants={contentChildVariants}
+                      initial='hidden'
+                      animate='visible'
+                      transition={{ delay: index * 0.12 + 0.3 }}
+                    >
+                      {section.items.map((item, i) => (
+                        <motion.li
+                          key={i}
+                          style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
+                          variants={contentChildVariants}
+                          initial='hidden'
+                          animate='visible'
+                          transition={{ delay: index * 0.12 + 0.4 + i * 0.1 }}
+                        >
+                          {item}
+                        </motion.li>
+                      ))}
+                    </motion.ul>
+                  )}
+                  <motion.p
+                    style={styles.techLabel}
+                    variants={contentChildVariants}
+                    initial='hidden'
+                    animate='visible'
+                    transition={{ delay: index * 0.12 + 0.7 }}
+                  >
+                    🔧 Skills & Technologies:
+                  </motion.p>
+                  <motion.div
+                    style={styles.techContainer}
+                    variants={contentChildVariants}
+                    initial='hidden'
+                    animate='visible'
+                    transition={{ delay: index * 0.12 + 0.8 }}
+                  >
+                    {getTechIcons(section.skills)}
+                  </motion.div>
+                </motion.div>
+                <motion.div
+                  style={{
+                    ...styles.iconWrapper,
+                  }}
+                  variants={contentChildVariants}
+                  initial='hidden'
+                  animate='visible'
+                  transition={{ delay: index * 0.12 + 1.0 }}
+                >
+                  <IconComp size='clamp(18px, 2.2vw, 28px)' color='#0d0026' />
+                </motion.div>
               </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </motion.section>
-
-      {/* Skills & Tools */}
-      <motion.section
-        className="fullscreen-card"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1.4 }}
-      >
-        <motion.div className="beast-about-badges" style={styles.section}>
-          <motion.h4
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            style={{ fontSize: "2rem", color: "#00ffcc", textShadow: "0 0 15px rgba(0, 255, 204, 0.6)" }}
-          >
-            📚 Other Tools & Skills
-          </motion.h4>
-          <motion.div className="badge-grid" style={styles.badgeGrid}>
-            {badges.map((badge, i) => (
-              <motion.span
-                key={badge}
-                className="badge"
-                custom={i}
-                variants={badgeVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false }}
-                whileHover={{
-                  scale: 1.15,
-                  background: "rgba(0, 255, 204, 0.2)",
-                  color: "#ff33cc",
-                  y: -8,
-                }}
-                style={styles.badge}
-              >
-                {badge}
-              </motion.span>
-            ))}
-          </motion.div>
-        </motion.div>
-      </motion.section>
-    </div>
+            );
+          })}
+        </AnimatePresence>
+      </motion.div>
+    </motion.section>
   );
 };
 
