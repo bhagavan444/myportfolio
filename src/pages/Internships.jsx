@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { FaExternalLinkAlt, FaBriefcase } from 'react-icons/fa';
 import {
   SiMongodb,
@@ -18,25 +18,26 @@ import {
   SiSocketdotio,
   SiCloudinary,
   SiNumpy,
+  SiKeras,
 } from 'react-icons/si';
 
-// Tech icon mapping function
+// Enhanced Tech icon mapping function with more icons
 const getTechIcons = (tech) => {
   const iconMap = {
-    MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
-    Express: { icon: <SiExpress />, label: 'Express' },
-    'Express.js': { icon: <SiExpress />, label: 'Express.js' },
-    React: { icon: <SiReact />, label: 'React' },
-    'React.js': { icon: <SiReact />, label: 'React.js' },
-    Node: { icon: <SiNodedotjs />, label: 'Node.js' },
-    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js' },
-    Flask: { icon: <SiFlask />, label: 'Flask' },
-    Python: { icon: <SiPython />, label: 'Python' },
-    Firebase: { icon: <SiFirebase />, label: 'Firebase' },
-    'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth' },
-    HTML: { icon: <SiHtml5 />, label: 'HTML' },
-    CSS: { icon: <SiCss3 />, label: 'CSS' },
-    CSS3: { icon: <SiCss3 />, label: 'CSS3' },
+    MongoDB: { icon: <SiMongodb />, label: 'MongoDB', color: '#47A248' },
+    Express: { icon: <SiExpress />, label: 'Express', color: '#000000' },
+    'Express.js': { icon: <SiExpress />, label: 'Express.js', color: '#000000' },
+    React: { icon: <SiReact />, label: 'React', color: '#61DAFB' },
+    'React.js': { icon: <SiReact />, label: 'React.js', color: '#61DAFB' },
+    Node: { icon: <SiNodedotjs />, label: 'Node.js', color: '#339933' },
+    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js', color: '#339933' },
+    Flask: { icon: <SiFlask />, label: 'Flask', color: '#000000' },
+    Python: { icon: <SiPython />, label: 'Python', color: '#3776AB' },
+    Firebase: { icon: <SiFirebase />, label: 'Firebase', color: '#FFCA28' },
+    'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth', color: '#FFCA28' },
+    HTML: { icon: <SiHtml5 />, label: 'HTML', color: '#E44D26' },
+    CSS: { icon: <SiCss3 />, label: 'CSS', color: '#1572B6' },
+    CSS3: { icon: <SiCss3 />, label: 'CSS3', color: '#1572B6' },
     'HTML/CSS': {
       icon: (
         <>
@@ -44,65 +45,66 @@ const getTechIcons = (tech) => {
         </>
       ),
       label: 'HTML/CSS',
+      color: '#E44D26',
     },
-    'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn' },
-    TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow' },
-    Pandas: { icon: <SiPandas />, label: 'Pandas' },
-    Numpy: { icon: <SiNumpy />, label: 'Numpy' },
-    Numpys: { icon: <SiNumpy />, label: 'Numpy' },
-    OpenAI: { icon: <SiOpenai />, label: 'OpenAI' },
-    'OpenAI API': { icon: <SiOpenai />, label: 'OpenAI API' },
-    Socket: { icon: <SiSocketdotio />, label: 'Socket.io' },
-    'Socket.io': { icon: <SiSocketdotio />, label: 'Socket.io' },
-    Cloudinary: { icon: <SiCloudinary />, label: 'Cloudinary' },
-    TFIDF: { icon: null, label: 'TF-IDF' },
-    'TF-IDF': { icon: null, label: 'TF-IDF' },
-    NLTK: { icon: null, label: 'NLTK' },
-    Keras: { icon: null, label: 'Keras' },
-    LangChain: { icon: null, label: 'LangChain' },
+    'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn', color: '#F7931E' },
+    TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow', color: '#FF6F00' },
+    Pandas: { icon: <SiPandas />, label: 'Pandas', color: '#150458' },
+    Numpy: { icon: <SiNumpy />, label: 'Numpy', color: '#013243' },
+    Numpys: { icon: <SiNumpy />, label: 'Numpy', color: '#013243' },
+    OpenAI: { icon: <SiOpenai />, label: 'OpenAI', color: '#412991' },
+    'OpenAI API': { icon: <SiOpenai />, label: 'OpenAI API', color: '#412991' },
+    Socket: { icon: <SiSocketdotio />, label: 'Socket.io', color: '#010101' },
+    'Socket.io': { icon: <SiSocketdotio />, label: 'Socket.io', color: '#010101' },
+    Cloudinary: { icon: <SiCloudinary />, label: 'Cloudinary', color: '#3448C5' },
+    TFIDF: { icon: null, label: 'TF-IDF', color: '#6B7280' },
+    'TF-IDF': { icon: null, label: 'TF-IDF', color: '#6B7280' },
+    NLTK: { icon: null, label: 'NLTK', color: '#6B7280' },
+    Keras: { icon: <SiKeras />, label: 'Keras', color: '#D00000' },
+    LangChain: { icon: null, label: 'LangChain', color: '#6B7280' },
   };
 
-  return tech.split(', ').map((t, i) => (
-    <motion.span
-      key={i}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 'clamp(6px, 1vw, 8px)',
-        margin: 'clamp(4px, 0.8vw, 6px)',
-        padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-        background: 'rgba(76, 29, 149, 0.15)',
-        borderRadius: 'clamp(8px, 1.2vw, 10px)',
-        border: '1px solid rgba(76, 29, 149, 0.3)',
-      }}
-      whileHover={{
-        scale: 1.15,
-        rotate: 3,
-        boxShadow: '0 0 15px rgba(76, 29, 149, 0.7)',
-        background: 'rgba(76, 29, 149, 0.3)',
-      }}
-      whileTap={{ scale: 0.9 }}
-      transition={{ type: 'spring', stiffness: 300 }}
-    >
-      {iconMap[t] ? (
-        <>
+  return tech.split(', ').map((t, i) => {
+    const mapped = iconMap[t] || { icon: null, label: t, color: '#6B7280' };
+    return (
+      <motion.span
+        key={i}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 'clamp(6px, 1vw, 8px)',
+          margin: 'clamp(4px, 0.8vw, 6px)',
+          padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
+          background: 'rgba(76, 29, 149, 0.15)',
+          borderRadius: 'clamp(8px, 1.2vw, 10px)',
+          border: '1px solid rgba(76, 29, 149, 0.3)',
+          cursor: 'pointer',
+        }}
+        whileHover={{
+          scale: 1.15,
+          rotate: [0, 5, -5, 0],
+          boxShadow: `0 0 15px ${mapped.color}80`,
+          background: `rgba(76, 29, 149, 0.3)`,
+        }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+      >
+        {mapped.icon && (
           <motion.span
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.08 }}
-            style={{ color: '#c026d3', textShadow: '0 0 10px rgba(76, 29, 149, 0.5)' }}
+            initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ delay: i * 0.08, duration: 0.4 }}
+            style={{ color: mapped.color, textShadow: `0 0 10px ${mapped.color}50` }}
           >
-            {iconMap[t].icon}
+            {mapped.icon}
           </motion.span>
-          <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
-            {iconMap[t].label}
-          </span>
-        </>
-      ) : (
-        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>{t}</span>
-      )}
-    </motion.span>
-  ));
+        )}
+        <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
+          {mapped.label}
+        </span>
+      </motion.span>
+    );
+  });
 };
 
 // Internship Data
@@ -133,7 +135,7 @@ const internshipData = [
   },
 ];
 
-// Inline Styles
+// Inline Styles with enhancements
 const styles = {
   container: {
     minHeight: '100vh',
@@ -233,13 +235,13 @@ const styles = {
     border: '1px solid rgba(76, 29, 149, 0.3)',
     borderRadius: 'clamp(14px, 2.5vw, 20px)',
     padding: 'clamp(2rem, 4vw, 3rem)',
-    width: 'clamp(300px, 45%, 600px)',
     textAlign: 'left',
     backdropFilter: 'blur(18px)',
     boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(76, 29, 149, 0.25)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
+    transition: 'all 0.3s ease',
   },
   contentLeft: { marginRight: 'auto' },
   contentRight: { marginLeft: 'auto' },
@@ -299,6 +301,7 @@ const styles = {
     boxShadow: '0 0 10px rgba(76, 29, 149, 0.5)',
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.7vw, 0.5rem)',
+    transition: 'all 0.3s ease',
   },
   iconWrapper: {
     position: 'absolute',
@@ -345,7 +348,7 @@ const styles = {
   },
 };
 
-// Inline Animation Styles
+// Enhanced Inline Animation Styles
 const animationStyles = `
   @keyframes holographicPulse {
     0%, 100% { opacity: 0.7; }
@@ -363,42 +366,52 @@ const animationStyles = `
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
   }
+  @keyframes neonFlicker {
+    0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(76, 29, 149, 0.5); }
+    20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.6; text-shadow: 0 0 5px rgba(76, 29, 149, 0.3); }
+  }
+  @keyframes floatGlow {
+    0% { transform: translateY(0px); box-shadow: 0 0 20px rgba(76, 29, 149, 0.7); }
+    50% { transform: translateY(-10px); box-shadow: 0 0 30px rgba(76, 29, 149, 1); }
+    100% { transform: translateY(0px); box-shadow: 0 0 20px rgba(76, 29, 149, 0.7); }
+  }
 `;
 
-// Animation Variants
+// Enhanced Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.88 },
+  hidden: { opacity: 0, scale: 0.85, rotateX: -10 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 1.8, ease: 'easeOut', staggerChildren: 0.25 },
+    rotateX: 0,
+    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.2, when: 'beforeChildren' },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -80, rotateX: -12 },
+  hidden: { opacity: 0, y: -100, rotateX: -15 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.2, type: 'spring', stiffness: 130, damping: 16 },
+    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 20 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 100, scale: 0.82, rotateY: -20 },
+  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 0.9, type: 'spring', stiffness: 120, damping: 15 },
+    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 18 },
   },
 };
 
 const contentChildVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, x: -50, scale: 0.9 },
+  visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
 };
 
 const Internships = () => {
@@ -411,8 +424,8 @@ const Internships = () => {
   }, []);
 
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.88, 1]);
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 100, damping: 20 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 100, damping: 20 });
 
   // Apply responsive styles based on window width
   const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
@@ -429,8 +442,8 @@ const Internships = () => {
       aria-label='Internships section'
     >
       <style>{animationStyles}</style>
-      {/* Background Particles */}
-      {[...Array(12)].map((_, i) => (
+      {/* Enhanced Background Particles */}
+      {[...Array(15)].map((_, i) => (
         <motion.div
           key={i}
           style={{
@@ -444,26 +457,38 @@ const Internships = () => {
             pointerEvents: 'none',
           }}
           animate={{
-            y: [0, -50, 0],
+            y: [0, -60, 0],
             opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.3, 1],
+            scale: [1, 1.5, 1],
+            rotate: [0, 180, 360],
           }}
-          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
       {/* Holographic Glow */}
       <motion.div
-        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 15s ease-in-out infinite' }}
+        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow }}
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.35, 0.5, 0.35],
+          x: [-30, 30, -30],
+          y: [-30, 30, -30],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
       {/* Header Section */}
       <motion.div
         style={{ ...styles.header, ...responsiveStyles.header }}
         variants={headerVariants}
       >
-        <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate' }}>
+        <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate, neonFlicker 3s infinite' }}>
           💼 My Internship Journey
         </h2>
-        <div style={styles.titleUnderline} />
+        <motion.div 
+          style={styles.titleUnderline}
+          animate={{ scaleX: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        />
         <p style={{ ...styles.introText, ...responsiveStyles.introText }}>
           A showcase of my professional experience, highlighting my contributions to real-world projects in AI, Machine Learning, and Data Science during internships.
         </p>
@@ -477,7 +502,7 @@ const Internships = () => {
           style={styles.timelineLine}
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: '100%', opacity: 1 }}
-          transition={{ duration: 1.8, delay: 0.6 }}
+          transition={{ duration: 2, delay: 0.5, ease: 'easeInOut' }}
         />
         <AnimatePresence>
           {internshipData.map((intern, index) => {
@@ -497,11 +522,18 @@ const Internships = () => {
                     ...responsiveStyles.content,
                     ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
                   }}
-                  
-                  whileTap={{ scale: 0.92, rotateZ: -5 }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    rotateY: 5, 
+                    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(76, 29, 149, 0.5)' 
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  animate={{ animation: 'floatGlow 4s ease-in-out infinite' }}
                 >
                   <motion.div
-                    style={{ ...styles.contentOverlay, animation: 'rotateGlow 10s linear infinite' }}
+                    style={{ ...styles.contentOverlay }}
+                    animate={{ opacity: [0.45, 0.65, 0.45], rotate: [0, 360] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
                   />
                   <motion.h3
                     style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
@@ -572,6 +604,7 @@ const Internships = () => {
                         scale: 1.15,
                         boxShadow: '0 15px 50px rgba(192, 38, 211, 0.6)',
                         translateY: -3,
+                        background: 'linear-gradient(90deg, #7c3aed, #d946ef)',
                       }}
                       whileTap={{ scale: 0.95 }}
                       aria-label={`View certificate for ${intern.title}`}
@@ -584,8 +617,9 @@ const Internships = () => {
                 <motion.div
                   style={{
                     ...styles.iconWrapper,
-                    animation: 'rotateIcon 12s linear infinite',
                   }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   variants={contentChildVariants}
                   initial='hidden'
                   animate='visible'

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense, Component } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { FaCode, FaBrain, FaLink } from 'react-icons/fa';
 import {
   SiMongodb,
   SiExpress,
@@ -13,146 +14,156 @@ import {
   SiScikitlearn,
   SiTensorflow,
   SiPandas,
-  SiOpenai,
-  SiSocketdotio,
-  SiCloudinary,
   SiNumpy,
+  SiAmazon,
+  SiDjango,
+  SiTailwindcss,
 } from 'react-icons/si';
 
-// Tech icon mapping function
-const getTechIcons = (tech) => {
-  const iconMap = {
+// Error Boundary Component
+class ProjectCardErrorBoundary extends Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ color: '#f0faff', textAlign: 'center', padding: '2rem' }}>
+          Error loading project card. Please try again.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// Tech Icon Component
+const TechIcon = React.memo(({ tech, index }) => {
+  const iconMap = useMemo(() => ({
     MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
-    Express: { icon: <SiExpress />, label: 'Express' },
-    'Express.js': { icon: <SiExpress />, label: 'Express.js' },
-    React: { icon: <SiReact />, label: 'React' },
-    'React.js': { icon: <SiReact />, label: 'React.js' },
+    Express: { icon: <SiExpress />, label: 'Express.js' },
+    React: { icon: <SiReact />, label: 'React.js' },
     Node: { icon: <SiNodedotjs />, label: 'Node.js' },
-    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js' },
     Flask: { icon: <SiFlask />, label: 'Flask' },
     Python: { icon: <SiPython />, label: 'Python' },
     Firebase: { icon: <SiFirebase />, label: 'Firebase' },
     'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth' },
     HTML: { icon: <SiHtml5 />, label: 'HTML' },
-    CSS: { icon: <SiCss3 />, label: 'CSS' },
-    CSS3: { icon: <SiCss3 />, label: 'CSS3' },
-    'HTML/CSS': {
-      icon: (
-        <>
-          <SiHtml5 /> <SiCss3 />
-        </>
-      ),
-      label: 'HTML/CSS',
-    },
+    CSS: { icon: <SiCss3 />, label: 'CSS3' },
+    'HTML/CSS': { icon: [<SiHtml5 key="html" />, <SiCss3 key="css" />], label: 'HTML/CSS' },
     'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn' },
     TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow' },
     Pandas: { icon: <SiPandas />, label: 'Pandas' },
     Numpy: { icon: <SiNumpy />, label: 'Numpy' },
-    Numpys: { icon: <SiNumpy />, label: 'Numpy' },
-    OpenAI: { icon: <SiOpenai />, label: 'OpenAI' },
-    'OpenAI API': { icon: <SiOpenai />, label: 'OpenAI API' },
-    Socket: { icon: <SiSocketdotio />, label: 'Socket.io' },
-    'Socket.io': { icon: <SiSocketdotio />, label: 'Socket.io' },
-    Cloudinary: { icon: <SiCloudinary />, label: 'Cloudinary' },
-    TFIDF: { icon: null, label: 'TF-IDF' },
-    'TF-IDF': { icon: null, label: 'TF-IDF' },
-    NLTK: { icon: null, label: 'NLTK' },
-    Keras: { icon: null, label: 'Keras' },
-    LangChain: { icon: null, label: 'LangChain' },
-  };
+    'TF-IDF': { icon: <FaBrain />, label: 'TF-IDF' },
+    NLTK: { icon: <FaBrain />, label: 'NLTK' },
+    Keras: { icon: <FaBrain />, label: 'Keras' },
+    LangChain: { icon: <FaBrain />, label: 'LangChain' },
+    'Cloud Computing': { icon: <SiAmazon />, label: 'Cloud Computing' },
+    Django: { icon: <SiDjango />, label: 'Django' },
+    'Tailwind CSS': { icon: <SiTailwindcss />, label: 'Tailwind CSS' },
+  }), []);
 
   return tech.split(', ').map((t, i) => (
     <motion.span
-      key={i}
+      key={`${t}-${i}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'clamp(6px, 1vw, 8px)',
-        margin: 'clamp(4px, 0.8vw, 6px)',
-        padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-        background: 'rgba(76, 29, 149, 0.15)',
-        borderRadius: 'clamp(8px, 1.2vw, 10px)',
-        border: '1px solid rgba(76, 29, 149, 0.3)',
+        gap: 'clamp(6px,1vw,8px)',
+        margin: 'clamp(4px,0.8vw,6px)',
+        padding: 'clamp(4px,0.8vw,6px) clamp(8px,1.5vw,10px)',
+        background: 'linear-gradient(45deg, rgba(192,38,211,0.3), rgba(76,29,149,0.3))',
+        borderRadius: 'clamp(8px,1.2vw,10px)',
+        border: '1px solid rgba(255,51,255,0.4)',
+        boxShadow: '0 0 10px rgba(192,38,211,0.5)',
       }}
+      initial={{ opacity: 0, scale: 0.7, rotate: -15 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ delay: index * 0.08 + i * 0.05, type: 'spring', stiffness: 180, damping: 14 }}
+      
     >
       {iconMap[t] ? (
         <>
           <motion.span
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.08 }}
-            style={{ color: '#c026d3', textShadow: '0 0 10px rgba(76, 29, 149, 0.5)' }}
+            transition={{ delay: index * 0.08 + i * 0.05 }}
+            style={{ color: '#ff33ff', textShadow: '0 0 10px rgba(192,38,211,0.7)', fontSize: 'clamp(1rem,1.8vw,1.2rem)' }}
           >
-            {iconMap[t].icon}
+            {Array.isArray(iconMap[t].icon) ? iconMap[t].icon : iconMap[t].icon}
           </motion.span>
-          <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
+          <span style={{ color: '#f0faff', fontSize: 'clamp(0.85rem,1.8vw,1rem)', fontWeight: 600 }}>
             {iconMap[t].label}
           </span>
         </>
       ) : (
-        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>{t}</span>
+        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem,1.8vw,1rem)', fontWeight: 600 }}>{t}</span>
       )}
     </motion.span>
   ));
-};
+});
 
-// Project data
+// Project Data
 const projectData = [
   {
     title: '🧠 Enhance Resume Builder',
-    description:
-      'An intelligent MERN stack application that allows users to create professional resumes with modern templates, scoring using ATS.',
-    tech: 'MongoDB, Express.js, React.js, Node.js, Firebase Auth, HTML/CSS',
+    description: 'An intelligent MERN stack application that allows users to create professional resumes with modern templates, scoring using ATS.',
+    tech: 'MongoDB, Express, React, Node, Firebase Auth, HTML/CSS',
     link: 'https://github.com/bhagavan444/resumebuilder',
+    category: 'Full Stack',
   },
   {
     title: '🍏 Fruit & Vegetable Disease Classifier',
-    description:
-      'Flask + MobileNetV2-based image classifier to detect fruit/vegetable health. Real-time prediction and animated UI.',
-    tech: 'TensorFlow, Keras, Flask, React, CSS3, Python',
+    description: 'Flask + MobileNetV2-based image classifier to detect fruit/vegetable health. Real-time prediction and animated UI.',
+    tech: 'TensorFlow, Keras, Flask, React, CSS, Python',
     link: 'https://github.com/bhagavan444/smartbidgeproject',
+    category: 'Machine Learning',
   },
   {
     title: '🎯 Career Recommendation System',
-    description:
-      "ML-powered system recommending careers based on user's data. Includes predictions, roadmap, and resources.",
-    tech: 'Python, Flask, React.js, Scikit-learn, Pandas, HTML/CSS',
+    description: "ML-powered system recommending careers based on user's data. Includes predictions, roadmap, and resources.",
+    tech: 'Python, Flask, React, Scikit-learn, Pandas, HTML/CSS',
     link: 'https://github.com/bhagavan444/career-path-project',
+    category: 'Machine Learning',
   },
   {
     title: '💻 2nd Hand Electronics Platform',
-    description:
-      'Full-stack app for buying/selling electronics. Built during a hackathon with real-time chat, image uploads, auth.',
-    tech: 'MongoDB, Express, React, Node.js, Cloudinary, Socket.io',
+    description: 'Full-stack app for buying/selling electronics. Built during a hackathon with real-time chat, image uploads, auth.',
+    tech: 'MongoDB, Express, React, Node, Cloud Computing, Django',
     link: 'https://github.com/bhagavan444/hackathon-project',
+    category: 'Full Stack',
   },
   {
     title: '❌ Fake News Detector',
-    description:
-      'An AI-driven app that detects fake news using TF-IDF, NLP, and classification models.',
+    description: 'An AI-driven app that detects fake news using TF-IDF, NLP, and classification models.',
     tech: 'Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS',
     link: 'https://github.com/bhagavan444/fake-news-detector',
+    category: 'Machine Learning',
   },
   {
     title: '📖 Smart Career Chatbot',
-    description:
-      'LangChain + OpenAI-based chatbot that recommends careers through interactive dialogue.',
-    tech: 'LangChain, OpenAI API, Flask, React',
+    description: 'LangChain-based chatbot that recommends careers through interactive dialogue, powered by AI.',
+    tech: 'LangChain, Flask, React, Python',
     link: 'https://github.com/bhagavan444/smart-career-chatbot',
+    category: 'Machine Learning',
   },
   {
     title: '📑 Diabetes Predictor',
-    description:
-      'A Flask ML app predicting diabetes from user medical data. Simple and elegant UI.',
+    description: 'A Flask ML app predicting diabetes from user medical data. Simple and elegant UI.',
     tech: 'Python, Flask, Scikit-learn, Pandas, HTML/CSS',
     link: 'https://github.com/bhagavan444/diabetes-predictor-app',
+    category: 'Machine Learning',
   },
   {
     title: '📊 ML Projects – Health Risk Predictions',
-    description:
-      'Collection of mini-ML projects including diabetes, heart, and cancer risk predictors.',
-    tech: 'Python, Flask, Scikit-learn, Pandas, TensorFlow, Numpys',
+    description: 'Collection of mini-ML projects including diabetes, heart, and cancer risk predictors.',
+    tech: 'Python, Flask, Scikit-learn, Pandas, TensorFlow, Numpy',
     link: 'https://github.com/bhagavan444',
+    category: 'Machine Learning',
   },
 ];
 
@@ -160,203 +171,315 @@ const projectData = [
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(3rem, 8vw, 7rem) clamp(1.5rem, 3.5vw, 3rem)',
-    background: 'linear-gradient(155deg, #1a0033, #2a0055, #3b0088, #4c00bb)',
-    backgroundSize: '500% 500%',
-    color: '#f5f7fa',
-    overflowX: 'hidden',
+    padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)',
+    background: 'linear-gradient(165deg, #0d001a, #1a0033, #2a0055, #3b0088)',
+    backgroundSize: '800% 800%',
+    color: '#f0faff',
+    overflow: 'hidden',
     position: 'relative',
-    perspective: '1600px',
-    fontFamily: "'Inter', 'Montserrat', sans-serif",
+    perspective: '2500px',
+    fontFamily: "'Orbitron', 'Inter', sans-serif",
     willChange: 'background, transform',
+    animation: 'shimmer 12s ease-in-out infinite',
   },
-  overlay: {
+  scanlineOverlay: {
     position: 'absolute',
     inset: 0,
-    background: `
-      radial-gradient(circle at 10% 15%, rgba(76, 29, 149, 0.3), transparent 50%),
-      radial-gradient(circle at 90% 85%, rgba(192, 38, 211, 0.3), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)
-    `,
-    zIndex: -1,
+    background: 'linear-gradient(to bottom, transparent, rgba(255,51,255,0.1) 50%, transparent)',
     pointerEvents: 'none',
+    zIndex: 1,
+    animation: 'scanline 6s linear infinite',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(400px, 60vw, 700px)',
-    height: 'clamp(400px, 60vw, 700px)',
-    background: 'radial-gradient(circle, rgba(76, 29, 149, 0.35), transparent 60%)',
-    top: '-15%',
-    left: '-15%',
-    filter: 'blur(120px)',
-    zIndex: -1,
+    width: 'clamp(500px,70vw,1000px)',
+    height: 'clamp(500px,70vw,1000px)',
+    background: 'linear-gradient(45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
+    top: '-25%',
+    left: '-25%',
+    filter: 'blur(160px)',
+    zIndex: -2,
+    animation: 'rotateGlow 15s linear infinite',
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(2.5rem, 4.5vw, 4rem)',
-    background: 'rgba(10, 0, 30, 0.85)',
-    border: '1px solid rgba(76, 29, 149, 0.4)',
-    borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(76, 29, 149, 0.3)',
-    backdropFilter: 'blur(16px)',
-    maxWidth: 'clamp(700px, 90vw, 1100px)',
-    margin: '0 auto clamp(3rem, 6vw, 5rem)',
+    padding: 'clamp(3rem,5vw,5rem)',
+    background: 'rgba(10,0,30,0.95)',
+    borderRadius: 'clamp(20px,2.5vw,24px)',
+    boxShadow: '0 40px 80px rgba(0,0,0,0.9), 0 0 80px rgba(255,51,255,0.5)',
+    backdropFilter: 'blur(25px)',
+    maxWidth: 'clamp(800px,95vw,1400px)',
+    margin: '0 auto clamp(4rem,8vw,6rem)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  headerGlow: {
+    position: 'absolute',
+    inset: 0,
+    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.4), rgba(76,29,149,0.4), transparent)',
+    opacity: 0.6,
+    zIndex: -1,
   },
   title: {
-    fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
+    fontSize: 'clamp(3rem,7vw,6rem)',
     fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3, #3b82f6)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6, #00ccff)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 35px rgba(76, 29, 149, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
-    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
-    letterSpacing: '0.12em',
+    textShadow: '0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7)',
+    marginBottom: 'clamp(1rem,2.5vw,2rem)',
+    letterSpacing: '0.2em',
+    animation: 'neonFlicker 4s ease-in-out infinite alternate, glitch 2s ease-in-out infinite',
   },
   titleUnderline: {
-    width: 'clamp(160px, 30vw, 240px)',
-    height: '5px',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
-    borderRadius: '5px',
-    margin: '0.6rem auto',
-    boxShadow: '0 0 20px rgba(76, 29, 149, 0.7)',
+    width: 'clamp(200px,40vw,320px)',
+    height: '8px',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    borderRadius: '8px',
+    margin: '1rem auto',
+    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
   },
   filterBar: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 'clamp(0.8rem, 1.8vw, 1.2rem)',
-    marginBottom: 'clamp(2rem, 4vw, 3rem)',
+    gap: 'clamp(1.2rem,2.5vw,2rem)',
+    marginBottom: 'clamp(3rem,6vw,5rem)',
     flexWrap: 'wrap',
+    position: 'relative',
   },
   filterBtn: {
-    padding: 'clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.6rem)',
-    background: 'rgba(76, 29, 149, 0.2)',
-    border: '1px solid rgba(76, 29, 149, 0.4)',
-    borderRadius: 'clamp(12px, 1.8vw, 16px)',
-    color: '#e0e7ff',
+    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
+    background: 'rgba(255,51,255,0.2)',
+    border: '2px solid rgba(255,51,255,0.4)',
+    borderRadius: 'clamp(16px,2.2vw,20px)',
+    color: '#f0faff',
     cursor: 'pointer',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    fontWeight: '600',
-    boxShadow: '0 0 10px rgba(76, 29, 149, 0.3)',
+    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
+    fontWeight: '700',
+    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
+    position: 'relative',
+    overflow: 'hidden',
   },
   activeFilter: {
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
-    color: '#f5f7fa',
-    boxShadow: '0 0 15px rgba(76, 29, 149, 0.7)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    color: '#f0faff',
+    boxShadow: '0 0 25px rgba(255,51,255,0.9)',
+  },
+  filterGlow: {
+    position: 'absolute',
+    inset: 0,
+    background: 'radial-gradient(circle at 50% 50%, rgba(255,51,255,0.5), transparent 70%)',
+    opacity: 0,
+    zIndex: -1,
+    transition: 'opacity 0.3s ease',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 360px), 1fr))',
-    gap: 'clamp(1.8rem, 3.5vw, 3rem)',
-    maxWidth: 'clamp(800px, 95vw, 1600px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))',
+    gap: 'clamp(2.5rem,5vw,4rem)',
+    maxWidth: 'clamp(900px,95vw,2000px)',
     margin: '0 auto',
-    perspective: '1600px',
+    perspective: '2500px',
   },
   card: {
-    background: 'rgba(10, 0, 30, 0.9)',
-    border: '1px solid rgba(76, 29, 149, 0.3)',
-    borderRadius: 'clamp(14px, 2.5vw, 20px)',
-    padding: 'clamp(2rem, 4vw, 3rem)',
+    background: 'rgba(10,0,30,0.9)',
+    borderRadius: 'clamp(20px,3vw,24px)',
+    padding: 'clamp(2.5rem,5vw,3.5rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(18px)',
-    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(76, 29, 149, 0.25)',
+    backdropFilter: 'blur(30px)',
+    boxShadow: '0 40px 80px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,51,255,0.4)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
+    cursor: 'pointer',
   },
   cardOverlay: {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(76, 29, 149, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
     zIndex: -1,
-    opacity: 0.45,
+    opacity: 0.6,
+    animation: 'pulseBorder 2s ease-in-out infinite',
   },
   cardTitle: {
-    fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-    color: '#4c1d95',
-    textShadow: '0 0 18px rgba(76, 29, 149, 0.6)',
-    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
+    fontSize: 'clamp(1.8rem,4vw,2.6rem)',
+    color: '#ff33ff',
+    textShadow: '0 0 25px rgba(255,51,255,0.8)',
+    marginBottom: 'clamp(1.2rem,3vw,1.8rem)',
     fontWeight: '800',
+    animation: 'glitch 2s ease-in-out infinite',
   },
   cardDescription: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    fontSize: 'clamp(1rem,2.2vw,1.3rem)',
+    color: '#f0faff',
+    marginBottom: 'clamp(1.5rem,3vw,2rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+    textShadow: '0 0 15px rgba(255,51,255,0.6)',
   },
   techLabel: {
-    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#c026d3',
-    fontWeight: 'bold',
-    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
+    color: '#ff33ff',
+    fontWeight: '700',
+    marginTop: 'clamp(1.2rem,3vw,1.8rem)',
+    textShadow: '0 0 15px rgba(255,51,255,0.6)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(10px, 2vw, 12px)',
-    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    gap: 'clamp(10px,2vw,12px)',
+    marginTop: 'clamp(0.8rem,2vw,1rem)',
+    marginBottom: 'clamp(1.5rem,3vw,2rem)',
   },
   visitBtn: {
     display: 'inline-flex',
-    padding: 'clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.6rem)',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
-    color: '#f5f7fa',
-    borderRadius: 'clamp(10px, 1.5vw, 14px)',
+    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    color: '#f0faff',
+    borderRadius: 'clamp(12px,1.8vw,16px)',
     textDecoration: 'none',
-    fontWeight: '600',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    boxShadow: '0 0 10px rgba(76, 29, 149, 0.5)',
+    fontWeight: '700',
+    fontSize: 'clamp(1rem,2vw,1.2rem)',
+    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
   },
-  // Responsive styles
+  expandedCard: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'clamp(600px,80vw,1000px)',
+    maxHeight: '80vh',
+    background: 'linear-gradient(135deg, rgba(10,0,30,0.95), rgba(20,10,60,0.95)), url("data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"%3E%3Cdefs%3E%3ClinearGradient id=\"grad\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"%3E%3Cstop offset=\"0%\" stop-color=\"rgba(255,51,255,0.3)\"/%3E%3Cstop offset=\"100%\" stop-color=\"rgba(76,29,149,0.3)\"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=\"200\" height=\"200\" fill=\"url(%23grad)\"/%3E%3C/svg%3E")',
+    backgroundSize: 'cover',
+    borderRadius: 'clamp(24px,3.5vw,28px)',
+    padding: 'clamp(3rem,6vw,4rem)',
+    boxShadow: '0 50px 100px rgba(0,0,0,0.9), 0 0 100px rgba(255,51,255,0.6)',
+    backdropFilter: 'blur(30px)',
+    zIndex: 1000,
+    overflowY: 'auto',
+  },
+  expandedOverlay: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0,0,0,0.8)',
+    zIndex: 999,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 'clamp(1rem,2vw,1.5rem)',
+    right: 'clamp(1rem,2vw,1.5rem)',
+    background: 'transparent',
+    border: 'none',
+    color: '#f0faff',
+    fontSize: 'clamp(1.5rem,3vw,2rem)',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+  },
+  copyButton: {
+    display: 'inline-flex',
+    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
+    background: 'rgba(255,51,255,0.2)',
+    border: '2px solid rgba(255,51,255,0.4)',
+    borderRadius: 'clamp(12px,1.8vw,16px)',
+    color: '#f0faff',
+    fontSize: 'clamp(1rem,2vw,1.2rem)',
+    fontWeight: '700',
+    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
+    cursor: 'pointer',
+    marginLeft: 'clamp(1rem,2vw,1.5rem)',
+  },
+  loadingButton: {
+    opacity: 0.7,
+    cursor: 'not-allowed',
+  },
+  spinner: {
+    display: 'inline-block',
+    width: 'clamp(1.5rem,3vw,2rem)',
+    height: 'clamp(1.5rem,3vw,2rem)',
+    border: '4px solid rgba(255,51,255,0.3)',
+    borderTop: '4px solid #ff33ff',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+  },
   responsive: {
     large: {
-      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
-      header: { padding: 'clamp(2rem, 4vw, 3.5rem)' },
-      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
-      grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(320px, 45vw, 380px), 1fr))' },
-      card: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
-      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
-      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
-      holographicGlow: { width: 'clamp(400px, 55vw, 700px)', height: 'clamp(400px, 55vw, 700px)', top: '-15%', left: '-15%' },
+      container: { padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)' },
+      header: { padding: 'clamp(3rem,5vw,5rem)' },
+      title: { fontSize: 'clamp(3rem,7vw,6rem)' },
+      grid: { gap: 'clamp(2.5rem,5vw,4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))' },
+      card: { padding: 'clamp(2.5rem,5vw,3.5rem)' },
+      cardTitle: { fontSize: 'clamp(1.8rem,4vw,2.6rem)' },
+      cardDescription: { fontSize: 'clamp(1rem,2.2vw,1.3rem)' },
+      holographicGlow: { width: 'clamp(500px,70vw,1000px)', height: 'clamp(500px,70vw,1000px)', top: '-25%', left: '-25%' },
+      expandedCard: { width: 'clamp(600px,80vw,1000px)', padding: 'clamp(3rem,6vw,4rem)' },
     },
     medium: {
-      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
-      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)' },
-      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
-      grid: { gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 45vw, 340px), 1fr))', gap: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
-      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      container: { padding: 'clamp(3rem,8vw,6rem) clamp(1.5rem,3vw,3rem)' },
+      header: { padding: 'clamp(2rem,4vw,4rem)' },
+      title: { fontSize: 'clamp(2.5rem,6vw,5rem)' },
+      grid: { gap: 'clamp(2rem,4vw,3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px,45vw,360px), 1fr))' },
+      card: { padding: 'clamp(2rem,4vw,3rem)' },
+      cardTitle: { fontSize: 'clamp(1.6rem,3.5vw,2.2rem)' },
+      cardDescription: { fontSize: 'clamp(0.95rem,2vw,1.2rem)' },
+      holographicGlow: { width: 'clamp(400px,60vw,800px)', height: 'clamp(400px,60vw,800px)', top: '-20%', left: '-20%' },
+      expandedCard: { width: 'clamp(500px,80vw,800px)', padding: 'clamp(2.5rem,5vw,3.5rem)' },
     },
     small: {
-      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
-      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
-      grid: { gridTemplateColumns: '1fr', gap: 'clamp(1.2rem, 2.5vw, 2rem)' },
-      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
-      cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
-      holographicGlow: { width: 'clamp(250px, 40vw, 400px)', height: 'clamp(250px, 40vw, 400px)', top: '-10%', left: '-10%' },
+      container: { padding: 'clamp(2rem,6vw,5rem) clamp(1rem,2.5vw,2rem)' },
+      header: { padding: 'clamp(1.5rem,3.5vw,3rem)' },
+      title: { fontSize: 'clamp(2rem,5vw,4rem)' },
+      grid: { gap: 'clamp(1.5rem,3vw,2.5rem)', gridTemplateColumns: '1fr' },
+      card: { padding: 'clamp(1.5rem,3vw,2.5rem)' },
+      cardTitle: { fontSize: 'clamp(1.4rem,3vw,2rem)' },
+      cardDescription: { fontSize: 'clamp(0.9rem,1.8vw,1.1rem)' },
+      holographicGlow: { width: 'clamp(300px,50vw,600px)', height: 'clamp(300px,50vw,600px)', top: '-15%', left: '-15%' },
+      expandedCard: { width: 'clamp(300px,90vw,500px)', padding: 'clamp(2rem,4vw,3rem)' },
     },
   },
 };
 
 // Inline Animation Styles
 const animationStyles = `
-  @keyframes holographicPulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
   @keyframes glowShift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(70px, 70px) scale(1.12); }
+    50% { transform: translate(50px, 50px) scale(1.1); }
   }
   @keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes neonFlicker {
+    0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(255,51,255,0.9), 0 0 60px rgba(76,29,149,0.7); }
+    50% { opacity: 0.85; text-shadow: 0 0 20px rgba(255,51,255,0.7), 0 0 40px rgba(76,29,149,0.5); }
+  }
+  @keyframes pulseBorder {
+    0%, 100% { border-color: rgba(255,51,255,0.4); }
+    50% { border-color: rgba(255,51,255,0.9); }
+  }
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); }
+  }
+  @keyframes particleTrail {
+    0% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-40px) scale(1.2); opacity: 0.3; }
+    100% { transform: translateY(-80px) scale(1); opacity: 0; }
+  }
+  @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
@@ -364,214 +487,403 @@ const animationStyles = `
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.88 },
+  hidden: { opacity: 0, scale: 0.85 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 1.8, ease: 'easeOut', staggerChildren: 0.25 },
+    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -80, rotateX: -12 },
+  hidden: { opacity: 0, y: -100, rotateX: -15 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.2, type: 'spring', stiffness: 130, damping: 16 },
+    transition: { duration: 1.5, type: 'spring', stiffness: 140, damping: 14 },
   },
 };
 
 const filterBtnVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-  exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } },
+  hidden: { opacity: 0, scale: 0.8, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.5, type: 'spring', stiffness: 160, damping: 12 },
+  },
+  exit: { opacity: 0, scale: 0.8, y: 30, transition: { duration: 0.4 } },
+  active: {
+    scale: [1, 1.15, 1],
+    boxShadow: ['0 0 10px rgba(255,51,255,0.5)', '0 0 25px rgba(255,51,255,0.9)', '0 0 10px rgba(255,51,255,0.5)'],
+    transition: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' },
+  },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 100, scale: 0.82, rotateY: -20 },
+  hidden: { opacity: 0, y: 120, scale: 0.75, rotateY: 90 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 0.9, type: 'spring', stiffness: 120, damping: 15 },
+    transition: { duration: 1, type: 'spring', stiffness: 130, damping: 15 },
   },
 };
 
 const cardChildVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, x: -40, rotate: -10 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    rotate: 0,
+    transition: { duration: 0.7, type: 'spring', stiffness: 150, damping: 14 },
+  },
 };
+
+const expandedCardVariants = {
+  hidden: { opacity: 0, scale: 0.6, rotateY: 45, x: '-50%', y: '-50%' },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotateY: 0,
+    transition: { duration: 0.7, type: 'spring', stiffness: 110, damping: 13 },
+  },
+  exit: { opacity: 0, scale: 0.6, rotateY: -45, transition: { duration: 0.5 } },
+};
+
+// Lazy-loaded Project Card
+const ProjectCard = React.lazy(() => Promise.resolve({
+  default: ({ project, index, handleCardClick, styles, responsiveStyles }) => (
+    <ProjectCardErrorBoundary>
+      <motion.article
+        style={{ ...styles.card, ...responsiveStyles.card }}
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-100px' }}
+      
+        onClick={() => handleCardClick(project)}
+        tabIndex={0}
+        role="button"
+        aria-label={`View details for ${project.title}`}
+        onKeyDown={(e) => e.key === 'Enter' && handleCardClick(project)}
+      >
+        <motion.div style={styles.cardOverlay} />
+        <motion.h3
+          style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
+          variants={cardChildVariants}
+          transition={{ delay: index * 0.12 + 0.2 }}
+        >
+          {project.title}
+        </motion.h3>
+        <motion.p
+          style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
+          variants={cardChildVariants}
+          transition={{ delay: index * 0.12 + 0.3 }}
+        >
+          {project.description}
+        </motion.p>
+        <motion.p
+          style={styles.techLabel}
+          variants={cardChildVariants}
+          transition={{ delay: index * 0.12 + 0.4 }}
+        >
+          🔧 Tech Used:
+        </motion.p>
+        <motion.div
+          style={styles.techContainer}
+          variants={cardChildVariants}
+          transition={{ delay: index * 0.12 + 0.5 }}
+        >
+          <TechIcon tech={project.tech} index={index} />
+        </motion.div>
+        <motion.a
+          href={project.link}
+          style={styles.visitBtn}
+          target="_blank"
+          rel="noreferrer"
+          variants={cardChildVariants}
+          transition={{ delay: index * 0.12 + 0.6 }}
+          
+        >
+          View Project
+        </motion.a>
+      </motion.article>
+    </ProjectCardErrorBoundary>
+  ),
+}));
 
 const Projects = () => {
   const [filter, setFilter] = useState('All');
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isCopying, setIsCopying] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.4, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.85, 1]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5], [10, 0]);
+  const modalRef = useRef(null);
 
   useEffect(() => {
+    document.body.style.overflow = selectedProject ? 'hidden' : 'auto';
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (selectedProject && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [selectedProject]);
+
+  const techOptions = useMemo(() =>
+    ['All', ...Array.from(new Set(projectData.flatMap((p) => p.tech.split(', ')))).sort()],
+    []
+  );
+
+  const categoryOptions = useMemo(() =>
+    ['All', ...Array.from(new Set(projectData.map((p) => p.category))).sort()],
+    []
+  );
+
+  const filteredProjects = useMemo(() =>
+    filter === 'All' ? projectData : projectData.filter((p) =>
+      filter === p.category || p.tech.includes(filter)
+    ),
+    [filter]
+  );
+
+  const responsiveStyles = useMemo(() =>
+    windowWidth <= 480 ? styles.responsive.small :
+    windowWidth <= 768 ? styles.responsive.medium :
+    styles.responsive.large,
+    [windowWidth]
+  );
+
+  const handleCardClick = useCallback((project) => {
+    setSelectedProject(project);
   }, []);
 
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.88, 1]);
+  const handleClose = useCallback(() => {
+    setSelectedProject(null);
+  }, []);
 
-  const techOptions = [
-    'All',
-    ...Array.from(new Set(projectData.flatMap((p) => p.tech.split(', ')))).sort(),
-  ];
-
-  const filteredProjects = filter === 'All' ? projectData : projectData.filter((p) => p.tech.includes(filter));
-
-  // Apply responsive styles based on window width
-  const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
-                         windowWidth <= 768 ? styles.responsive.medium :
-                         styles.responsive.large;
+  const handleCopyLink = useCallback((link) => {
+    setIsCopying(true);
+    navigator.clipboard.writeText(link).then(() => {
+      alert('Link copied to clipboard!');
+      setIsCopying(false);
+    }).catch(() => {
+      alert('Failed to copy link.');
+      setIsCopying(false);
+    });
+  }, []);
 
   return (
     <motion.section
-      style={{ ...styles.container, ...responsiveStyles.container, opacity, scale }}
+      style={{ ...styles.container, ...responsiveStyles.container, opacity, scale, rotateX }}
       variants={containerVariants}
-      initial='hidden'
-      animate='visible'
-      role='region'
-      aria-label='Projects section'
+      initial="hidden"
+      animate="visible"
+      role="region"
+      aria-label="Projects section"
     >
       <style>{animationStyles}</style>
-      {/* Background Particles */}
-      {[...Array(12)].map((_, i) => (
+      {/* Scanline Overlay */}
+      <motion.div style={styles.scanlineOverlay} />
+      {/* Background Particles with Trails */}
+      {[...Array(6)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
-            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
-            background: 'radial-gradient(circle, rgba(76, 29, 149, 0.4), rgba(192, 38, 211, 0.2))',
+            width: `clamp(0.5rem, calc(0.1vw + ${0.6 + i * 0.15}rem), ${1.2 + i * 0.2}rem)`,
+            height: `clamp(0.5rem, calc(0.1vw + ${0.6 + i * 0.15}rem), ${1.2 + i * 0.2}rem)`,
+            background: 'radial-gradient(circle, rgba(255,51,255,0.6), rgba(76,29,149,0.2))',
             borderRadius: '50%',
-            top: `${5 + i * 4}%`,
-            left: `${5 + i * 3}%`,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
+            boxShadow: '0 0 8px rgba(255,51,255,0.4)',
           }}
           animate={{
-            y: [0, -50, 0],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.3, 1],
+            y: [0, -60, -120],
+            x: [0, Math.random() * 40 - 20, 0],
+            opacity: [0.6, 0.3, 0],
+            scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 2 + i * 0.15, repeat: Infinity, ease: 'easeOut', delay: Math.random() * 1 }}
         />
       ))}
       {/* Holographic Glow */}
       <motion.div
-        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 15s ease-in-out infinite' }}
+        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow }}
+        animate={{ rotate: 360, scale: [1, 1.15, 1], opacity: [0.5, 0.7, 0.5] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
       />
       {/* Header Section */}
-      <motion.div
+      <motion.header
         style={{ ...styles.header, ...responsiveStyles.header }}
         variants={headerVariants}
+        
       >
-        <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate' }}>
+        <div style={styles.headerGlow} />
+        <h2 style={{ ...styles.title, ...responsiveStyles.title }}>
           🚀 My Technical Projects
         </h2>
-        <div style={styles.titleUnderline} />
-      </motion.div>
+        <motion.div
+          style={styles.titleUnderline}
+          initial={{ width: 0, scaleX: 0 }}
+          animate={{ width: 'clamp(200px,40vw,320px)', scaleX: 1 }}
+          transition={{ duration: 1.8, ease: 'easeOut' }}
+        />
+      </motion.header>
       {/* Filter Bar */}
-      <motion.div
-        style={{ ...styles.filterBar, ...responsiveStyles.filterBar }}
-        variants={containerVariants}
-      >
+      <motion.div style={styles.filterBar} variants={containerVariants}>
         <AnimatePresence>
-          {techOptions.map((tech, index) => (
+          {[...categoryOptions, ...techOptions.filter(t => t !== 'All')].map((option, index) => (
             <motion.button
-              key={tech}
-              style={{ ...styles.filterBtn, ...(filter === tech ? styles.activeFilter : {}), ...responsiveStyles.filterBtn }}
-              onClick={() => setFilter(tech)}
+              key={option}
+              style={{ ...styles.filterBtn, ...(filter === option ? styles.activeFilter : {}) }}
+              onClick={() => setFilter(option)}
               variants={filterBtnVariants}
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-              
+              initial="hidden"
+              animate={filter === option ? 'active' : 'visible'}
+              exit="exit"
+            
+              whileTap={{ scale: 0.95 }}
+              aria-pressed={filter === option}
+              aria-current={filter === option ? 'true' : 'false'}
+              aria-label={`Filter by ${option}`}
             >
-              {tech}
+              <span style={styles.filterGlow} />
+              {option}
             </motion.button>
           ))}
         </AnimatePresence>
       </motion.div>
       {/* Projects Grid */}
-      <motion.div
-        style={{ ...styles.grid, ...responsiveStyles.grid }}
-        variants={containerVariants}
-      >
+      <motion.div style={{ ...styles.grid, ...responsiveStyles.grid }} variants={containerVariants}>
         <AnimatePresence>
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              style={{ ...styles.card, ...responsiveStyles.card }}
-              variants={cardVariants}
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true, margin: '-50px' }}
-              
-            >
-              <motion.div
-                style={{ ...styles.cardOverlay, animation: 'rotateGlow 10s linear infinite' }}
+          <Suspense fallback={
+            <div style={{ color: '#f0faff', textAlign: 'center', padding: '2rem' }}>
+              <span style={styles.spinner} /> Loading projects...
+            </div>
+          }>
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                index={index}
+                handleCardClick={handleCardClick}
+                styles={styles}
+                responsiveStyles={responsiveStyles}
               />
-              <motion.h3
-                style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
-                variants={cardChildVariants}
-                initial='hidden'
-                animate='visible'
-                transition={{ delay: index * 0.12 + 0.2 }}
+            ))}
+          </Suspense>
+        </AnimatePresence>
+      </motion.div>
+      {/* Expanded Card Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <>
+            <motion.div
+              style={styles.expandedOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleClose}
+              role="button"
+              tabIndex={0}
+              aria-label="Close project details"
+              onKeyDown={(e) => e.key === 'Enter' && handleClose()}
+            />
+            <motion.div
+              ref={modalRef}
+              style={{ ...styles.expandedCard, ...responsiveStyles.expandedCard }}
+              variants={expandedCardVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              tabIndex={-1}
+              role="dialog"
+              aria-label={`${selectedProject.title} details`}
+            >
+              <motion.div style={styles.cardOverlay} />
+              <motion.button
+                style={styles.closeButton}
+                onClick={handleClose}
+                aria-label="Close project details"
+                
               >
-                {project.title}
+                ✕
+              </motion.button>
+              <motion.h3
+                style={{
+                  ...styles.cardTitle,
+                  fontSize: 'clamp(2rem,5vw,3rem)',
+                  marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+                }}
+                variants={cardChildVariants}
+              >
+                {selectedProject.title}
               </motion.h3>
               <motion.p
-                style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
+                style={{
+                  ...styles.cardDescription,
+                  fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
+                }}
                 variants={cardChildVariants}
-                initial='hidden'
-                animate='visible'
-                transition={{ delay: index * 0.12 + 0.3 }}
               >
-                {project.description}
+                {selectedProject.description}
               </motion.p>
               <motion.p
                 style={styles.techLabel}
                 variants={cardChildVariants}
-                initial='hidden'
-                animate='visible'
-                transition={{ delay: index * 0.12 + 0.4 }}
               >
                 🔧 Tech Used:
               </motion.p>
               <motion.div
                 style={styles.techContainer}
                 variants={cardChildVariants}
-                initial='hidden'
-                animate='visible'
-                transition={{ delay: index * 0.12 + 0.5 }}
               >
-                {getTechIcons(project.tech)}
+                <TechIcon tech={selectedProject.tech} index={0} />
               </motion.div>
-              <motion.a
-                href={project.link}
-                style={styles.visitBtn}
-                target='_blank'
-                rel='noreferrer'
+              <motion.div
+                style={{ display: 'flex', gap: 'clamp(1rem,2vw,1.5rem)', marginTop: 'clamp(1.5rem,3vw,2rem)' }}
                 variants={cardChildVariants}
-                initial='hidden'
-                animate='visible'
-                transition={{ delay: index * 0.12 + 0.6 }}
-                
               >
-                View Project
-              </motion.a>
+                <motion.a
+                  href={selectedProject.link}
+                  style={styles.visitBtn}
+                  target="_blank"
+                  rel="noreferrer"
+                  
+                >
+                  View Project
+                </motion.a>
+                <motion.button
+                  style={{ ...styles.copyButton, ...(isCopying ? styles.loadingButton : {}) }}
+                  onClick={() => handleCopyLink(selectedProject.link)}
+                  disabled={isCopying}
+  
+                >
+                  <FaLink style={{ marginRight: 'clamp(0.5rem,1vw,0.8rem)' }} />
+                  {isCopying ? 'Copying...' : 'Copy Link'}
+                </motion.button>
+              </motion.div>
             </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };
 
-export default Projects;
+export default React.memo(Projects);
