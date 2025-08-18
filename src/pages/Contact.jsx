@@ -141,7 +141,6 @@ const styles = {
     fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
     textAlign: 'center',
   },
-  // Responsive styles
   responsive: {
     large: {
       container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
@@ -233,6 +232,12 @@ const Contact = () => {
   const form = useRef();
   const [isSent, setIsSent] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [otp, setOtp] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [formData, setFormData] = useState({ user_name: '', user_email: '', message: '' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -240,24 +245,86 @@ const Contact = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const sendEmail = (e) => {
-    e.preventDefault();
+  const generateOtp = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+  };
+
+  const sendOtp = (email) => {
+    const newOtp = generateOtp();
+    setGeneratedOtp(newOtp);
     emailjs
-      .sendForm(
+      .send(
         'service_8pg8cek',
-        'template_1ys1isn',
-        form.current,
+        'template_otp', // Dedicated template for OTP
+        {
+          to_email: email, // Send OTP to user's email
+          message: `Your OTP is: ${newOtp}`,
+        },
         'GOTwySQukEpQEuRa5'
       )
       .then(
         () => {
-          setIsSent(true);
-          e.target.reset();
+          setIsOtpSent(true);
+          setError('');
         },
         () => {
-          alert('❌ Oops! Failed to send message.');
+          setError('Failed to send OTP. Please try again.');
         }
       );
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const { user_name, user_email, message } = formData;
+
+    if (!isOtpSent) {
+      // First step: Send OTP to user's email
+      if (!user_email) {
+        setError('Please enter a valid email address.');
+        return;
+      }
+      setFormData({ user_name, user_email, message: '' });
+      sendOtp(user_email);
+    } else if (!isOtpVerified) {
+      // Second step: Verify OTP
+      if (otp === generatedOtp) {
+        setIsOtpVerified(true);
+        setError('');
+      } else {
+        setError('Invalid OTP. Please try again.');
+      }
+    } else {
+      // Final step: Send message to portfolio creator
+      if (!message) {
+        setError('Please enter a message.');
+        return;
+      }
+      emailjs
+        .send(
+          'service_8pg8cek',
+          'template_1ys1isn', // Template for message to creator
+          {
+            user_name,
+            user_email,
+            message,
+            to_email: 'g.sivasatyasaibhagavan@gmail.com', // Send message to portfolio creator
+          },
+          'GOTwySQukEpQEuRa5'
+        )
+        .then(
+          () => {
+            setIsSent(true);
+            setFormData({ user_name: '', user_email: '', message: '' });
+            setOtp('');
+            setIsOtpSent(false);
+            setIsOtpVerified(false);
+            setError('');
+          },
+          () => {
+            setError('Failed to send message. Please try again.');
+          }
+        );
+    }
   };
 
   const { scrollYProgress } = useScroll();
@@ -266,8 +333,8 @@ const Contact = () => {
 
   // Apply responsive styles based on window width
   const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
-                         windowWidth <= 768 ? styles.responsive.medium :
-                         styles.responsive.large;
+                          windowWidth <= 768 ? styles.responsive.medium :
+                          styles.responsive.large;
 
   return (
     <motion.section
@@ -309,7 +376,6 @@ const Contact = () => {
       <motion.div
         style={{ ...styles.card, ...responsiveStyles.card }}
         variants={cardVariants}
-        
       >
         <motion.div
           style={{ ...styles.cardOverlay, animation: 'rotateGlow 10s linear infinite' }}
@@ -325,52 +391,88 @@ const Contact = () => {
         <div style={styles.titleUnderline} />
         <motion.form
           ref={form}
-          onSubmit={sendEmail}
+          onSubmit={handleFormSubmit}
           style={styles.form}
           variants={formChildVariants}
           initial='hidden'
           animate='visible'
           transition={{ delay: 0.2 }}
         >
-          {[
-            { type: 'text', name: 'user_name', placeholder: 'Full Name' },
-            { type: 'email', name: 'user_email', placeholder: 'Email Address' },
-          ].map((input, idx) => (
+          {!isOtpSent && (
+            <>
+              <motion.input
+                type="text"
+                name="user_name"
+                placeholder="Full Name"
+                required
+                value={formData.user_name}
+                onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
+                style={{ ...styles.input, ...responsiveStyles.input }}
+                whileFocus={{
+                  scale: 1.05,
+                  boxShadow: '0 0 20px rgba(76, 29, 149, 0.8)',
+                  borderColor: '#c026d3',
+                }}
+                whileHover={{ borderColor: '#c026d3' }}
+                variants={formChildVariants}
+                transition={{ delay: 0.3 }}
+              />
+              <motion.input
+                type="email"
+                name="user_email"
+                placeholder="Email Address"
+                required
+                value={formData.user_email}
+                onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
+                style={{ ...styles.input, ...responsiveStyles.input }}
+                whileFocus={{
+                  scale: 1.05,
+                  boxShadow: '0 0 20px rgba(76, 29, 149, 0.8)',
+                  borderColor: '#c026d3',
+                }}
+                whileHover={{ borderColor: '#c026d3' }}
+                variants={formChildVariants}
+                transition={{ delay: 0.4 }}
+              />
+            </>
+          )}
+          {isOtpSent && !isOtpVerified && (
             <motion.input
-              key={idx}
-              {...input}
-              required
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
               style={{ ...styles.input, ...responsiveStyles.input }}
               whileFocus={{
                 scale: 1.05,
                 boxShadow: '0 0 20px rgba(76, 29, 149, 0.8)',
                 borderColor: '#c026d3',
               }}
-              whileHover={{
+              whileHover={{ borderColor: '#c026d3' }}
+              variants={formChildVariants}
+              transition={{ delay: 0.3 }}
+            />
+          )}
+          {isOtpVerified && (
+            <motion.textarea
+              name="message"
+              placeholder="Your Message"
+              required
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              style={{ ...styles.textarea, ...responsiveStyles.textarea }}
+              whileFocus={{
+                scale: 1.02,
+                boxShadow: '0 0 20px rgba(76, 29, 149, 0.8)',
                 borderColor: '#c026d3',
               }}
+              whileHover={{ borderColor: '#c026d3' }}
               variants={formChildVariants}
-              transition={{ delay: 0.3 + idx * 0.1 }}
+              transition={{ delay: 0.5 }}
             />
-          ))}
-          <motion.textarea
-            name='message'
-            placeholder='Your Message'
-            required
-            style={{ ...styles.textarea, ...responsiveStyles.textarea }}
-            whileFocus={{
-              scale: 1.02,
-              boxShadow: '0 0 20px rgba(76, 29, 149, 0.8)',
-              borderColor: '#c026d3',
-            }}
-            whileHover={{
-              borderColor: '#c026d3',
-            }}
-            variants={formChildVariants}
-            transition={{ delay: 0.5 }}
-          />
+          )}
           <motion.button
-            type='submit'
+            type="submit"
             style={{ ...styles.button, ...responsiveStyles.button }}
             whileHover={{
               scale: 1.08,
@@ -380,9 +482,9 @@ const Contact = () => {
             whileTap={{ scale: 0.95 }}
             variants={formChildVariants}
             transition={{ delay: 0.6 }}
-            aria-label='Send Message'
+            aria-label={isOtpSent && !isOtpVerified ? 'Verify OTP' : isOtpVerified ? 'Send Message' : 'Send OTP'}
           >
-            🚀 Send Message
+            {isOtpSent && !isOtpVerified ? '🔐 Verify OTP' : isOtpVerified ? '🚀 Send Message' : '📧 Send OTP'}
           </motion.button>
         </motion.form>
         <motion.div
@@ -413,6 +515,17 @@ const Contact = () => {
           ))}
         </motion.div>
         <AnimatePresence>
+          {error && (
+            <motion.div
+              style={{ ...styles.feedback, background: 'rgba(220, 38, 38, 0.9)' }}
+              variants={feedbackVariants}
+              initial='hidden'
+              animate='visible'
+              exit='exit'
+            >
+              ❌ {error}
+            </motion.div>
+          )}
           {isSent && (
             <motion.div
               style={styles.feedback}
