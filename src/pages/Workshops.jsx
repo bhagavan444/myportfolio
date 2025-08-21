@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
-import { FaCode, FaLaptopCode, FaMobileAlt, FaBrain, FaCogs, FaDatabase } from 'react-icons/fa';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { FaCode, FaLaptopCode, FaMobileAlt, FaBrain, FaCogs, FaDatabase, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   SiMongodb,
   SiExpress,
@@ -22,117 +22,84 @@ import {
   SiKeras,
 } from 'react-icons/si';
 
-// Tech icon mapping function with tooltips
-const getTechIcons = (tech) => {
+// Tech icon component with carousel effect
+const TechIcon = React.memo(({ tech, index }) => {
   const iconMap = {
-    MongoDB: { icon: <SiMongodb />, label: 'MongoDB', tooltip: 'NoSQL database for scalable applications' },
-    Express: { icon: <SiExpress />, label: 'Express', tooltip: 'Web framework for Node.js' },
-    'Express.js': { icon: <SiExpress />, label: 'Express.js', tooltip: 'Web framework for Node.js' },
-    React: { icon: <SiReact />, label: 'React', tooltip: 'UI library for building interactive apps' },
-    'React.js': { icon: <SiReact />, label: 'React.js', tooltip: 'UI library for building interactive apps' },
-    Node: { icon: <SiNodedotjs />, label: 'Node.js', tooltip: 'JavaScript runtime for server-side development' },
-    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js', tooltip: 'JavaScript runtime for server-side development' },
-    Flask: { icon: <SiFlask />, label: 'Flask', tooltip: 'Lightweight Python web framework' },
-    Python: { icon: <SiPython />, label: 'Python', tooltip: 'Versatile programming language for AI and web' },
-    Firebase: { icon: <SiFirebase />, label: 'Firebase', tooltip: 'Backend platform for app development' },
-    'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth', tooltip: 'Authentication service by Firebase' },
-    HTML: { icon: <SiHtml5 />, label: 'HTML', tooltip: 'Markup language for web structure' },
-    CSS: { icon: <SiCss3 />, label: 'CSS', tooltip: 'Styling language for web design' },
-    CSS3: { icon: <SiCss3 />, label: 'CSS3', tooltip: 'Advanced CSS features' },
-    'HTML/CSS': {
-      icon: (
-        <>
-          <SiHtml5 /> <SiCss3 />
-        </>
-      ),
-      label: 'HTML/CSS',
-      tooltip: 'Core technologies for web development',
-    },
-    'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn', tooltip: 'Machine learning library in Python' },
-    TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow', tooltip: 'ML framework for deep learning' },
-    Pandas: { icon: <SiPandas />, label: 'Pandas', tooltip: 'Data manipulation and analysis library' },
-    Numpy: { icon: <SiNumpy />, label: 'Numpy', tooltip: 'Numerical computing library' },
-    Numpys: { icon: <SiNumpy />, label: 'Numpy', tooltip: 'Numerical computing library' },
-    OpenAI: { icon: <SiOpenai />, label: 'OpenAI', tooltip: 'AI research and deployment platform' },
-    'OpenAI API': { icon: <SiOpenai />, label: 'OpenAI API', tooltip: 'API for AI model integration' },
-    Socket: { icon: <SiSocketdotio />, label: 'Socket.io', tooltip: 'Real-time communication library' },
-    'Socket.io': { icon: <SiSocketdotio />, label: 'Socket.io', tooltip: 'Real-time communication library' },
-    Cloudinary: { icon: <SiCloudinary />, label: 'Cloudinary', tooltip: 'Cloud-based media management' },
-    TFIDF: { icon: null, label: 'TF-IDF', tooltip: 'Text processing technique for NLP' },
-    'TF-IDF': { icon: null, label: 'TF-IDF', tooltip: 'Text processing technique for NLP' },
-    NLTK: { icon: null, label: 'NLTK', tooltip: 'Natural language processing toolkit' },
-    Keras: { icon: <SiKeras />, label: 'Keras', tooltip: 'High-level neural networks API' },
-    LangChain: { icon: null, label: 'LangChain', tooltip: 'Framework for building LLM applications' },
-    Flutter: { icon: <SiFlutter />, label: 'Flutter', tooltip: 'Cross-platform mobile app framework' },
+    MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
+    Express: { icon: <SiExpress />, label: 'Express' },
+    'Express.js': { icon: <SiExpress />, label: 'Express.js' },
+    React: { icon: <SiReact />, label: 'React' },
+    'React.js': { icon: <SiReact />, label: 'React.js' },
+    Node: { icon: <SiNodedotjs />, label: 'Node.js' },
+    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js' },
+    Flask: { icon: <SiFlask />, label: 'Flask' },
+    Python: { icon: <SiPython />, label: 'Python' },
+    Firebase: { icon: <SiFirebase />, label: 'Firebase' },
+    'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth' },
+    HTML: { icon: <SiHtml5 />, label: 'HTML' },
+    CSS: { icon: <SiCss3 />, label: 'CSS' },
+    CSS3: { icon: <SiCss3 />, label: 'CSS3' },
+    'HTML/CSS': { icon: (<><SiHtml5 /><SiCss3 /></>), label: 'HTML/CSS' },
+    'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn' },
+    TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow' },
+    Pandas: { icon: <SiPandas />, label: 'Pandas' },
+    Numpy: { icon: <SiNumpy />, label: 'Numpy' },
+    Numpys: { icon: <SiNumpy />, label: 'Numpy' },
+    OpenAI: { icon: <SiOpenai />, label: 'OpenAI' },
+    'OpenAI API': { icon: <SiOpenai />, label: 'OpenAI API' },
+    Socket: { icon: <SiSocketdotio />, label: 'Socket.io' },
+    'Socket.io': { icon: <SiSocketdotio />, label: 'Socket.io' },
+    Cloudinary: { icon: <SiCloudinary />, label: 'Cloudinary' },
+    TFIDF: { icon: null, label: 'TF-IDF' },
+    'TF-IDF': { icon: null, label: 'TF-IDF' },
+    NLTK: { icon: null, label: 'NLTK' },
+    Keras: { icon: <SiKeras />, label: 'Keras' },
+    LangChain: { icon: null, label: 'LangChain' },
+    Flutter: { icon: <SiFlutter />, label: 'Flutter' },
+    Dart: { icon: null, label: 'Dart' },
+    JavaScript: { icon: null, label: 'JavaScript' },
   };
 
-  return tech.split(', ').map((t, i) => (
+  const techData = iconMap[tech] || { icon: null, label: tech };
+  return (
     <motion.span
-      key={i}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'clamp(6px, 1vw, 8px)',
-        margin: 'clamp(4px, 0.8vw, 6px)',
-        padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-        background: 'rgba(34, 197, 94, 0.15)',
-        borderRadius: 'clamp(8px, 1.2vw, 10px)',
-        border: '1px solid rgba(34, 197, 94, 0.3)',
-        position: 'relative',
+        gap: 'clamp(8px,1.2vw,10px)',
+        margin: 'clamp(6px,1vw,8px)',
+        padding: 'clamp(6px,1vw,8px) clamp(10px,1.8vw,12px)',
+        background: 'linear-gradient(45deg, rgba(192,38,211,0.3), rgba(76,29,149,0.3))',
+        borderRadius: 'clamp(10px,1.5vw,12px)',
+        border: '2px solid rgba(255,51,255,0.4)',
+        boxShadow: '0 0 15px rgba(192,38,211,0.5)',
       }}
-      whileHover={{
-        scale: 1.15,
-        rotate: 5,
-        boxShadow: '0 0 20px rgba(34, 197, 94, 0.7)',
-        background: 'rgba(34, 197, 94, 0.3)',
-      }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 400 }}
+      initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ delay: index * 0.08, type: 'spring', stiffness: 180, damping: 14 }}
     >
-      {iconMap[t] ? (
-        <>
-          <motion.span
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.08 }}
-            style={{ color: '#22c55e', textShadow: '0 0 10px rgba(34, 197, 94, 0.5)' }}
-          >
-            {iconMap[t].icon}
-          </motion.span>
-          <span style={{ color: '#ecfdf5', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
-            {iconMap[t].label}
-          </span>
-          <motion.span
-            className="tooltip"
-            initial={{ opacity: 0, y: 10 }}
-            whileHover={{ opacity: 1, y: 0 }}
-            style={{
-              position: 'absolute',
-              bottom: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'rgba(17, 24, 39, 0.9)',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              fontSize: '0.8rem',
-              whiteSpace: 'nowrap',
-              zIndex: 10,
-            }}
-          >
-            {iconMap[t].tooltip}
-          </motion.span>
-        </>
-      ) : (
-        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>{t}</span>
+      {techData.icon && (
+        <motion.span
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.08 }}
+          style={{ color: '#ff33ff', textShadow: '0 0 15px rgba(192,38,211,0.7)' }}
+        >
+          {techData.icon}
+        </motion.span>
       )}
+      <span style={{ color: '#f0faff', fontSize: 'clamp(0.9rem,2vw,1.1rem)', fontWeight: 600 }}>
+        {techData.label}
+      </span>
     </motion.span>
-  ));
-};
+  );
+});
 
 // Workshop Data
 const workshops = [
   {
     title: '🔍 Machine Learning (ML)',
+    type: 'Machine Learning',
     description: 'Hands-on experience with supervised and unsupervised learning techniques. Explored model building, evaluation, and tuning using Scikit-learn.',
     tech: 'Python, Scikit-learn, Pandas, Numpy',
     icon: FaBrain,
@@ -140,6 +107,7 @@ const workshops = [
   },
   {
     title: '🧠 Deep Learning (DL)',
+    type: 'Deep Learning',
     description: 'Built CNNs for image classification using TensorFlow and Keras. Understood backpropagation, activation functions, and optimization techniques.',
     tech: 'Python, TensorFlow, Keras',
     icon: FaCogs,
@@ -147,6 +115,7 @@ const workshops = [
   },
   {
     title: '📱 Mobile App Development',
+    type: 'Mobile Development',
     description: 'Developed cross-platform mobile apps using Flutter. Focused on UI/UX principles, navigation, and state management with REST API integration.',
     tech: 'Flutter, Dart',
     icon: FaMobileAlt,
@@ -154,6 +123,7 @@ const workshops = [
   },
   {
     title: '🌐 Web Development',
+    type: 'Web Development',
     description: 'Created responsive web applications using HTML, CSS, JavaScript, and React. Mastered component-based architecture and frontend optimization.',
     tech: 'HTML, CSS3, JavaScript, React',
     icon: FaCode,
@@ -161,6 +131,7 @@ const workshops = [
   },
   {
     title: '🤖 Introduction to Artificial Intelligence',
+    type: 'Artificial Intelligence',
     description: 'Explored AI fundamentals, real-world use cases, ethical considerations, and logic-based AI systems through interactive sessions.',
     tech: 'Python, OpenAI API',
     icon: FaLaptopCode,
@@ -168,6 +139,7 @@ const workshops = [
   },
   {
     title: '💻 Full Stack Development Bootcamp',
+    type: 'Full Stack Development',
     description: 'Completed a comprehensive MERN stack bootcamp. Built and deployed full-stack apps with Express.js, MongoDB, React, and Node.js.',
     tech: 'MongoDB, Express.js, React, Node.js, Socket.io',
     icon: FaDatabase,
@@ -175,303 +147,388 @@ const workshops = [
   },
 ];
 
-// New Styles with a vibrant, modern aesthetic
+// Inline Styles
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(4rem, 10vw, 8rem) clamp(1.5rem, 4vw, 3rem)',
-    background: 'linear-gradient(135deg, #111827, #1f2937, #374151, #22c55e)',
-    backgroundSize: '1000% 1000%',
-    color: '#ecfdf5',
-    overflowX: 'hidden',
+    padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)',
+    background: 'linear-gradient(165deg, #0d001a, #1a0033, #2a0055, #3b0088)',
+    backgroundSize: '800% 800%',
+    color: '#f0faff',
+    overflow: 'hidden',
     position: 'relative',
     perspective: '2500px',
-    fontFamily: "'Inter', 'Roboto', sans-serif",
+    fontFamily: "'Orbitron', 'Inter', sans-serif",
     willChange: 'background, transform',
-    animation: 'gradientFlow 15s ease-in-out infinite',
+    animation: 'shimmer 12s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 15% 25%, rgba(34, 197, 94, 0.3), transparent 50%),
-      radial-gradient(circle at 85% 75%, rgba(236, 72, 153, 0.3), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)
+      radial-gradient(circle at 15% 5%, rgba(255,51,255,0.5), transparent 40%),
+      radial-gradient(circle at 85% 95%, rgba(76,29,149,0.5), transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(59,130,246,0.4), transparent 60%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
-    opacity: 0.85,
-    animation: 'ambientPulse 10s ease-in-out infinite',
+    animation: 'glowShift 8s ease-in-out infinite',
   },
-  glowEffect: {
+  holographicGlow: {
     position: 'absolute',
-    width: 'clamp(600px, 80vw, 1000px)',
-    height: 'clamp(600px, 80vw, 1000px)',
-    background: 'radial-gradient(circle, rgba(34, 197, 94, 0.4), rgba(236, 72, 153, 0.3), transparent 60%)',
+    width: 'clamp(500px,70vw,1000px)',
+    height: 'clamp(500px,70vw,1000px)',
+    background: 'linear-gradient(45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
     top: '-25%',
     left: '-25%',
-    filter: 'blur(180px)',
+    filter: 'blur(160px)',
     zIndex: -2,
-    animation: 'glowOrbit 20s linear infinite',
+    animation: 'rotateGlow 15s linear infinite',
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(3rem, 6vw, 5rem)',
-    background: 'rgba(17, 24, 39, 0.95)',
-    border: '1px solid rgba(34, 197, 94, 0.3)',
-    borderRadius: 'clamp(20px, 3vw, 24px)',
-    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.9), 0 0 60px rgba(34, 197, 94, 0.4)',
-    backdropFilter: 'blur(20px)',
-    maxWidth: 'clamp(800px, 90vw, 1400px)',
-    margin: '0 auto clamp(4rem, 8vw, 6rem)',
+    padding: 'clamp(3rem,5vw,5rem)',
+    background: 'rgba(10,0,30,0.95)',
+    borderRadius: 'clamp(20px,2.5vw,24px)',
+    boxShadow: '0 40px 80px rgba(0,0,0,0.9), 0 0 80px rgba(255,51,255,0.5)',
+    backdropFilter: 'blur(25px)',
+    maxWidth: 'clamp(800px,95vw,1400px)',
+    margin: '0 auto clamp(4rem,8vw,6rem)',
     position: 'relative',
     overflow: 'hidden',
   },
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(34, 197, 94, 0.5), rgba(236, 72, 153, 0.5), transparent)',
-    opacity: 0.7,
+    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.4), rgba(76,29,149,0.4), transparent)',
+    opacity: 0.6,
     zIndex: -1,
   },
   title: {
-    fontSize: 'clamp(3rem, 7vw, 5.5rem)',
-    fontWeight: 800,
+    fontSize: 'clamp(3rem,7vw,6rem)',
+    fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #22c55e, #ec4899, #facc15)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6, #00ccff)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 40px rgba(34, 197, 94, 0.8), 0 0 60px rgba(236, 72, 153, 0.6)',
-    marginBottom: 'clamp(1rem, 2.5vw, 2rem)',
-    letterSpacing: '0.15em',
-    animation: 'textShine 2s ease-in-out infinite alternate',
+    textShadow: '0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7)',
+    marginBottom: 'clamp(1rem,2.5vw,2rem)',
+    letterSpacing: '0.2em',
+    animation: 'neonFlicker 4s ease-in-out infinite alternate',
   },
   titleUnderline: {
-    width: 'clamp(200px, 40vw, 300px)',
+    width: 'clamp(200px,40vw,320px)',
     height: '8px',
-    background: 'linear-gradient(90deg, #22c55e, #ec4899)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
     borderRadius: '8px',
     margin: '1rem auto',
-    boxShadow: '0 0 30px rgba(34, 197, 94, 0.8)',
+    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
   },
   introText: {
-    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
-    color: '#ecfdf5',
-    maxWidth: 'clamp(600px, 80vw, 900px)',
-    margin: '0 auto clamp(1.5rem, 3vw, 2rem)',
-    lineHeight: '1.7',
-    textShadow: '0 0 15px rgba(34, 197, 94, 0.5)',
+    fontSize: 'clamp(1.1rem,2.8vw,1.5rem)',
+    color: '#f0faff',
+    maxWidth: 'clamp(600px,85vw,1000px)',
+    margin: '0 auto clamp(1.5rem,3vw,2rem)',
+    lineHeight: '1.9',
+    textShadow: '0 0 15px rgba(255,51,255,0.6)',
+  },
+  filterBar: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 'clamp(1.2rem,2.5vw,2rem)',
+    marginBottom: 'clamp(3rem,6vw,5rem)',
+    flexWrap: 'wrap',
+  },
+  filterBtn: {
+    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
+    background: 'rgba(255,51,255,0.2)',
+    border: '2px solid rgba(255,51,255,0.4)',
+    borderRadius: 'clamp(16px,2.2vw,20px)',
+    color: '#f0faff',
+    cursor: 'pointer',
+    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
+    fontWeight: '700',
+    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
+    transition: 'all 0.3s ease',
+  },
+  activeFilter: {
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    color: '#f0faff',
+    boxShadow: '0 0 25px rgba(255,51,255,0.9)',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(320px, 45vw, 400px), 1fr))',
-    gap: 'clamp(2.5rem, 5vw, 4rem)',
-    maxWidth: 'clamp(900px, 95vw, 2000px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))',
+    gap: 'clamp(2.5rem,5vw,4rem)',
+    maxWidth: 'clamp(900px,95vw,2000px)',
     margin: '0 auto',
     perspective: '2500px',
   },
-  card: {
-    background: 'rgba(17, 24, 39, 0.95)',
-    border: '1px solid rgba(34, 197, 94, 0.3)',
-    borderRadius: 'clamp(20px, 3vw, 24px)',
-    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
+  tile: {
+    background: 'rgba(10,0,30,0.9)',
+    borderRadius: 'clamp(20px,3vw,24px)',
+    padding: 'clamp(2.5rem,5vw,3.5rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(25px)',
-    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(34, 197, 94, 0.3)',
+    backdropFilter: 'blur(30px)',
+    boxShadow: '0 40px 80px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,51,255,0.4)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
+    cursor: 'pointer',
   },
-  cardOverlay: {
+  tileOverlay: {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(34, 197, 94, 0.6), rgba(236, 72, 153, 0.6), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
     zIndex: -1,
-    opacity: 0.7,
-    animation: 'borderGlow 2s ease-in-out infinite',
+    opacity: 0.6,
+    animation: 'rotateGlow 10s linear infinite',
   },
-  cardTitle: {
-    fontSize: 'clamp(1.6rem, 3.5vw, 2rem)',
-    color: '#22c55e',
-    textShadow: '0 0 20px rgba(34, 197, 94, 0.7)',
-    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
-    fontWeight: '700',
+  tileTitle: {
+    fontSize: 'clamp(1.8rem,4vw,2.6rem)',
+    color: '#ff33ff',
+    textShadow: '0 0 25px rgba(255,51,255,0.8)',
+    marginBottom: 'clamp(1.2rem,3vw,1.8rem)',
+    fontWeight: '800',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
+    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
   },
-  cardDescription: {
-    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
-    color: '#ecfdf5',
-    marginBottom: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-    lineHeight: '1.7',
-    textShadow: '0 0 15px rgba(34, 197, 94, 0.5)',
+  tileDescription: {
+    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
+    color: '#f0faff',
+    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+    lineHeight: '1.9',
+    textShadow: '0 0 15px rgba(255,51,255,0.6)',
   },
   techLabel: {
-    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
-    color: '#ec4899',
-    fontWeight: '600',
-    marginTop: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-    textShadow: '0 0 15px rgba(236, 72, 153, 0.6)',
+    fontSize: 'clamp(1.2rem,2.5vw,1.5rem)',
+    color: '#3b82f6',
+    fontWeight: 'bold',
+    marginTop: 'clamp(1.5rem,3.5vw,2rem)',
+    textShadow: '0 0 15px rgba(59,130,246,0.6)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(10px, 2vw, 12px)',
-    marginTop: 'clamp(0.8rem, 2vw, 1.2rem)',
-    marginBottom: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+    gap: 'clamp(15px,3vw,18px)',
+    marginTop: 'clamp(1.2rem,3vw,1.8rem)',
+    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+    overflow: 'hidden',
   },
   achievementsLabel: {
-    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
-    color: '#22c55e',
-    fontWeight: '600',
-    marginTop: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-    textShadow: '0 0 15px rgba(34, 197, 94, 0.6)',
+    fontSize: 'clamp(1.2rem,2.5vw,1.5rem)',
+    color: '#3b82f6',
+    fontWeight: 'bold',
+    marginTop: 'clamp(1.5rem,3.5vw,2rem)',
+    textShadow: '0 0 15px rgba(59,130,246,0.6)',
   },
   achievementList: {
     listStyleType: 'none',
     padding: 0,
-    marginTop: 'clamp(0.8rem, 1.5vw, 1.2rem)',
+    marginTop: 'clamp(0.8rem,1.5vw,1.2rem)',
   },
   achievementItem: {
-    fontSize: 'clamp(0.95rem, 2vw, 1.2rem)',
-    color: '#d1d5db',
-    marginBottom: 'clamp(0.6rem, 1.2vw, 1rem)',
+    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
+    color: '#f0faff',
+    marginBottom: 'clamp(0.6rem,1.2vw,1rem)',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
+    gap: 'clamp(0.5rem,1vw,0.8rem)',
+  },
+  linkContainer: {
+    display: 'flex',
+    gap: 'clamp(1rem,2vw,1.5rem)',
+    flexWrap: 'wrap',
+  },
+  link: {
+    display: 'inline-flex',
+    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
+    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    color: '#f0faff',
+    borderRadius: 'clamp(14px,2.2vw,18px)',
+    textDecoration: 'none',
+    fontWeight: '700',
+    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
+    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
+    alignItems: 'center',
+    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+  },
+  expandedTile: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'clamp(600px,80vw,1000px)',
+    maxHeight: '80vh',
+    background: 'rgba(10,0,30,0.95)',
+    borderRadius: 'clamp(24px,3.5vw,28px)',
+    padding: 'clamp(3rem,6vw,4rem)',
+    boxShadow: '0 50px 100px rgba(0,0,0,0.9), 0 0 100px rgba(255,51,255,0.6)',
+    backdropFilter: 'blur(30px)',
+    zIndex: 1000,
+    overflowY: 'auto',
+  },
+  expandedOverlay: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0,0,0,0.8)',
+    zIndex: 999,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 'clamp(1rem,2vw,1.5rem)',
+    right: 'clamp(1rem,2vw,1.5rem)',
+    background: 'transparent',
+    border: 'none',
+    color: '#f0faff',
+    fontSize: 'clamp(1.5rem,3vw,2rem)',
+    cursor: 'pointer',
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(4rem, 10vw, 8rem) clamp(1.5rem, 4vw, 3rem)' },
-      header: { padding: 'clamp(3rem, 6vw, 5rem)' },
-      title: { fontSize: 'clamp(3rem, 7vw, 5.5rem)' },
-      introText: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
-      grid: { gap: 'clamp(2.5rem, 5vw, 4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(320px, 45vw, 400px), 1fr))' },
-      card: { padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.6rem, 3.5vw, 2rem)' },
-      cardDescription: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
-      glowEffect: { width: 'clamp(600px, 80vw, 1000px)', height: 'clamp(600px, 80vw, 1000px)' },
+      container: { padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)' },
+      header: { padding: 'clamp(3rem,5vw,5rem)' },
+      title: { fontSize: 'clamp(3rem,7vw,6rem)' },
+      grid: { gap: 'clamp(2.5rem,5vw,4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))' },
+      tile: { padding: 'clamp(2.5rem,5vw,3.5rem)' },
+      tileTitle: { fontSize: 'clamp(1.8rem,4vw,2.6rem)' },
+      tileDescription: { fontSize: 'clamp(1.1rem,2.5vw,1.4rem)' },
+      holographicGlow: { width: 'clamp(500px,70vw,1000px)', height: 'clamp(500px,70vw,1000px)', top: '-25%', left: '-25%' },
+      expandedTile: { width: 'clamp(600px,80vw,1000px)', padding: 'clamp(3rem,6vw,4rem)' },
     },
     medium: {
-      container: { padding: 'clamp(3rem, 8vw, 6rem) clamp(1rem, 3vw, 2rem)' },
-      header: { padding: 'clamp(2rem, 4.5vw, 3.5rem)' },
-      title: { fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' },
-      introText: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
-      grid: { gap: 'clamp(2rem, 4vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 360px), 1fr))' },
-      card: { padding: 'clamp(2rem, 4vw, 3rem)' },
-      cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      cardDescription: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
-      glowEffect: { width: 'clamp(400px, 70vw, 700px)', height: 'clamp(400px, 70vw, 700px)' },
+      container: { padding: 'clamp(3rem,8vw,6rem) clamp(1.5rem,3vw,3rem)' },
+      header: { padding: 'clamp(2rem,4vw,4rem)' },
+      title: { fontSize: 'clamp(2.5rem,6vw,5rem)' },
+      grid: { gap: 'clamp(2rem,4vw,3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px,45vw,360px), 1fr))' },
+      tile: { padding: 'clamp(2rem,4vw,3rem)' },
+      tileTitle: { fontSize: 'clamp(1.6rem,3.5vw,2.2rem)' },
+      tileDescription: { fontSize: 'clamp(1rem,2.2vw,1.3rem)' },
+      holographicGlow: { width: 'clamp(400px,60vw,800px)', height: 'clamp(400px,60vw,800px)', top: '-20%', left: '-20%' },
+      expandedTile: { width: 'clamp(500px,80vw,800px)', padding: 'clamp(2.5rem,5vw,3.5rem)' },
     },
     small: {
-      container: { padding: 'clamp(2rem, 6vw, 4rem) clamp(0.8rem, 2.5vw, 1.5rem)' },
-      header: { padding: 'clamp(1.5rem, 3.5vw, 2.5rem)' },
-      title: { fontSize: 'clamp(2rem, 5vw, 3.5rem)' },
-      introText: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
-      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: '1fr' },
-      card: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
-      glowEffect: { width: 'clamp(300px, 60vw, 600px)', height: 'clamp(300px, 60vw, 600px)' },
+      container: { padding: 'clamp(2rem,6vw,5rem) clamp(1rem,2.5vw,2rem)' },
+      header: { padding: 'clamp(1.5rem,3.5vw,3rem)' },
+      title: { fontSize: 'clamp(2rem,5vw,4rem)' },
+      grid: { gap: 'clamp(1.5rem,3vw,2.5rem)', gridTemplateColumns: '1fr' },
+      tile: { padding: 'clamp(1.5rem,3vw,2.5rem)' },
+      tileTitle: { fontSize: 'clamp(1.4rem,3vw,2rem)' },
+      tileDescription: { fontSize: 'clamp(0.9rem,2vw,1.2rem)' },
+      holographicGlow: { width: 'clamp(300px,50vw,600px)', height: 'clamp(300px,50vw,600px)', top: '-15%', left: '-15%' },
+      expandedTile: { width: 'clamp(300px,90vw,500px)', padding: 'clamp(2rem,4vw,3rem)' },
     },
   },
 };
 
-// New Animation Styles
+// Inline Animation Styles
 const animationStyles = `
-  @keyframes gradientFlow {
+  @keyframes shimmer {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-  @keyframes ambientPulse {
-    0%, 100% { opacity: 0.85; }
-    50% { opacity: 1; }
+  @keyframes glowShift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(100px, 100px) scale(1.2); }
   }
-  @keyframes glowOrbit {
-    0% { transform: rotate(0deg); filter: brightness(1); }
-    50% { transform: rotate(180deg); filter: brightness(1.3); }
-    100% { transform: rotate(360deg); filter: brightness(1); }
+  @keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-  @keyframes textShine {
-    0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(34, 197, 94, 0.8), 0 0 60px rgba(236, 72, 153, 0.6); }
-    50% { opacity: 0.9; text-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 45px rgba(236, 72, 153, 0.5); }
+  @keyframes neonFlicker {
+    0%, 100% { opacity: 1; text-shadow: 0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7); }
+    50% { opacity: 0.8; text-shadow: 0 0 30px rgba(255,51,255,0.7), 0 0 50px rgba(76,29,149,0.5); }
   }
-  @keyframes borderGlow {
-    0%, 100% { border-color: rgba(34, 197, 94, 0.3); box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); }
-    50% { border-color: rgba(34, 197, 94, 0.7); box-shadow: 0 0 30px rgba(34, 197, 94, 0.8); }
+  @keyframes pulseBorder {
+    0%, 100% { border-color: rgba(255,51,255,0.4); }
+    50% { border-color: rgba(255,51,255,0.9); }
   }
-  @keyframes particleDrift {
-    0% { transform: translateY(0) scale(1); opacity: 0.7; }
-    50% { transform: translateY(-60px) scale(1.3); opacity: 0.4; }
-    100% { transform: translateY(-120px) scale(1); opacity: 0; }
+  @keyframes techCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
   }
 `;
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.8, rotateX: -20 },
+  hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
     scale: 1,
-    rotateX: 0,
-    transition: {
-      duration: 2,
-      ease: 'easeOut',
-      staggerChildren: 0.2,
-      when: 'beforeChildren',
-    },
+    transition: { duration: 2.5, ease: 'easeOut', staggerChildren: 0.4 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -150, rotateX: -25 },
+  hidden: { opacity: 0, y: -120, rotateX: -20 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: {
-      duration: 1.5,
-      type: 'spring',
-      stiffness: 180,
-      damping: 20,
-    },
+    transition: { duration: 1.8, type: 'spring', stiffness: 150, damping: 15 },
   },
 };
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 200, scale: 0.7, rotateY: -45 },
+const filterBtnVariants = {
+  hidden: { opacity: 0, scale: 0.7, y: 40 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.6, type: 'spring', stiffness: 170, damping: 13 },
+  },
+  exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
+  active: {
+    scale: [1, 1.2, 1],
+    boxShadow: ['0 0 15px rgba(255,51,255,0.5)', '0 0 30px rgba(255,51,255,0.9)', '0 0 15px rgba(255,51,255,0.5)'],
+    transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
+  },
+};
+
+const tileVariants = {
+  hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: 180 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: {
-      duration: 1,
-      type: 'spring',
-      stiffness: 160,
-      damping: 18,
-    },
+    transition: { duration: 1.2, type: 'spring', stiffness: 140, damping: 16 },
   },
-  
 };
 
-const cardChildVariants = {
-  hidden: { opacity: 0, x: -40, rotate: -10 },
+const tileChildVariants = {
+  hidden: { opacity: 0, x: -50, rotate: -15 },
   visible: {
     opacity: 1,
     x: 0,
     rotate: 0,
-    transition: { duration: 0.6 },
+    transition: { duration: 0.8, type: 'spring', stiffness: 160, damping: 15 },
   },
 };
 
+const expandedTileVariants = {
+  hidden: { opacity: 0, scale: 0.5, rotateY: 90, x: '-50%', y: '-50%' },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotateY: 0,
+    transition: { duration: 0.8, type: 'spring', stiffness: 120, damping: 14 },
+  },
+  exit: { opacity: 0, scale: 0.5, rotateY: -90, transition: { duration: 0.6 } },
+};
+
 const Workshops = () => {
+  const [filter, setFilter] = useState('All');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5], [15, 0]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -479,133 +536,212 @@ const Workshops = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.4, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const rotate = useTransform(scrollYProgress, [0, 0.5], [-10, 0]);
+  const typeOptions = useMemo(() => [
+    'All',
+    ...Array.from(new Set(workshops.map((w) => w.type))).sort(),
+  ], []);
 
-  const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
-                         windowWidth <= 768 ? styles.responsive.medium :
-                         styles.responsive.large;
+  const filteredWorkshops = useMemo(() =>
+    filter === 'All' ? workshops : workshops.filter((w) => w.type === filter),
+    [filter]
+  );
+
+  const getTechIcons = useCallback((tech) => {
+    const techs = tech.split(', ');
+    return (
+      <motion.div
+        style={{ display: 'flex', width: `${techs.length * 100}%`, animation: techs.length > 3 ? 'techCarousel 20s linear infinite' : 'none' }}
+      >
+        {techs.concat(techs).map((t, i) => (
+          <TechIcon key={`${t}-${i}`} tech={t} index={i} />
+        ))}
+      </motion.div>
+    );
+  }, []);
+
+  const handleTileClick = useCallback((workshop) => {
+    setSelectedWorkshop(workshop);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setSelectedWorkshop(null);
+  }, []);
 
   return (
     <motion.section
-      ref={ref}
-      style={{ ...styles.container, ...responsiveStyles.container, opacity, scale, rotate }}
+      ref={containerRef}
+      style={{
+        ...styles.container,
+        ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].container,
+        opacity,
+        scale,
+        rotateX,
+      }}
       variants={containerVariants}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      animate="visible"
       role="region"
       aria-label="Workshops section"
     >
       <style>{animationStyles}</style>
       {/* Background Particles */}
-      {[...Array(25)].map((_, i) => (
+      {[...Array(20)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.15}rem), ${1 + i * 0.2}rem)`,
-            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.15}rem), ${1 + i * 0.2}rem)`,
-            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(34, 197, 94, 0.4))',
+            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
+            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
+            background: 'radial-gradient(circle, rgba(255,51,255,0.6), rgba(76,29,149,0.4))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
-            zIndex: -2,
-            boxShadow: '0 0 10px rgba(34, 197, 94, 0.5)',
           }}
           animate={{
-            y: [0, -80, -160],
-            x: [0, Math.random() * 50 - 25, 0],
-            opacity: [0.7, 0.4, 0],
-            scale: [1, 1.3, 1],
+            x: [0, Math.random() * 150 - 75, 0],
+            y: [0, Math.random() * 150 - 75, 0],
+            opacity: [0.3, 1, 0.3],
+            scale: [1, 1.5, 1],
+            rotate: [0, 360, 0],
           }}
-          transition={{ duration: 2.5 + i * 0.2, repeat: Infinity, ease: 'easeOut', delay: Math.random() * 1.5 }}
+          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 4 }}
         />
       ))}
-      {/* Glow Effect */}
+      {/* Holographic Glow */}
       <motion.div
-        style={{ ...styles.glowEffect, ...responsiveStyles.glowEffect }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.4, 0.7, 0.4],
-          x: [-50, 50, -50],
-          y: [-50, 50, -50],
+        style={{
+          ...styles.holographicGlow,
+          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].holographicGlow,
         }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
       />
       {/* Header Section */}
-      <motion.div
-        style={{ ...styles.header, ...responsiveStyles.header }}
+      <motion.header
+        style={{
+          ...styles.header,
+          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].header,
+        }}
         variants={headerVariants}
+        transition={{ type: 'spring', stiffness: 130, damping: 14 }}
       >
         <div style={styles.headerGlow} />
-        <h2 style={{ ...styles.title, ...responsiveStyles.title }}>
-          📖 Technical Workshops
+        <h2
+          style={{
+            ...styles.title,
+            ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].title,
+          }}
+        >
+          📖 My Workshop Journey
         </h2>
-        <div style={styles.titleUnderline} />
-        <p style={{ ...styles.introText, ...responsiveStyles.introText }}>
+        <motion.div
+          style={styles.titleUnderline}
+          initial={{ width: 0, scaleX: 0 }}
+          animate={{ width: 'clamp(200px,40vw,320px)', scaleX: 1 }}
+          transition={{ duration: 2, ease: 'easeOut' }}
+        />
+        <p
+          style={{
+            ...styles.introText,
+            ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].introText,
+          }}
+        >
           Immersive workshops where I honed my skills in cutting-edge technologies, from AI and machine learning to full-stack and mobile app development.
         </p>
-      </motion.div>
-      {/* Workshops Grid */}
+      </motion.header>
+      {/* Filter Bar */}
       <motion.div
-        style={{ ...styles.grid, ...responsiveStyles.grid }}
+        style={{
+          ...styles.filterBar,
+          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].filterBar,
+        }}
         variants={containerVariants}
       >
         <AnimatePresence>
-          {workshops.map((workshop, index) => {
+          {typeOptions.map((type, index) => (
+            <motion.button
+              key={type}
+              style={{
+                ...styles.filterBtn,
+                ...(filter === type ? styles.activeFilter : {}),
+                ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].filterBtn,
+              }}
+              onClick={() => setFilter(type)}
+              variants={filterBtnVariants}
+              initial="hidden"
+              animate={filter === type ? 'active' : 'visible'}
+              exit="exit"
+              whileTap={{ scale: 0.9 }}
+              aria-pressed={filter === type}
+              aria-label={`Filter by ${type}`}
+            >
+              {type}
+            </motion.button>
+          ))}
+        </AnimatePresence>
+      </motion.div>
+      {/* Workshops Grid */}
+      <motion.div
+        style={{
+          ...styles.grid,
+          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].grid,
+        }}
+        variants={containerVariants}
+      >
+        <AnimatePresence>
+          {filteredWorkshops.map((workshop, index) => {
             const IconComp = workshop.icon;
             return (
-              <motion.div
+              <motion.article
                 key={index}
-                style={{ ...styles.card, ...responsiveStyles.card }}
-                variants={cardVariants}
+                style={{
+                  ...styles.tile,
+                  ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tile,
+                }}
+                variants={tileVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: '-50px' }}
-                whileHover="hover"
+                viewport={{ once: true, margin: '-100px' }}
+                onClick={() => handleTileClick(workshop)}
+                tabIndex={0}
+                role="button"
+                aria-label={`View details for ${workshop.title}`}
+                onKeyDown={(e) => e.key === 'Enter' && handleTileClick(workshop)}
               >
-                <motion.div style={styles.cardOverlay} />
+                <motion.div style={{ ...styles.tileOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
                 <motion.h3
-                  style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
-                  variants={cardChildVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: index * 0.15 + 0.2 }}
+                  style={{
+                    ...styles.tileTitle,
+                    ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileTitle,
+                  }}
+                  variants={tileChildVariants}
+                  transition={{ delay: index * 0.2 + 0.2 }}
                 >
-                  <IconComp style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
-                  {workshop.title}
+                  <IconComp style={{ fontSize: 'clamp(1.6rem,3vw,2rem)' }} />
+                  #{index + 1} • {workshop.title}
                 </motion.h3>
                 <motion.p
-                  style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
-                  variants={cardChildVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: index * 0.15 + 0.3 }}
+                  style={{
+                    ...styles.tileDescription,
+                    ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileDescription,
+                  }}
+                  variants={tileChildVariants}
+                  transition={{ delay: index * 0.2 + 0.3 }}
                 >
-                  {workshop.description}
+                  <span style={styles.label}>Description:</span> {workshop.description}
                 </motion.p>
                 <motion.p
                   style={styles.techLabel}
-                  variants={cardChildVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: index * 0.15 + 0.4 }}
+                  variants={tileChildVariants}
+                  transition={{ delay: index * 0.2 + 0.4 }}
                 >
                   🔧 Tech Used:
                 </motion.p>
                 <motion.div
                   style={styles.techContainer}
-                  variants={cardChildVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: index * 0.15 + 0.5 }}
+                  variants={tileChildVariants}
+                  transition={{ delay: index * 0.2 + 0.5 }}
                 >
                   {getTechIcons(workshop.tech)}
                 </motion.div>
@@ -613,19 +749,15 @@ const Workshops = () => {
                   <>
                     <motion.p
                       style={styles.achievementsLabel}
-                      variants={cardChildVariants}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ delay: index * 0.15 + 0.6 }}
+                      variants={tileChildVariants}
+                      transition={{ delay: index * 0.2 + 0.6 }}
                     >
                       🏆 Achievements:
                     </motion.p>
                     <motion.ul
                       style={styles.achievementList}
-                      variants={cardChildVariants}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ delay: index * 0.15 + 0.7 }}
+                      variants={tileChildVariants}
+                      transition={{ delay: index * 0.2 + 0.7 }}
                     >
                       {workshop.achievements.map((ach, achIndex) => (
                         <motion.li
@@ -633,22 +765,119 @@ const Workshops = () => {
                           style={styles.achievementItem}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.15 + 0.8 + achIndex * 0.1 }}
+                          transition={{ delay: index * 0.2 + 0.8 + achIndex * 0.1 }}
                         >
-                          <FaBrain style={{ color: '#22c55e' }} />
+                          <FaBrain style={{ color: '#3b82f6' }} />
                           {ach}
                         </motion.li>
                       ))}
                     </motion.ul>
                   </>
                 )}
-              </motion.div>
+              </motion.article>
             );
           })}
         </AnimatePresence>
       </motion.div>
+      {/* Expanded Tile Modal */}
+      <AnimatePresence>
+        {selectedWorkshop && (
+          <>
+            <motion.div
+              style={styles.expandedOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleClose}
+              role="button"
+              tabIndex={0}
+              aria-label="Close expanded view"
+              onKeyDown={(e) => e.key === 'Enter' && handleClose()}
+            />
+            <motion.div
+              style={{
+                ...styles.expandedTile,
+                ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].expandedTile,
+              }}
+              variants={expandedTileVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 10s linear infinite' }} />
+              <button
+                style={styles.closeButton}
+                onClick={handleClose}
+                aria-label="Close expanded view"
+              >
+                ✕
+              </button>
+              <motion.h3
+                style={{
+                  ...styles.tileTitle,
+                  fontSize: 'clamp(2rem,5vw,3rem)',
+                  marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+                }}
+                variants={tileChildVariants}
+              >
+                <selectedWorkshop.icon style={{ fontSize: 'clamp(1.8rem,3.5vw,2.2rem)' }} />
+                #{workshops.indexOf(selectedWorkshop) + 1} • {selectedWorkshop.title}
+              </motion.h3>
+              <motion.p
+                style={{
+                  ...styles.tileDescription,
+                  fontSize: 'clamp(1.2rem,2.8vw,1.6rem)',
+                  lineHeight: '2',
+                }}
+                variants={tileChildVariants}
+              >
+                <span style={styles.label}>Description:</span> {selectedWorkshop.description}
+              </motion.p>
+              <motion.p
+                style={styles.techLabel}
+                variants={tileChildVariants}
+              >
+                🔧 Tech Used:
+              </motion.p>
+              <motion.div
+                style={styles.techContainer}
+                variants={tileChildVariants}
+              >
+                {getTechIcons(selectedWorkshop.tech)}
+              </motion.div>
+              {selectedWorkshop.achievements && (
+                <>
+                  <motion.p
+                    style={styles.achievementsLabel}
+                    variants={tileChildVariants}
+                  >
+                    🏆 Achievements:
+                  </motion.p>
+                  <motion.ul
+                    style={styles.achievementList}
+                    variants={tileChildVariants}
+                  >
+                    {selectedWorkshop.achievements.map((ach, achIndex) => (
+                      <motion.li
+                        key={achIndex}
+                        style={styles.achievementItem}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: achIndex * 0.1 }}
+                      >
+                        <FaBrain style={{ color: '#3b82f6' }} />
+                        {ach}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };
 
-export default Workshops;
+export default React.memo(Workshops);
