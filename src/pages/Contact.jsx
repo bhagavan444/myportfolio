@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { FaLinkedin, FaGithub, FaEnvelope, FaPhone, FaTwitter, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaLinkedin, FaEnvelope, FaPhone, FaExternalLinkAlt } from 'react-icons/fa';
 
 // Contact Icon Component with Enhanced Animation
-const ContactIcon = React.memo(({ icon: Icon, label, index }) => (
-  <motion.span
+const ContactIcon = React.memo(({ icon: Icon, label, link, index }) => (
+  <motion.a
+    href={link || '#'}
+    target={link ? '_blank' : '_self'}
+    rel={link ? 'noopener noreferrer' : ''}
     style={{
       display: 'inline-flex',
       alignItems: 'center',
@@ -15,6 +18,7 @@ const ContactIcon = React.memo(({ icon: Icon, label, index }) => (
       borderRadius: 'clamp(10px, 1.5vw, 12px)',
       border: '2px solid rgba(255, 51, 255, 0.4)',
       boxShadow: '0 0 15px rgba(192, 38, 211, 0.5)',
+      textDecoration: 'none',
     }}
     initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
     animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -40,7 +44,7 @@ const ContactIcon = React.memo(({ icon: Icon, label, index }) => (
     <span style={{ color: '#f0faff', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', fontWeight: 600 }}>
       {label}
     </span>
-  </motion.span>
+  </motion.a>
 ));
 
 // Contact Data
@@ -156,51 +160,20 @@ const styles = {
     lineHeight: '1.9',
     textShadow: '0 0 15px rgba(255, 51, 255, 0.6)',
   },
-  filterBar: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 'clamp(1.2rem, 2.5vw, 2rem)',
-    marginBottom: 'clamp(3rem, 6vw, 5rem)',
-    flexWrap: 'wrap',
-  },
-  filterBtn: {
-    padding: 'clamp(0.8rem, 1.8vw, 1.2rem) clamp(1.8rem, 3vw, 2.5rem)',
-    background: 'rgba(255, 51, 255, 0.2)',
-    border: '2px solid rgba(255, 51, 255, 0.4)',
-    borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    color: '#f0faff',
-    cursor: 'pointer',
-    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 15px rgba(255, 51, 255, 0.5)',
-    transition: 'all 0.3s ease',
-  },
-  activeFilter: {
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    color: '#f0faff',
-    boxShadow: '0 0 25px rgba(255, 51, 255, 0.9)',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px, 50vw, 420px), 1fr))',
-    gap: 'clamp(2.5rem, 5vw, 4rem)',
-    maxWidth: 'clamp(900px, 95vw, 2000px)',
-    margin: '0 auto',
-    perspective: '2500px',
-  },
-  tile: {
+  contactSection: {
     background: 'rgba(10, 0, 30, 0.9)',
     borderRadius: 'clamp(20px, 3vw, 24px)',
     padding: 'clamp(2.5rem, 5vw, 3.5rem)',
-    textAlign: 'left',
+    textAlign: 'center',
     backdropFilter: 'blur(30px)',
     boxShadow: '0 40px 80px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 51, 255, 0.4)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
-    cursor: 'pointer',
+    maxWidth: 'clamp(800px, 95vw, 1400px)',
+    margin: '0 auto',
   },
-  tileOverlay: {
+  sectionOverlay: {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
@@ -209,112 +182,55 @@ const styles = {
     opacity: 0.6,
     animation: 'rotateGlow 10s linear infinite',
   },
-  tileTitle: {
+  sectionTitle: {
     fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
     color: '#ff33ff',
     textShadow: '0 0 25px rgba(255, 51, 255, 0.8)',
     marginBottom: 'clamp(1.2rem, 3vw, 1.8rem)',
     fontWeight: '800',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'clamp(0.5rem, 1.2vw, 0.8rem)',
   },
-  tileDescription: {
+  sectionDescription: {
     fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
     color: '#f0faff',
     marginBottom: 'clamp(1.5rem, 3.5vw, 2rem)',
     lineHeight: '1.9',
     textShadow: '0 0 15px rgba(255, 51, 255, 0.6)',
+    maxWidth: 'clamp(600px, 85vw, 1000px)',
+    margin: '0 auto clamp(1.5rem, 3vw, 2rem)',
   },
-  detailsLabel: {
-    fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
-    color: '#3b82f6',
-    fontWeight: 'bold',
-    marginTop: 'clamp(1.5rem, 3.5vw, 2rem)',
-    textShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
-  },
-  linkContainer: {
+  contactList: {
     display: 'flex',
-    gap: 'clamp(1rem, 2vw, 1.5rem)',
-    flexWrap: 'wrap',
-  },
-  link: {
-    display: 'inline-flex',
-    padding: 'clamp(0.8rem, 1.8vw, 1.2rem) clamp(1.8rem, 3vw, 2.5rem)',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    color: '#f0faff',
-    borderRadius: 'clamp(14px, 2.2vw, 18px)',
-    textDecoration: 'none',
-    fontWeight: '700',
-    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
-    boxShadow: '0 0 20px rgba(255, 51, 255, 0.7)',
+    flexDirection: 'column',
+    gap: 'clamp(1.5rem, 3vw, 2rem)',
     alignItems: 'center',
-    gap: 'clamp(0.5rem, 1.2vw, 0.8rem)',
-  },
-  expandedTile: {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'clamp(600px, 80vw, 1000px)',
-    maxHeight: '80vh',
-    background: 'rgba(10, 0, 30, 0.95)',
-    borderRadius: 'clamp(24px, 3.5vw, 28px)',
-    padding: 'clamp(3rem, 6vw, 4rem)',
-    boxShadow: '0 50px 100px rgba(0, 0, 0, 0.9), 0 0 100px rgba(255, 51, 255, 0.6)',
-    backdropFilter: 'blur(30px)',
-    zIndex: 1000,
-    overflowY: 'auto',
-  },
-  expandedOverlay: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0, 0, 0, 0.8)',
-    zIndex: 999,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 'clamp(1rem, 2vw, 1.5rem)',
-    right: 'clamp(1rem, 2vw, 1.5rem)',
-    background: 'transparent',
-    border: 'none',
-    color: '#f0faff',
-    fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-    cursor: 'pointer',
   },
   responsive: {
     large: {
       container: { padding: 'clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 4rem)' },
       header: { padding: 'clamp(3rem, 5vw, 5rem)' },
       title: { fontSize: 'clamp(3rem, 7vw, 6rem)' },
-      grid: { gap: 'clamp(2.5rem, 5vw, 4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px, 50vw, 420px), 1fr))' },
-      tile: { padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
-      tileTitle: { fontSize: 'clamp(1.8rem, 4vw, 2.6rem)' },
-      tileDescription: { fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)' },
+      contactSection: { padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
+      sectionTitle: { fontSize: 'clamp(1.8rem, 4vw, 2.6rem)' },
+      sectionDescription: { fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)' },
       holographicGlow: { width: 'clamp(500px, 70vw, 1000px)', height: 'clamp(500px, 70vw, 1000px)', top: '-25%', left: '-25%' },
-      expandedTile: { width: 'clamp(600px, 80vw, 1000px)', padding: 'clamp(3rem, 6vw, 4rem)' },
     },
     medium: {
       container: { padding: 'clamp(3rem, 8vw, 6rem) clamp(1.5rem, 3vw, 3rem)' },
       header: { padding: 'clamp(2rem, 4vw, 4rem)' },
       title: { fontSize: 'clamp(2.5rem, 6vw, 5rem)' },
-      grid: { gap: 'clamp(2rem, 4vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 360px), 1fr))' },
-      tile: { padding: 'clamp(2rem, 4vw, 3rem)' },
-      tileTitle: { fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)' },
-      tileDescription: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
+      contactSection: { padding: 'clamp(2rem, 4vw, 3rem)' },
+      sectionTitle: { fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)' },
+      sectionDescription: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
       holographicGlow: { width: 'clamp(400px, 60vw, 800px)', height: 'clamp(400px, 60vw, 800px)', top: '-20%', left: '-20%' },
-      expandedTile: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
     },
     small: {
       container: { padding: 'clamp(2rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
       header: { padding: 'clamp(1.5rem, 3.5vw, 3rem)' },
       title: { fontSize: 'clamp(2rem, 5vw, 4rem)' },
-      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: '1fr' },
-      tile: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      tileTitle: { fontSize: 'clamp(1.4rem, 3vw, 2rem)' },
-      tileDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.2rem)' },
+      contactSection: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
+      sectionTitle: { fontSize: 'clamp(1.4rem, 3vw, 2rem)' },
+      sectionDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.2rem)' },
       holographicGlow: { width: 'clamp(300px, 50vw, 600px)', height: 'clamp(300px, 50vw, 600px)', top: '-15%', left: '-15%' },
-      expandedTile: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
   },
 };
@@ -378,24 +294,7 @@ const headerVariants = {
   },
 };
 
-const filterBtnVariants = {
-  hidden: { opacity: 0, scale: 0.7, y: 40 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: 0.6, type: 'spring', stiffness: 170, damping: 13 },
-  },
-  exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
-  active: {
-    scale: [1, 1.15, 1],
-    rotate: [0, 5, -5, 0],
-    boxShadow: ['0 0 15px rgba(255, 51, 255, 0.5)', '0 0 30px rgba(255, 51, 255, 0.9)', '0 0 15px rgba(255, 51, 255, 0.5)'],
-    transition: { duration: 1.5, repeat: Infinity, repeatType: 'reverse' },
-  },
-};
-
-const tileVariants = {
+const sectionVariants = {
   hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: 180, rotateX: -30 },
   visible: {
     opacity: 1,
@@ -407,7 +306,7 @@ const tileVariants = {
   },
 };
 
-const tileChildVariants = {
+const sectionChildVariants = {
   hidden: { opacity: 0, x: -50, rotate: -15, scale: 0.8 },
   visible: {
     opacity: 1,
@@ -418,22 +317,8 @@ const tileChildVariants = {
   },
 };
 
-const expandedTileVariants = {
-  hidden: { opacity: 0, scale: 0.5, rotateY: 90, rotateX: -45, x: '-50%', y: '-50%' },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotateY: 0,
-    rotateX: 0,
-    transition: { duration: 1, type: 'spring', stiffness: 120, damping: 14 },
-  },
-  exit: { opacity: 0, scale: 0.5, rotateY: -90, rotateX: 45, transition: { duration: 0.6 } },
-};
-
 const Contact = () => {
-  const [filter, setFilter] = useState('All');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-  const [selectedContact, setSelectedContact] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 1]);
@@ -458,24 +343,9 @@ const Contact = () => {
     };
   }, []);
 
-  const typeOptions = useMemo(() => ['All', ...Array.from(new Set(contacts.map((c) => c.type))).sort()], []);
-
-  const filteredContacts = useMemo(() =>
-    filter === 'All' ? contacts : contacts.filter((c) => c.type === filter),
-    [filter]
-  );
-
   const getContactIcon = useCallback((contact, index) => (
-    <ContactIcon icon={contact.icon} label={contact.details} index={index} />
+    <ContactIcon icon={contact.icon} label={contact.details} link={contact.link} index={index} />
   ), []);
-
-  const handleTileClick = useCallback((contact) => {
-    setSelectedContact(contact);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setSelectedContact(null);
-  }, []);
 
   return (
     <motion.section
@@ -566,271 +436,79 @@ const Contact = () => {
           Let's collaborate, discuss ideas, or connect professionally. Reach out through your preferred platform!
         </motion.p>
       </motion.header>
-      {/* Filter Bar with Enhanced Glow and Pulse */}
+      {/* Unified Contact Section with 3D Tilt and Particle Effects */}
       <motion.div
         style={{
-          ...styles.filterBar,
-          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].filterBar,
+          ...styles.contactSection,
+          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].contactSection,
         }}
-        variants={containerVariants}
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-100px' }}
       >
-        <AnimatePresence>
-          {typeOptions.map((type, index) => (
-            <motion.button
-              key={type}
-              style={{
-                ...styles.filterBtn,
-                ...(filter === type ? styles.activeFilter : {}),
-                ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].filterBtn,
-              }}
-              onClick={() => setFilter(type)}
-              variants={filterBtnVariants}
-              initial="hidden"
-              animate={filter === type ? 'active' : 'visible'}
-              exit="exit"
-              whileHover={{ scale: 1.1, boxShadow: '0 0 25px rgba(255, 51, 255, 0.9)', background: 'linear-gradient(90deg, #3b82f6, #ff33ff)' }}
-              whileTap={{ scale: 0.9 }}
-              aria-pressed={filter === type}
-              aria-label={`Filter by ${type}`}
-            >
-              {type}
-            </motion.button>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-      {/* Contact Grid with 3D Tilt and Particle Effects */}
-      <motion.div
-        style={{
-          ...styles.grid,
-          ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].grid,
-        }}
-        variants={containerVariants}
-      >
-        <AnimatePresence>
-          {filteredContacts.map((contact, index) => {
-            const IconComp = contact.icon;
-            return (
-              <motion.article
-                key={contact.title}
-                style={{
-                  ...styles.tile,
-                  ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tile,
-                }}
-                variants={tileVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-100px' }}
-               
-                onClick={() => handleTileClick(contact)}
-                tabIndex={0}
-                role="button"
-                aria-label={`View details for ${contact.title}`}
-                onKeyDown={(e) => e.key === 'Enter' && handleTileClick(contact)}
-              >
-                <motion.div style={{ ...styles.tileOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={`particle-${index}-${i}`}
-                    style={{
-                      position: 'absolute',
-                      width: '8px',
-                      height: '8px',
-                      background: 'rgba(255, 51, 255, 0.7)',
-                      borderRadius: '50%',
-                      top: '50%',
-                      left: '50%',
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }}
-                    animate={{
-                      scale: [0, 1, 0],
-                      x: (Math.random() - 0.5) * 200,
-                      y: (Math.random() - 0.5) * 200,
-                      opacity: [0, 1, 0],
-                    }}
-                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2, ease: 'easeOut' }}
-                  />
-                ))}
-                <motion.h3
-                  style={{
-                    ...styles.tileTitle,
-                    ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileTitle,
-                  }}
-                  variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.2 }}
-                  whileHover={{ color: '#00ccff', textShadow: '0 0 35px rgba(59, 130, 246, 0.9)', scale: 1.05 }}
-                >
-                  <IconComp style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)' }} />
-                  {contact.title}
-                </motion.h3>
-                <motion.p
-                  style={{
-                    ...styles.tileDescription,
-                    ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileDescription,
-                  }}
-                  variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.3 }}
-                  whileHover={{ color: '#ffccff', scale: 1.02 }}
-                >
-                  {contact.description}
-                </motion.p>
-                <motion.p
-                  style={styles.detailsLabel}
-                  variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.4 }}
-                  whileHover={{ scale: 1.1, color: '#00ccff', textShadow: '0 0 20px rgba(59, 130, 246, 0.8)' }}
-                >
-                  🔗 Contact Details:
-                </motion.p>
-                <motion.div
-                  style={styles.techContainer}
-                  variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.5 }}
-                >
-                  {getContactIcon(contact, index)}
-                </motion.div>
-                {contact.link && (
-                  <motion.div
-                    style={styles.linkContainer}
-                    variants={tileChildVariants}
-                    transition={{ delay: index * 0.2 + 0.6 }}
-                  >
-                    <motion.a
-                      href={contact.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={styles.link}
-                      
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <FaExternalLinkAlt style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.2rem)' }} />
-                      Connect Now
-                    </motion.a>
-                  </motion.div>
-                )}
-              </motion.article>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
-      {/* Enhanced Expanded Tile Modal with Dynamic Entrance */}
-      <AnimatePresence>
-        {selectedContact && (
-          <>
+        <motion.div style={{ ...styles.sectionOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            style={{
+              position: 'absolute',
+              width: '8px',
+              height: '8px',
+              background: 'rgba(255, 51, 255, 0.7)',
+              borderRadius: '50%',
+              top: '50%',
+              left: '50%',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+            animate={{
+              scale: [0, 1, 0],
+              x: (Math.random() - 0.5) * 200,
+              y: (Math.random() - 0.5) * 200,
+              opacity: [0, 1, 0],
+            }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2, ease: 'easeOut' }}
+          />
+        ))}
+        <motion.h3
+          style={{
+            ...styles.sectionTitle,
+            ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].sectionTitle,
+          }}
+          variants={sectionChildVariants}
+          transition={{ delay: 0.2 }}
+          whileHover={{ color: '#00ccff', textShadow: '0 0 35px rgba(59, 130, 246, 0.9)', scale: 1.05 }}
+        >
+          Contact Information
+        </motion.h3>
+        <motion.p
+          style={{
+            ...styles.sectionDescription,
+            ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].sectionDescription,
+          }}
+          variants={sectionChildVariants}
+          transition={{ delay: 0.3 }}
+          whileHover={{ color: '#ffccff', scale: 1.02 }}
+        >
+          Reach out to me through any of the following channels for professional inquiries, collaborations, or quick discussions.
+        </motion.p>
+        <motion.div
+          style={styles.contactList}
+          variants={sectionChildVariants}
+          transition={{ delay: 0.4 }}
+        >
+          {contacts.map((contact, index) => (
             <motion.div
-              style={styles.expandedOverlay}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              onClick={handleClose}
-              role="button"
-              tabIndex={0}
-              aria-label="Close expanded view"
-              onKeyDown={(e) => e.key === 'Enter' && handleClose()}
-            />
-            <motion.div
-              style={{
-                ...styles.expandedTile,
-                ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].expandedTile,
-              }}
-              variants={expandedTileVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              whileHover={{ scale: 1.02, rotateY: mousePosition.x * 10, rotateX: -mousePosition.y * 10 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 12 }}
+              key={contact.title}
+              variants={sectionChildVariants}
+              transition={{ delay: index * 0.2 + 0.5 }}
             >
-              <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 10s linear infinite' }} />
-              {[...Array(10)].map((_, i) => (
-                <motion.div
-                  key={`modal-particle-${i}`}
-                  style={{
-                    position: 'absolute',
-                    width: '6px',
-                    height: '6px',
-                    background: 'rgba(255, 51, 255, 0.7)',
-                    borderRadius: '50%',
-                    top: '50%',
-                    left: '50%',
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                  }}
-                  animate={{
-                    scale: [0, 1.5, 0],
-                    x: (Math.random() - 0.5) * 300,
-                    y: (Math.random() - 0.5) * 300,
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.1, ease: 'easeOut' }}
-                />
-              ))}
-              <motion.button
-                style={styles.closeButton}
-                onClick={handleClose}
-                aria-label="Close expanded view"
-                whileHover={{ scale: 1.2, rotate: 90, color: '#ff33ff' }}
-                whileTap={{ scale: 0.8 }}
-              >
-                ✕
-              </motion.button>
-              <motion.h3
-                style={{
-                  ...styles.tileTitle,
-                  fontSize: 'clamp(2rem, 5vw, 3rem)',
-                  marginBottom: 'clamp(1.5rem, 3.5vw, 2rem)',
-                }}
-                variants={tileChildVariants}
-                whileHover={{ scale: 1.05, color: '#00ccff', textShadow: '0 0 30px rgba(59, 130, 246, 0.9)' }}
-              >
-                <selectedContact.icon style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.2rem)' }} />
-                {selectedContact.title}
-              </motion.h3>
-              <motion.p
-                style={{
-                  ...styles.tileDescription,
-                  fontSize: 'clamp(1.2rem, 2.8vw, 1.6rem)',
-                  lineHeight: '2',
-                }}
-                variants={tileChildVariants}
-                whileHover={{ color: '#ffccff', scale: 1.02 }}
-              >
-                {selectedContact.description}
-              </motion.p>
-              <motion.p
-                style={styles.detailsLabel}
-                variants={tileChildVariants}
-                whileHover={{ scale: 1.1, color: '#00ccff', textShadow: '0 0 20px rgba(59, 130, 246, 0.8)' }}
-              >
-                🔗 Contact Details:
-              </motion.p>
-              <motion.div style={styles.techContainer} variants={tileChildVariants}>
-                {getContactIcon(selectedContact, 0)}
-              </motion.div>
-              {selectedContact.link && (
-                <motion.div style={styles.linkContainer} variants={tileChildVariants}>
-                  <motion.a
-                    href={selectedContact.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ ...styles.link, fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }}
-                    whileHover={{
-                      scale: 1.1,
-                      boxShadow: '0 0 30px rgba(255, 51, 255, 0.9)',
-                      background: 'linear-gradient(90deg, #3b82f6, #ff33ff)',
-                      rotate: [0, 5, -5, 0],
-                    }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <FaExternalLinkAlt style={{ fontSize: 'clamp(1rem, 2vw, 1.3rem)' }} />
-                    Connect Now
-                  </motion.a>
-                </motion.div>
-              )}
+              {getContactIcon(contact, index)}
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          ))}
+        </motion.div>
+      </motion.div>
     </motion.section>
   );
 };
