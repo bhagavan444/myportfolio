@@ -160,11 +160,7 @@ const styles = {
   overlay: {
     position: 'absolute',
     inset: 0,
-    background: `
-      radial-gradient(circle at 10% 15%, rgba(76, 29, 149, 0.3), transparent 50%),
-      radial-gradient(circle at 90% 85%, rgba(192, 38, 211, 0.3), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)
-    `,
+    background: `radial-gradient(circle at 10% 15%, rgba(76, 29, 149, 0.3), transparent 50%), radial-gradient(circle at 90% 85%, rgba(192, 38, 211, 0.3), transparent 50%), radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)`,
     zIndex: -1,
     pointerEvents: 'none',
   },
@@ -346,41 +342,52 @@ const animationStyles = `
     0%, 100% { transform: translate(0, 0) scale(1); }
     50% { transform: translate(70px, 70px) scale(1.12); }
   }
+  @keyframes orbit {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(76, 29, 149, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(76, 29, 149, 0.8); }
+  }
 `;
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.88 },
+  hidden: { opacity: 0, scale: 0.88, rotateY: -15 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 1.8, ease: 'easeOut', staggerChildren: 0.25 },
+    rotateY: 0,
+    transition: { duration: 1.8, ease: [0.43, 0.13, 0.23, 0.96], staggerChildren: 0.25 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -80, rotateX: -12 },
+  hidden: { opacity: 0, y: -80, rotateX: -12, skewY: 5 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
+    skewY: 0,
     transition: { duration: 1.2, type: 'spring', stiffness: 130, damping: 16 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 100, scale: 0.82 },
+  hidden: { opacity: 0, y: 100, scale: 0.82, rotateZ: -10 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.9, type: 'spring', stiffness: 120, damping: 15 },
+    rotateZ: 0,
+    transition: { duration: 0.9, type: 'spring', stiffness: 120, damping: 15, delay: 0.1 },
   },
 };
 
 const contentChildVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, x: -30, skewX: -5 },
+  visible: { opacity: 1, x: 0, skewX: 0, transition: { duration: 0.5, ease: [0.34, 0.02, 0.12, 1] } },
 };
 
 const About = () => {
@@ -429,6 +436,7 @@ const About = () => {
             y: [0, -50, 0],
             opacity: [0.3, 0.8, 0.3],
             scale: [1, 1.3, 1],
+            rotate: [0, 180, 360],
           }}
           transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -436,6 +444,8 @@ const About = () => {
       {/* Holographic Glow */}
       <motion.div
         style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 15s ease-in-out infinite' }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.7, 0.9, 0.7] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
       {/* Header Section */}
       <motion.div
@@ -445,7 +455,11 @@ const About = () => {
         <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate' }}>
           👋 About Siva Satya Sai Bhagavan
         </h2>
-        <div style={styles.titleUnderline} />
+        <motion.div
+          style={styles.titleUnderline}
+          animate={{ scale: [1, 1.05, 1], boxShadow: ['0 0 20px rgba(76, 29, 149, 0.7)', '0 0 30px rgba(76, 29, 149, 0.9)'] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
         <p style={{ ...styles.introText, ...responsiveStyles.introText }}>
           Final Year B.Tech AI&DS Student | MERN Stack Developer | Python & Data Science Enthusiast
         </p>
@@ -459,7 +473,7 @@ const About = () => {
           style={styles.timelineLine}
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: '100%', opacity: 1 }}
-          transition={{ duration: 1.8, delay: 0.6 }}
+          transition={{ duration: 1.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         />
         <AnimatePresence>
           {aboutData.map((section, index) => {
@@ -472,6 +486,7 @@ const About = () => {
                 initial='hidden'
                 whileInView='visible'
                 viewport={{ once: true, margin: '-50px' }}
+                whileHover="hover"
               >
                 <motion.div
                   style={{
@@ -488,6 +503,8 @@ const About = () => {
                 >
                   <motion.div
                     style={{ ...styles.contentOverlay }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   />
                   <motion.h3
                     style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
@@ -548,6 +565,8 @@ const About = () => {
                   initial='hidden'
                   animate='visible'
                   transition={{ delay: index * 0.12 + 1.0 }}
+                  animate={{ rotate: 360, scale: [1, 1.1, 1], boxShadow: ['0 0 25px rgba(76, 29, 149, 0.9)', '0 0 35px rgba(76, 29, 149, 1)'] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   <IconComp size='clamp(18px, 2.2vw, 28px)' color='#0d0026' />
                 </motion.div>

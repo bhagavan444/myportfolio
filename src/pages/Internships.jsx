@@ -21,7 +21,7 @@ import {
   SiKeras,
 } from 'react-icons/si';
 
-// Enhanced Tech icon mapping function with more icons
+// Enhanced Tech icon mapping function
 const getTechIcons = (tech) => {
   const iconMap = {
     MongoDB: { icon: <SiMongodb />, label: 'MongoDB', color: '#47A248' },
@@ -72,36 +72,58 @@ const getTechIcons = (tech) => {
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 'clamp(6px, 1vw, 8px)',
-          margin: 'clamp(4px, 0.8vw, 6px)',
-          padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-          background: 'rgba(76, 29, 149, 0.15)',
-          borderRadius: 'clamp(8px, 1.2vw, 10px)',
-          border: '1px solid rgba(76, 29, 149, 0.3)',
+          gap: 'clamp(8px, 1.2vw, 10px)',
+          margin: 'clamp(5px, 1vw, 7px)',
+          padding: 'clamp(6px, 1vw, 8px) clamp(10px, 1.8vw, 12px)',
+          background: 'rgba(16, 185, 129, 0.15)',
+          borderRadius: 'clamp(10px, 1.5vw, 12px)',
+          border: `1px solid ${mapped.color}40`,
           cursor: 'pointer',
+          position: 'relative',
         }}
         whileHover={{
-          scale: 1.15,
-          rotate: [0, 5, -5, 0],
-          boxShadow: `0 0 15px ${mapped.color}80`,
-          background: `rgba(76, 29, 149, 0.3)`,
+          scale: 1.2,
+          rotate: [0, 8, -8, 0],
+          boxShadow: `0 0 20px ${mapped.color}80`,
+          background: `${mapped.color}20`,
         }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 350, damping: 15 }}
       >
         {mapped.icon && (
           <motion.span
-            initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
+            initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ delay: i * 0.08, duration: 0.4 }}
-            style={{ color: mapped.color, textShadow: `0 0 10px ${mapped.color}50` }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            style={{ color: mapped.color, textShadow: `0 0 12px ${mapped.color}60` }}
           >
             {mapped.icon}
           </motion.span>
         )}
-        <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
+        <span style={{ color: '#d1fae5', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', fontWeight: 500 }}>
           {mapped.label}
         </span>
+        <motion.span
+          className="tooltip"
+          initial={{ opacity: 0, y: 10 }}
+          whileHover={{ opacity: 1, y: 0 }}
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'rgba(17, 24, 39, 0.95)',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            fontSize: '0.85rem',
+            whiteSpace: 'nowrap',
+            zIndex: 10,
+            color: '#d1fae5',
+            boxShadow: `0 0 10px ${mapped.color}50`,
+          }}
+        >
+          {mapped.label}
+        </motion.span>
       </motion.span>
     );
   });
@@ -135,113 +157,128 @@ const internshipData = [
   },
 ];
 
-// Inline Styles with enhancements
+// Enhanced Styles
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(3rem, 8vw, 7rem) clamp(1.5rem, 3.5vw, 3rem)',
-    background: 'linear-gradient(155deg, #1a0033, #2a0055, #3b0088, #4c00bb)',
-    backgroundSize: '500% 500%',
-    color: '#f5f7fa',
+    padding: 'clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3.5rem)',
+    background: 'linear-gradient(135deg, #0f172a, #1e293b, #475569, #10b981)',
+    backgroundSize: '800% 800%',
+    color: '#d1fae5',
     overflowX: 'hidden',
     position: 'relative',
-    perspective: '1600px',
-    fontFamily: "'Inter', 'Montserrat', sans-serif",
+    perspective: '2000px',
+    fontFamily: "'Inter', 'Roboto', sans-serif",
     willChange: 'background, transform',
+    animation: 'gradientShift 20s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 10% 15%, rgba(76, 29, 149, 0.3), transparent 50%),
-      radial-gradient(circle at 90% 85%, rgba(192, 38, 211, 0.3), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)
+      radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.4), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(239, 68, 68, 0.4), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
+    opacity: 0.9,
+    animation: 'ambientGlow 12s ease-in-out infinite',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(400px, 60vw, 700px)',
-    height: 'clamp(400px, 60vw, 700px)',
-    background: 'radial-gradient(circle, rgba(76, 29, 149, 0.35), transparent 60%)',
-    top: '-15%',
-    left: '-15%',
-    filter: 'blur(120px)',
-    zIndex: -1,
+    width: 'clamp(500px, 70vw, 900px)',
+    height: 'clamp(500px, 70vw, 900px)',
+    background: 'radial-gradient(circle, rgba(16, 185, 129, 0.5), rgba(239, 68, 68, 0.3), transparent 60%)',
+    top: '-20%',
+    left: '-20%',
+    filter: 'blur(150px)',
+    zIndex: -2,
+    animation: 'glowOrbit 18s linear infinite',
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(2.5rem, 4.5vw, 4rem)',
-    background: 'rgba(10, 0, 30, 0.85)',
-    border: '1px solid rgba(76, 29, 149, 0.4)',
-    borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(76, 29, 149, 0.3)',
-    backdropFilter: 'blur(16px)',
-    maxWidth: 'clamp(700px, 90vw, 1100px)',
-    margin: '0 auto clamp(3rem, 6vw, 5rem)',
+    padding: 'clamp(3rem, 6vw, 5rem)',
+    background: 'rgba(17, 24, 39, 0.95)',
+    border: '1px solid rgba(16, 185, 129, 0.4)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(16, 185, 129, 0.5)',
+    backdropFilter: 'blur(20px)',
+    maxWidth: 'clamp(800px, 90vw, 1400px)',
+    margin: '0 auto clamp(4rem, 8vw, 6rem)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  headerGlow: {
+    position: 'absolute',
+    inset: 0,
+    background: 'conic-gradient(from 45deg, rgba(16, 185, 129, 0.6), rgba(239, 68, 68, 0.6), transparent)',
+    opacity: 0.7,
+    zIndex: -1,
+    animation: 'rotateGlow 10s linear infinite',
   },
   title: {
-    fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
-    fontWeight: 900,
+    fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+    fontWeight: 800,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3, #3b82f6)',
+    background: 'linear-gradient(90deg, #10b981, #ef4444, #facc15)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 35px rgba(76, 29, 149, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
-    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
-    letterSpacing: '0.12em',
+    textShadow: '0 0 40px rgba(16, 185, 129, 0.8), 0 0 60px rgba(239, 68, 68, 0.6)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.8rem)',
+    letterSpacing: '0.15em',
+    animation: 'textShine 2.5s ease-in-out infinite alternate',
   },
   titleUnderline: {
-    width: 'clamp(160px, 30vw, 240px)',
-    height: '5px',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
-    borderRadius: '5px',
-    margin: '0.6rem auto',
-    boxShadow: '0 0 20px rgba(76, 29, 149, 0.7)',
+    width: 'clamp(200px, 40vw, 300px)',
+    height: '8px',
+    background: 'linear-gradient(90deg, #10b981, #ef4444)',
+    borderRadius: '8px',
+    margin: '1rem auto',
+    boxShadow: '0 0 30px rgba(16, 185, 129, 0.8)',
   },
   introText: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
-    maxWidth: 'clamp(500px, 80vw, 800px)',
-    margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
+    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
+    color: '#d1fae5',
+    maxWidth: 'clamp(600px, 80vw, 900px)',
+    margin: '0 auto clamp(1.5rem, 3vw, 2rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+    textShadow: '0 0 15px rgba(16, 185, 129, 0.5)',
   },
   timeline: {
     position: 'relative',
-    maxWidth: 'clamp(800px, 95vw, 1600px)',
+    maxWidth: 'clamp(900px, 95vw, 1800px)',
     margin: '0 auto',
-    padding: '0 clamp(0.5rem, 2vw, 1.5rem)',
+    padding: '0 clamp(0.8rem, 2vw, 1.8rem)',
   },
   timelineLine: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: '50%',
-    width: 'clamp(3px, 0.5vw, 7px)',
-    background: 'linear-gradient(to bottom, #4c1d95, #c026d3)',
+    width: 'clamp(4px, 0.6vw, 8px)',
+    background: 'linear-gradient(to bottom, #10b981, #ef4444)',
     transform: 'translateX(-50%)',
-    boxShadow: '0 0 20px rgba(76, 29, 149, 0.7)',
+    boxShadow: '0 0 25px rgba(16, 185, 129, 0.8)',
   },
   item: {
     display: 'flex',
     justifyContent: 'center',
     position: 'relative',
-    marginBottom: 'clamp(1.8rem, 3.5vw, 3rem)',
+    marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
   },
   content: {
-    background: 'rgba(10, 0, 30, 0.9)',
-    border: '1px solid rgba(76, 29, 149, 0.3)',
-    borderRadius: 'clamp(14px, 2.5vw, 20px)',
-    padding: 'clamp(2rem, 4vw, 3rem)',
+    background: 'rgba(17, 24, 39, 0.95)',
+    border: '1px solid rgba(16, 185, 129, 0.4)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(18px)',
-    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(76, 29, 149, 0.25)',
+    backdropFilter: 'blur(25px)',
+    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(16, 185, 129, 0.3)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.4s ease',
   },
   contentLeft: { marginRight: 'auto' },
   contentRight: { marginLeft: 'auto' },
@@ -249,173 +286,209 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(76, 29, 149, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(16, 185, 129, 0.6), rgba(239, 68, 68, 0.6), transparent)',
     zIndex: -1,
-    opacity: 0.45,
+    opacity: 0.7,
+    animation: 'borderGlow 2s ease-in-out infinite',
   },
   cardTitle: {
-    fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-    color: '#4c1d95',
-    textShadow: '0 0 18px rgba(76, 29, 149, 0.6)',
-    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
-    fontWeight: '800',
+    fontSize: 'clamp(1.6rem, 3.5vw, 2rem)',
+    color: '#10b981',
+    textShadow: '0 0 20px rgba(16, 185, 129, 0.7)',
+    marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
+    fontWeight: '700',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
+    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
   },
   cardDescription: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
+    color: '#d1fae5',
+    marginBottom: 'clamp(1.2rem, 2.5vw, 1.8rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+    textShadow: '0 0 15px rgba(16, 185, 129, 0.5)',
   },
   techLabel: {
-    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#c026d3',
-    fontWeight: 'bold',
-    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(76, 29, 149, 0.4)',
+    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
+    color: '#ef4444',
+    fontWeight: '600',
+    marginTop: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+    textShadow: '0 0 15px rgba(239, 68, 68, 0.6)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(10px, 2vw, 12px)',
-    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    gap: 'clamp(12px, 2.2vw, 14px)',
+    marginTop: 'clamp(1rem, 2vw, 1.5rem)',
+    marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
   },
   label: {
-    color: '#c026d3',
-    fontWeight: '700',
-    marginRight: 'clamp(0.3rem, 0.8vw, 0.6rem)',
+    color: '#ef4444',
+    fontWeight: '600',
+    marginRight: 'clamp(0.4rem, 1vw, 0.8rem)',
   },
   certificateLink: {
     display: 'inline-flex',
-    padding: 'clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.6rem)',
-    background: 'linear-gradient(90deg, #4c1d95, #c026d3)',
-    color: '#f5f7fa',
-    borderRadius: 'clamp(10px, 1.5vw, 14px)',
+    padding: 'clamp(0.8rem, 1.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem)',
+    background: 'linear-gradient(90deg, #10b981, #ef4444)',
+    color: '#f0fdfa',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
     textDecoration: 'none',
     fontWeight: '600',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    boxShadow: '0 0 10px rgba(76, 29, 149, 0.5)',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    boxShadow: '0 0 15px rgba(16, 185, 129, 0.6)',
     alignItems: 'center',
-    gap: 'clamp(0.3rem, 0.7vw, 0.5rem)',
-    transition: 'all 0.3s ease',
+    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
+    transition: 'all 0.4s ease',
   },
   iconWrapper: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    background: 'linear-gradient(135deg, #4c1d95, #c026d3)',
+    background: 'linear-gradient(135deg, #10b981, #ef4444)',
     borderRadius: '50%',
-    padding: 'clamp(0.5rem, 1.2vw, 1rem)',
-    boxShadow: '0 0 25px rgba(76, 29, 149, 0.9)',
+    padding: 'clamp(0.8rem, 1.5vw, 1.2rem)',
+    boxShadow: '0 0 30px rgba(16, 185, 129, 0.9)',
     zIndex: 3,
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
-      header: { padding: 'clamp(2rem, 4vw, 3.5rem)' },
-      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.8vw, 1.2rem)' },
-      content: { padding: 'clamp(2rem, 3.5vw, 2.8rem)', width: 'clamp(320px, 45%, 600px)' },
-      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
-      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
-      holographicGlow: { width: 'clamp(400px, 55vw, 700px)', height: 'clamp(400px, 55vw, 700px)', top: '-15%', left: '-15%' },
+      container: { padding: 'clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3.5rem)' },
+      header: { padding: 'clamp(3rem, 6vw, 5rem)' },
+      title: { fontSize: 'clamp(2.5rem, 7vw, 5rem)' },
+      introText: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
+      timeline: { padding: '0 clamp(0.8rem, 2vw, 1.8rem)' },
+      content: { padding: 'clamp(2.5rem, 5vw, 3.5rem)', width: 'clamp(350px, 45%, 650px)' },
+      cardTitle: { fontSize: 'clamp(1.6rem, 3.5vw, 2rem)' },
+      cardDescription: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
+      holographicGlow: { width: 'clamp(500px, 70vw, 900px)', height: 'clamp(500px, 70vw, 900px)' },
     },
     medium: {
-      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
-      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)' },
-      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.5vw, 1rem)' },
-      content: { padding: 'clamp(1.8rem, 3vw, 2.5rem)', width: 'clamp(280px, 45%, 500px)' },
+      container: { padding: 'clamp(3rem, 8vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4.5vw, 3.5rem)' },
+      title: { fontSize: 'clamp(2rem, 6vw, 4rem)' },
+      introText: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
+      timeline: { padding: '0 clamp(0.6rem, 1.5vw, 1.2rem)' },
+      content: { padding: 'clamp(2rem, 4vw, 3rem)', width: 'clamp(300px, 45%, 550px)' },
       cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
-      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      cardDescription: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(400px, 60vw, 700px)', height: 'clamp(400px, 60vw, 700px)' },
     },
     small: {
-      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
-      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.2vw, 0.8rem)' },
-      content: { padding: 'clamp(1.5rem, 2.5vw, 2rem)', width: 'clamp(260px, 80%, 400px)' },
+      container: { padding: 'clamp(2rem, 6vw, 4rem) clamp(1rem, 2.5vw, 1.8rem)' },
+      header: { padding: 'clamp(1.5rem, 3.5vw, 2.5rem)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      introText: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
+      timeline: { padding: '0 clamp(0.5rem, 1.2vw, 1rem)' },
+      content: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', width: 'clamp(280px, 85%, 450px)' },
       cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
-      holographicGlow: { width: 'clamp(250px, 40vw, 400px)', height: 'clamp(250px, 40vw, 400px)', top: '-10%', left: '-10%' },
+      cardDescription: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
+      holographicGlow: { width: 'clamp(300px, 50vw, 600px)', height: 'clamp(300px, 50vw, 600px)' },
     },
   },
 };
 
-// Enhanced Inline Animation Styles
+// Enhanced Animation Styles
 const animationStyles = `
-  @keyframes holographicPulse {
-    0%, 100% { opacity: 0.7; }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes ambientGlow {
+    0%, 100% { opacity: 0.9; }
     50% { opacity: 1; }
   }
-  @keyframes glowShift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(70px, 70px) scale(1.12); }
+  @keyframes glowOrbit {
+    0% { transform: rotate(0deg); filter: brightness(1); }
+    50% { transform: rotate(180deg); filter: brightness(1.4); }
+    100% { transform: rotate(360deg); filter: brightness(1); }
+  }
+  @keyframes textShine {
+    0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(16, 185, 129, 0.8), 0 0 60px rgba(239, 68, 68, 0.6); }
+    50% { opacity: 0.9; text-shadow: 0 0 30px rgba(16, 185, 129, 0.6), 0 0 45px rgba(239, 68, 68, 0.5); }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: rgba(16, 185, 129, 0.4); box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
+    50% { border-color: rgba(16, 185, 129, 0.7); box-shadow: 0 0 35px rgba(16, 185, 129, 0.9); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  @keyframes rotateIcon {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-  @keyframes neonFlicker {
-    0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(76, 29, 149, 0.5); }
-    20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.6; text-shadow: 0 0 5px rgba(76, 29, 149, 0.3); }
+  @keyframes particleDrift {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-80px) scale(1.4); opacity: 0.5; }
+    100% { transform: translateY(-160px) scale(1); opacity: 0; }
   }
   @keyframes floatGlow {
-    0% { transform: translateY(0px); box-shadow: 0 0 20px rgba(76, 29, 149, 0.7); }
-    50% { transform: translateY(-10px); box-shadow: 0 0 30px rgba(76, 29, 149, 1); }
-    100% { transform: translateY(0px); box-shadow: 0 0 20px rgba(76, 29, 149, 0.7); }
+    0% { transform: translateY(0px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
+    50% { transform: translateY(-15px); box-shadow: 0 0 40px rgba(16, 185, 129, 1); }
+    100% { transform: translateY(0px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
   }
 `;
 
 // Enhanced Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.85, rotateX: -10 },
+  hidden: { opacity: 0, scale: 0.8, rotateX: -15 },
   visible: {
     opacity: 1,
     scale: 1,
     rotateX: 0,
-    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.2, when: 'beforeChildren' },
+    transition: {
+      duration: 2.5,
+      ease: 'easeOut',
+      staggerChildren: 0.3,
+      when: 'beforeChildren',
+    },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -100, rotateX: -15 },
+  hidden: { opacity: 0, y: -150, rotateX: -20 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 20 },
+    transition: {
+      duration: 1.8,
+      type: 'spring',
+      stiffness: 180,
+      damping: 22,
+    },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
+  hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: -30 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 18 },
+    transition: {
+      duration: 1.2,
+      type: 'spring',
+      stiffness: 160,
+      damping: 20,
+    },
   },
+
 };
 
 const contentChildVariants = {
-  hidden: { opacity: 0, x: -50, scale: 0.9 },
-  visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+  hidden: { opacity: 0, x: -60, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: 'easeOut' },
+  },
 };
 
 const Internships = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -424,10 +497,9 @@ const Internships = () => {
   }, []);
 
   const { scrollYProgress } = useScroll();
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 100, damping: 20 });
-  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 100, damping: 20 });
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 120, damping: 25 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.8, 1]), { stiffness: 120, damping: 25 });
 
-  // Apply responsive styles based on window width
   const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
                          windowWidth <= 768 ? styles.responsive.medium :
                          styles.responsive.large;
@@ -436,58 +508,61 @@ const Internships = () => {
     <motion.section
       style={{ ...styles.container, ...responsiveStyles.container, opacity, scale }}
       variants={containerVariants}
-      initial='hidden'
-      animate='visible'
-      role='region'
-      aria-label='Internships section'
+      initial="hidden"
+      animate="visible"
+      role="region"
+      aria-label="Internships section"
     >
       <style>{animationStyles}</style>
       {/* Enhanced Background Particles */}
-      {[...Array(15)].map((_, i) => (
+      {[...Array(20)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
-            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.15}rem), ${1.5 + i * 0.2}rem)`,
-            background: 'radial-gradient(circle, rgba(76, 29, 149, 0.4), rgba(192, 38, 211, 0.2))',
+            width: `clamp(0.6rem, calc(0.1vw + ${0.8 + i * 0.2}rem), ${1.2 + i * 0.25}rem)`,
+            height: `clamp(0.6rem, calc(0.1vw + ${0.8 + i * 0.2}rem), ${1.2 + i * 0.25}rem)`,
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(16, 185, 129, 0.5))',
             borderRadius: '50%',
-            top: `${5 + i * 4}%`,
-            left: `${5 + i * 3}%`,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
+            zIndex: -2,
+            boxShadow: '0 0 12px rgba(16, 185, 129, 0.6)',
           }}
           animate={{
-            y: [0, -60, 0],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.5, 1],
-            rotate: [0, 180, 360],
+            y: [0, -100, -200],
+            x: [0, Math.random() * 60 - 30, 0],
+            opacity: [0.8, 0.5, 0],
+            scale: [1, 1.4, 1],
           }}
-          transition={{ duration: 6 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 3 + i * 0.3, repeat: Infinity, ease: 'easeOut', delay: Math.random() * 2 }}
         />
       ))}
       {/* Holographic Glow */}
       <motion.div
         style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow }}
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.35, 0.5, 0.35],
-          x: [-30, 30, -30],
-          y: [-30, 30, -30],
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.5, 0.8, 0.5],
+          x: [-40, 40, -40],
+          y: [-40, 40, -40],
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
       />
       {/* Header Section */}
       <motion.div
         style={{ ...styles.header, ...responsiveStyles.header }}
         variants={headerVariants}
       >
-        <h2 style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2s ease-in-out infinite alternate, neonFlicker 3s infinite' }}>
+        <div style={styles.headerGlow} />
+        <h2 style={{ ...styles.title, ...responsiveStyles.title }}>
           💼 My Internship Journey
         </h2>
-        <motion.div 
+        <motion.div
           style={styles.titleUnderline}
-          animate={{ scaleX: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ scaleX: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         />
         <p style={{ ...styles.introText, ...responsiveStyles.introText }}>
           A showcase of my professional experience, highlighting my contributions to real-world projects in AI, Machine Learning, and Data Science during internships.
@@ -502,7 +577,7 @@ const Internships = () => {
           style={styles.timelineLine}
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: '100%', opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5, ease: 'easeInOut' }}
+          transition={{ duration: 2.5, delay: 0.7, ease: 'easeInOut' }}
         />
         <AnimatePresence>
           {internshipData.map((intern, index) => {
@@ -512,9 +587,10 @@ const Internships = () => {
                 key={intern.sno}
                 style={styles.item}
                 variants={itemVariants}
-                initial='hidden'
-                whileInView='visible'
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true, margin: '-50px' }}
+                whileHover="hover"
               >
                 <motion.div
                   style={{
@@ -522,110 +598,98 @@ const Internships = () => {
                     ...responsiveStyles.content,
                     ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
                   }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    rotateY: 5, 
-                    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(76, 29, 149, 0.5)' 
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  animate={{ animation: 'floatGlow 4s ease-in-out infinite' }}
+                  animate={{ animation: 'floatGlow 4.5s ease-in-out infinite' }}
                 >
-                  <motion.div
-                    style={{ ...styles.contentOverlay }}
-                    animate={{ opacity: [0.45, 0.65, 0.45], rotate: [0, 360] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                  />
+                  <motion.div style={styles.contentOverlay} />
                   <motion.h3
                     style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.2 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.2 }}
                   >
-                    <IconComp style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
+                    <IconComp style={{ fontSize: 'clamp(1.4rem, 2.8vw, 1.8rem)' }} />
                     #{intern.sno} • {intern.title}
                   </motion.h3>
                   <motion.p
                     style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.3 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.3 }}
                   >
                     <span style={styles.label}>Company:</span> {intern.company}
                   </motion.p>
                   <motion.p
                     style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.4 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.4 }}
                   >
                     <span style={styles.label}>Duration:</span> {intern.duration}
                   </motion.p>
                   <motion.p
                     style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.5 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.5 }}
                   >
                     <span style={styles.label}>Description:</span> {intern.description}
                   </motion.p>
                   <motion.p
                     style={styles.techLabel}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.6 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.6 }}
                   >
                     🔧 Tech Used:
                   </motion.p>
                   <motion.div
                     style={styles.techContainer}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.12 + 0.7 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.15 + 0.7 }}
                   >
                     {getTechIcons(intern.tech)}
                   </motion.div>
                   {intern.certificateLink && (
                     <motion.a
                       href={intern.certificateLink}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={styles.certificateLink}
                       variants={contentChildVariants}
-                      initial='hidden'
-                      animate='visible'
-                      transition={{ delay: index * 0.12 + 0.8 }}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: index * 0.15 + 0.8 }}
                       whileHover={{
-                        scale: 1.15,
-                        boxShadow: '0 15px 50px rgba(192, 38, 211, 0.6)',
-                        translateY: -3,
-                        background: 'linear-gradient(90deg, #7c3aed, #d946ef)',
+                        scale: 1.2,
+                        boxShadow: '0 20px 60px rgba(239, 68, 68, 0.7)',
+                        translateY: -5,
+                        background: 'linear-gradient(90deg, #14b8a6, #f43f5e)',
                       }}
                       whileTap={{ scale: 0.95 }}
                       aria-label={`View certificate for ${intern.title}`}
                     >
-                      <FaExternalLinkAlt style={{ fontSize: 'clamp(0.75rem, 1.4vw, 0.95rem)' }} />
+                      <FaExternalLinkAlt style={{ fontSize: 'clamp(0.9rem, 1.6vw, 1.1rem)' }} />
                       View Certificate
                     </motion.a>
                   )}
                 </motion.div>
                 <motion.div
-                  style={{
-                    ...styles.iconWrapper,
-                  }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                  style={styles.iconWrapper}
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
                   variants={contentChildVariants}
-                  initial='hidden'
-                  animate='visible'
-                  transition={{ delay: index * 0.12 + 0.9 }}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: index * 0.15 + 0.9 }}
                 >
-                  <IconComp size='clamp(18px, 2.2vw, 28px)' color='#0d0026' />
+                  <IconComp size="clamp(20px, 2.5vw, 32px)" color="#0f172a" />
                 </motion.div>
               </motion.div>
             );

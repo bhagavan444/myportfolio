@@ -46,62 +46,38 @@ const getTechIcons = (tech) => {
   return tech.split(', ').map((t, i) => (
     <motion.span
       key={i}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 'clamp(6px, 1vw, 8px)',
-        margin: 'clamp(4px, 0.8vw, 6px)',
-        padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-        background: 'rgba(59, 130, 246, 0.15)',
-        borderRadius: 'clamp(8px, 1.2vw, 10px)',
-        border: '1px solid rgba(59, 130, 246, 0.3)',
-        position: 'relative',
-      }}
+      className="inline-flex items-center gap-2 px-3 py-1.5 m-1.5 bg-blue-900/20 border border-blue-500/30 rounded-lg cursor-pointer relative"
       whileHover={{
-        scale: 1.15,
-        rotate: 5,
-        boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+        scale: 1.2,
+        rotate: [0, 5, -5, 0],
         background: 'rgba(59, 130, 246, 0.3)',
+        boxShadow: '0 0 25px rgba(59, 130, 246, 0.8)',
+        transition: { duration: 0.4 }
       }}
       whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 400 }}
+      initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ delay: i * 0.1, type: 'spring', stiffness: 300, damping: 15 }}
     >
-      {iconMap[t] ? (
-        <>
-          <motion.span
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.08 }}
-            style={{ color: '#3b82f6', textShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }}
-          >
-            {iconMap[t].icon}
-          </motion.span>
-          <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>
-            {iconMap[t].label}
-          </span>
-          <motion.span
-            className="tooltip"
-            initial={{ opacity: 0, y: 10 }}
-            whileHover={{ opacity: 1, y: 0 }}
-            style={{
-              position: 'absolute',
-              bottom: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'rgba(10, 0, 30, 0.9)',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              fontSize: '0.8rem',
-              whiteSpace: 'nowrap',
-              zIndex: 10,
-            }}
-          >
-            {iconMap[t].tooltip}
-          </motion.span>
-        </>
-      ) : (
-        <span style={{ color: '#d1d5db', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)' }}>{t}</span>
+      {iconMap[t]?.icon && (
+        <motion.span
+          className="text-blue-400"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: i * 0.1 + 0.1 }}
+        >
+          {iconMap[t].icon}
+        </motion.span>
       )}
+      <span className="text-blue-100 text-sm font-medium">{iconMap[t]?.label || t}</span>
+      <motion.span
+        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900/90 text-white text-xs rounded-md whitespace-nowrap z-10"
+        initial={{ opacity: 0, y: 10 }}
+        whileHover={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        {iconMap[t]?.tooltip || t}
+      </motion.span>
     </motion.span>
   ));
 };
@@ -118,7 +94,7 @@ const educationData = [
     skills: 'Python, TensorFlow, Pandas, Numpy, Scikit-learn, Data Structures, Algorithms, DBMS, Docker, Kubernetes, AWS',
     certificateLink: null,
     icon: FaUniversity,
-    achievements: [ 'Top 5% in Data Science projects'],
+    achievements: ['Top 5% in Data Science projects'],
   },
   {
     sno: 2,
@@ -146,113 +122,128 @@ const educationData = [
   },
 ];
 
-// New Styles with updated color scheme (blue-purple gradient) and more effects
+// Enhanced Styles with modern, sleek design
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(3rem, 8vw, 7rem) clamp(1.5rem, 3.5vw, 3rem)',
-    background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b82f6)',
-    backgroundSize: '600% 600%',
-    color: '#f5f7fa',
+    padding: 'clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3rem)',
+    background: 'linear-gradient(135deg, #111827, #1f2937, #374151, #10b981)',
+    backgroundSize: '1000% 1000%',
+    color: '#ecfdf5',
     overflowX: 'hidden',
     position: 'relative',
-    perspective: '2000px',
-    fontFamily: "'Inter', 'Montserrat', sans-serif",
+    perspective: '3000px',
+    fontFamily: "'Inter', 'Roboto', sans-serif",
     willChange: 'background, transform',
+    animation: 'gradientFlow 20s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
+      radial-gradient(circle at 15% 25%, rgba(16, 185, 129, 0.3), transparent 50%),
+      radial-gradient(circle at 85% 75%, rgba(239, 68, 68, 0.3), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
+    opacity: 0.85,
+    animation: 'ambientPulse 10s ease-in-out infinite',
   },
-  holographicGlow: {
+  glowEffect: {
     position: 'absolute',
-    width: 'clamp(500px, 70vw, 800px)',
-    height: 'clamp(500px, 70vw, 800px)',
-    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
-    top: '-20%',
-    left: '-20%',
-    filter: 'blur(150px)',
-    zIndex: -1,
+    width: 'clamp(600px, 80vw, 1000px)',
+    height: 'clamp(600px, 80vw, 1000px)',
+    background: 'radial-gradient(circle, rgba(16, 185, 129, 0.4), rgba(239, 68, 68, 0.3), transparent 60%)',
+    top: '-25%',
+    left: '-25%',
+    filter: 'blur(180px)',
+    zIndex: -2,
+    animation: 'glowOrbit 22s linear infinite',
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(2.5rem, 4.5vw, 4rem)',
-    background: 'rgba(10, 0, 30, 0.85)',
-    border: '1px solid rgba(59, 130, 246, 0.4)',
-    borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
-    backdropFilter: 'blur(16px)',
-    maxWidth: 'clamp(700px, 90vw, 1100px)',
-    margin: '0 auto clamp(3rem, 6vw, 5rem)',
+    padding: 'clamp(3rem, 6vw, 5rem)',
+    background: 'rgba(17, 24, 39, 0.95)',
+    border: '1px solid rgba(16, 185, 129, 0.4)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.9), 0 0 60px rgba(16, 185, 129, 0.5)',
+    backdropFilter: 'blur(20px)',
+    maxWidth: 'clamp(800px, 90vw, 1400px)',
+    margin: '0 auto clamp(4rem, 8vw, 6rem)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  headerGlow: {
+    position: 'absolute',
+    inset: 0,
+    background: 'conic-gradient(from 45deg, rgba(16, 185, 129, 0.6), rgba(239, 68, 68, 0.6), transparent)',
+    opacity: 0.7,
+    zIndex: -1,
+    animation: 'rotateGlow 12s linear infinite',
   },
   title: {
-    fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
-    fontWeight: 900,
+    fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+    fontWeight: 800,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
+    background: 'linear-gradient(90deg, #10b981, #ef4444, #facc15)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
-    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
-    letterSpacing: '0.12em',
+    textShadow: '0 0 40px rgba(16, 185, 129, 0.8), 0 0 60px rgba(239, 68, 68, 0.6)',
+    marginBottom: 'clamp(0.5rem, 1.5vw, 1rem)', // Reduced margin
+    letterSpacing: '0.15em',
+    animation: 'textGlow 2s ease-in-out infinite alternate',
   },
   titleUnderline: {
-    width: 'clamp(160px, 30vw, 240px)',
-    height: '5px',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
-    borderRadius: '5px',
-    margin: '0.6rem auto',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    width: 'clamp(200px, 40vw, 300px)',
+    height: '8px',
+    background: 'linear-gradient(90deg, #10b981, #ef4444)',
+    borderRadius: '8px',
+    margin: '0.5rem auto 0', // Adjusted margin to remove gap
+    boxShadow: '0 0 30px rgba(16, 185, 129, 0.8)',
   },
   introText: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
-    maxWidth: 'clamp(500px, 80vw, 800px)',
-    margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
+    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
+    color: '#ecfdf5',
+    maxWidth: 'clamp(600px, 80vw, 900px)',
+    margin: '0 auto clamp(1.5rem, 3vw, 2rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 15px rgba(16, 185, 129, 0.5)',
   },
   timeline: {
     position: 'relative',
-    maxWidth: 'clamp(800px, 95vw, 1600px)',
+    maxWidth: 'clamp(900px, 95vw, 1800px)',
     margin: '0 auto',
-    padding: '0 clamp(0.5rem, 2vw, 1.5rem)',
+    padding: '0 clamp(0.8rem, 2vw, 1.8rem)',
   },
   timelineLine: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: '50%',
-    width: 'clamp(3px, 0.5vw, 7px)',
-    background: 'linear-gradient(to bottom, #3b82f6, #c026d3)',
+    width: 'clamp(4px, 0.6vw, 8px)',
+    background: 'linear-gradient(to bottom, #10b981, #ef4444)',
     transform: 'translateX(-50%)',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    boxShadow: '0 0 25px rgba(16, 185, 129, 0.8)',
   },
   item: {
     display: 'flex',
     justifyContent: 'center',
     position: 'relative',
-    marginBottom: 'clamp(1.8rem, 3.5vw, 3rem)',
+    marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
   },
   content: {
-    background: 'rgba(10, 0, 30, 0.9)',
-    border: '1px solid rgba(59, 130, 246, 0.3)',
-    borderRadius: 'clamp(14px, 2.5vw, 20px)',
-    padding: 'clamp(2rem, 4vw, 3rem)',
-    width: 'clamp(300px, 45%, 600px)',
+    background: 'rgba(17, 24, 39, 0.95)',
+    border: '1px solid rgba(16, 185, 129, 0.4)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(18px)',
-    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
+    backdropFilter: 'blur(25px)',
+    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(16, 185, 129, 0.3)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
+    transition: 'all 0.4s ease',
   },
   contentLeft: { marginRight: 'auto' },
   contentRight: { marginLeft: 'auto' },
@@ -260,80 +251,82 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(16, 185, 129, 0.6), rgba(239, 68, 68, 0.6), transparent)',
     zIndex: -1,
-    opacity: 0.45,
+    opacity: 0.7,
+    animation: 'borderGlow 2s ease-in-out infinite',
   },
   cardTitle: {
-    fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-    color: '#3b82f6',
-    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
-    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
-    fontWeight: '800',
+    fontSize: 'clamp(1.6rem, 3.5vw, 2rem)',
+    color: '#10b981',
+    textShadow: '0 0 20px rgba(16, 185, 129, 0.7)',
+    marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
+    fontWeight: '700',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
+    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
   },
   cardDescription: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
+    color: '#d1fae5',
+    marginBottom: 'clamp(1.2rem, 2.5vw, 1.8rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 15px rgba(16, 185, 129, 0.5)',
   },
   techLabel: {
-    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#c026d3',
-    fontWeight: 'bold',
-    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
+    color: '#ef4444',
+    fontWeight: '600',
+    marginTop: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+    textShadow: '0 0 15px rgba(239, 68, 68, 0.6)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(10px, 2vw, 12px)',
-    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    gap: 'clamp(12px, 2.2vw, 14px)',
+    marginTop: 'clamp(1rem, 2vw, 1.5rem)',
+    marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
   },
   label: {
-    color: '#c026d3',
-    fontWeight: '700',
-    marginRight: 'clamp(0.3rem, 0.8vw, 0.6rem)',
+    color: '#ef4444',
+    fontWeight: '600',
+    marginRight: 'clamp(0.4rem, 1vw, 0.8rem)',
   },
   certificateLink: {
     display: 'inline-flex',
-    padding: 'clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.6rem)',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
-    color: '#f5f7fa',
-    borderRadius: 'clamp(10px, 1.5vw, 14px)',
+    padding: 'clamp(0.8rem, 1.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem)',
+    background: 'linear-gradient(90deg, #10b981, #ef4444)',
+    color: '#f0fdfa',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
     textDecoration: 'none',
     fontWeight: '600',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    boxShadow: '0 0 15px rgba(16, 185, 129, 0.6)',
     alignItems: 'center',
-    gap: 'clamp(0.3rem, 0.7vw, 0.5rem)',
+    gap: 'clamp(0.5rem, 1vw, 0.8rem)',
+    transition: 'all 0.4s ease',
   },
   iconWrapper: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    background: 'linear-gradient(135deg, #3b82f6, #c026d3)',
+    background: 'linear-gradient(135deg, #10b981, #ef4444)',
     borderRadius: '50%',
-    padding: 'clamp(0.5rem, 1.2vw, 1rem)',
-    boxShadow: '0 0 25px rgba(59, 130, 246, 0.9)',
+    padding: 'clamp(0.8rem, 1.5vw, 1.2rem)',
+    boxShadow: '0 0 30px rgba(16, 185, 129, 0.9)',
     zIndex: 3,
   },
   progressContainer: {
     marginTop: 'clamp(0.3rem, 1.5vw, 1rem)',
-    background: 'rgba(59, 130, 246, 0.2)',
+    background: 'rgba(16, 185, 129, 0.2)',
     borderRadius: 'clamp(4px, 0.8vw, 8px)',
     height: 'clamp(6px, 1vw, 12px)',
     overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
+    background: 'linear-gradient(90deg, #10b981, #ef4444)',
     transition: 'width 1s ease-in-out',
   },
   cgpaText: {
@@ -341,15 +334,15 @@ const styles = {
     alignItems: 'center',
     marginTop: 'clamp(0.2rem, 1vw, 0.5rem)',
     fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-    color: '#e0e7ff',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    color: '#ecfdf5',
+    textShadow: '0 0 10px rgba(16, 185, 129, 0.5)',
   },
   achievementsLabel: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#3b82f6',
-    fontWeight: 'bold',
+    color: '#10b981',
+    fontWeight: '600',
     marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 10px rgba(16, 185, 129, 0.6)',
   },
   achievementList: {
     listStyleType: 'none',
@@ -358,7 +351,7 @@ const styles = {
   },
   achievementItem: {
     fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    color: '#d1d5db',
+    color: '#d1fae5',
     marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)',
     display: 'flex',
     alignItems: 'center',
@@ -366,72 +359,94 @@ const styles = {
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
-      header: { padding: 'clamp(2rem, 4vw, 3.5rem)' },
-      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.8vw, 1.2rem)' },
-      content: { padding: 'clamp(2rem, 3.5vw, 2.8rem)', width: 'clamp(320px, 45%, 600px)' },
-      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
-      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
-      holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
+      container: { padding: 'clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3.5rem)' },
+      header: { padding: 'clamp(3rem, 6vw, 5rem)' },
+      title: { fontSize: 'clamp(2.5rem, 7vw, 5rem)' },
+      introText: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
+      timeline: { padding: '0 clamp(0.8rem, 2vw, 1.8rem)' },
+      content: { padding: 'clamp(2.5rem, 5vw, 3.5rem)', width: 'clamp(350px, 45%, 650px)' },
+      cardTitle: { fontSize: 'clamp(1.6rem, 3.5vw, 2rem)' },
+      cardDescription: { fontSize: 'clamp(1rem, 2.2vw, 1.3rem)' },
+      holographicGlow: { width: 'clamp(500px, 70vw, 900px)', height: 'clamp(500px, 70vw, 900px)' },
     },
     medium: {
-      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
-      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)' },
-      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.5vw, 1rem)' },
-      content: { padding: 'clamp(1.8rem, 3vw, 2.5rem)', width: 'clamp(280px, 45%, 500px)' },
+      container: { padding: 'clamp(3rem, 8vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4.5vw, 3.5rem)' },
+      title: { fontSize: 'clamp(2rem, 6vw, 4rem)' },
+      introText: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
+      timeline: { padding: '0 clamp(0.6rem, 1.5vw, 1.2rem)' },
+      content: { padding: 'clamp(2rem, 4vw, 3rem)', width: 'clamp(300px, 45%, 550px)' },
       cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
-      holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
+      cardDescription: { fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(400px, 60vw, 700px)', height: 'clamp(400px, 60vw, 700px)' },
     },
     small: {
-      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
-      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)' },
-      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
-      timeline: { padding: '0 clamp(0.5rem, 1.2vw, 0.8rem)' },
-      content: { padding: 'clamp(1.5rem, 2.5vw, 2rem)', width: 'clamp(260px, 80%, 400px)' },
+      container: { padding: 'clamp(2rem, 6vw, 4rem) clamp(1rem, 2.5vw, 1.8rem)' },
+      header: { padding: 'clamp(1.5rem, 3.5vw, 2.5rem)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      introText: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
+      timeline: { padding: '0 clamp(0.5rem, 1.2vw, 1rem)' },
+      content: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', width: 'clamp(280px, 85%, 450px)' },
       cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
-      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      cardDescription: { fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' },
+      holographicGlow: { width: 'clamp(300px, 50vw, 600px)', height: 'clamp(300px, 50vw, 600px)' },
     },
   },
 };
 
-// Enhanced Animation Styles with more keyframes
+// New Animation Styles
 const animationStyles = `
-  @keyframes holographicPulse {
-    0%, 100% { opacity: 0.6; }
+  @keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes ambientPulse {
+    0%, 100% { opacity: 0.9; }
     50% { opacity: 1; }
   }
-  @keyframes glowShift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(50px, 50px) scale(1.1); }
-    50% { transform: translate(100px, 0) scale(1.15); }
-    75% { transform: translate(50px, -50px) scale(1.1); }
+  @keyframes glowOrbit {
+    0% { transform: rotate(0deg); filter: brightness(1); }
+    50% { transform: rotate(180deg); filter: brightness(1.4); }
+    100% { transform: rotate(360deg); filter: brightness(1); }
+  }
+  @keyframes textGlow {
+    0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(16, 185, 129, 0.8), 0 0 60px rgba(239, 68, 68, 0.6); }
+    50% { opacity: 0.9; text-shadow: 0 0 30px rgba(16, 185, 129, 0.6), 0 0 45px rgba(239, 68, 68, 0.5); }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
+    50% { border-color: rgba(16, 185, 129, 0.7); boxShadow: 0 0 30px rgba(16, 185, 129, 0.8); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  @keyframes rotateIcon {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+  @keyframes particleDrift {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-80px) scale(1.4); opacity: 0.5; }
+    100% { transform: translateY(-160px) scale(1); opacity: 0; }
   }
-  @keyframes particleFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
+  @keyframes floatGlow {
+    0% { transform: translateY(0px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
+    50% { transform: translateY(-15px); box-shadow: 0 0 40px rgba(16, 185, 129, 1); }
+    100% { transform: translateY(0px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
   }
 `;
 
-// Updated Animation Variants with more complexity
+// Enhanced Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
+  hidden: { opacity: 0, scale: 0.8, rotateX: -20 },
   visible: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
-    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
+    rotateX: 0,
+    transition: {
+      duration: 2,
+      ease: 'easeOut',
+      staggerChildren: 0.2,
+      when: 'beforeChildren',
+    },
   },
 };
 
@@ -454,6 +469,16 @@ const itemVariants = {
     rotateY: 0,
     transition: { duration: 1, type: 'spring', stiffness: 140, damping: 16 },
   },
+  hover: {
+    scale: 1.05,
+    rotateY: 10,
+    rotateX: -10,
+    boxShadow: '0 50px 100px rgba(0, 0, 0, 0.9), 0 0 80px rgba(16, 185, 129, 0.7)',
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+    },
+  },
 };
 
 const contentChildVariants = {
@@ -462,7 +487,7 @@ const contentChildVariants = {
 };
 
 const EducationEnhanced = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -477,7 +502,6 @@ const EducationEnhanced = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.85, 1]);
   const rotate = useTransform(scrollYProgress, [0, 0.5], [-5, 0]);
 
-  // Apply responsive styles
   const responsiveStyles = windowWidth <= 480 ? styles.responsive.small :
                          windowWidth <= 768 ? styles.responsive.medium :
                          styles.responsive.large;
@@ -487,20 +511,20 @@ const EducationEnhanced = () => {
       ref={ref}
       style={{ ...styles.container, ...responsiveStyles.container, opacity, scale, rotate }}
       variants={containerVariants}
-      initial='hidden'
+      initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      role='region'
-      aria-label='Education section'
+      role="region"
+      aria-label="Education section"
     >
       <style>{animationStyles}</style>
-      {/* Enhanced Background Particles with more variety */}
-      {[...Array(20)].map((_, i) => (
+      {/* Background Particles */}
+      {[...Array(25)].map((_, i) => (
         <motion.div
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.15}rem), ${1 + i * 0.2}rem)`,
+            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.15}rem), ${1 + i * 0.2}rem)`,
             background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
@@ -508,17 +532,24 @@ const EducationEnhanced = () => {
             pointerEvents: 'none',
           }}
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.7, 0.2],
-            scale: [1, 1.4, 1],
+            y: [0, -50, 0],
+            opacity: [0.3, 0.8, 0.3],
+            scale: [1, 1.5, 1],
             rotate: [0, 360, 0],
           }}
-          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 5 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
       {/* Holographic Glow */}
       <motion.div
-        style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 12s ease-in-out infinite' }}
+        style={{ ...styles.glowEffect, ...responsiveStyles.holographicGlow }}
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.4, 0.7, 0.4],
+          x: [-50, 50, -50],
+          y: [-50, 50, -50],
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
       />
       {/* Header Section */}
       <motion.div
@@ -542,7 +573,7 @@ const EducationEnhanced = () => {
           style={styles.timelineLine}
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: '100%', opacity: 1 }}
-          transition={{ duration: 2, delay: 0.8 }}
+          transition={{ duration: 2, delay: 0.5 }}
         />
         <AnimatePresence>
           {educationData.map((edu, index) => {
@@ -554,8 +585,8 @@ const EducationEnhanced = () => {
                 key={edu.sno}
                 style={styles.item}
                 variants={itemVariants}
-                initial='hidden'
-                whileInView='visible'
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true, margin: '-50px' }}
               >
                 <motion.div
@@ -564,17 +595,20 @@ const EducationEnhanced = () => {
                     ...responsiveStyles.content,
                     ...(index % 2 === 0 ? styles.contentLeft : styles.contentRight),
                   }}
-                  
+                  whileHover={{ 
+                    scale: 1.08, 
+                    boxShadow: '0 30px 70px rgba(76, 29, 149, 0.6), 0 0 90px rgba(192, 38, 211, 0.5)',
+                    translateY: -12,
+                  }}
+                  whileTap={{ scale: 0.92 }}
                 >
-                  <motion.div
-                    style={{ ...styles.contentOverlay, animation: 'rotateGlow 8s linear infinite' }}
-                  />
+                  <motion.div style={styles.contentOverlay} />
                   <motion.h3
                     style={{ ...styles.cardTitle, ...responsiveStyles.cardTitle }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.15 + 0.2 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.12 + 0.2 }}
                   >
                     <IconComp style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
                     #{edu.sno} • {edu.qualification}
@@ -582,9 +616,9 @@ const EducationEnhanced = () => {
                   <motion.p
                     style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.15 + 0.3 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.12 + 0.3 }}
                   >
                     <span style={styles.label}>Board:</span> {edu.board}
                   </motion.p>
@@ -592,9 +626,9 @@ const EducationEnhanced = () => {
                     <motion.p
                       style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                       variants={contentChildVariants}
-                      initial='hidden'
-                      animate='visible'
-                      transition={{ delay: index * 0.15 + 0.4 }}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: index * 0.12 + 0.4 }}
                     >
                       <span style={styles.label}>College:</span> {edu.college}
                     </motion.p>
@@ -603,18 +637,18 @@ const EducationEnhanced = () => {
                     <motion.p
                       style={{ ...styles.cardDescription, ...responsiveStyles.cardDescription }}
                       variants={contentChildVariants}
-                      initial='hidden'
-                      animate='visible'
-                      transition={{ delay: index * 0.15 + 0.4 }}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: index * 0.12 + 0.4 }}
                     >
                       <span style={styles.label}>School:</span> {edu.school}
                     </motion.p>
                   )}
                   <motion.div
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.15 + 0.5 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.12 + 0.5 }}
                   >
                     <span style={{ ...styles.label, ...styles.cardDescription }}>CGPA:</span> {edu.cgpa}
                     {edu.maxCgpa && (
@@ -624,7 +658,7 @@ const EducationEnhanced = () => {
                             style={{ ...styles.progressBar, width: `${progress}%` }}
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
-                            transition={{ duration: 1.2, ease: 'easeInOut', delay: index * 0.15 + 0.6 }}
+                            transition={{ duration: 1.2, ease: 'easeInOut', delay: index * 0.12 + 0.6 }}
                           />
                         </div>
                         <p style={styles.cgpaText}>
@@ -637,18 +671,18 @@ const EducationEnhanced = () => {
                   <motion.p
                     style={styles.techLabel}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.15 + 0.7 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.12 + 0.7 }}
                   >
                     🔧 Skills Learned:
                   </motion.p>
                   <motion.div
                     style={styles.techContainer}
                     variants={contentChildVariants}
-                    initial='hidden'
-                    animate='visible'
-                    transition={{ delay: index * 0.15 + 0.8 }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: index * 0.12 + 0.8 }}
                   >
                     {getTechIcons(edu.skills)}
                   </motion.div>
@@ -657,18 +691,18 @@ const EducationEnhanced = () => {
                       <motion.p
                         style={styles.achievementsLabel}
                         variants={contentChildVariants}
-                        initial='hidden'
-                        animate='visible'
-                        transition={{ delay: index * 0.15 + 0.9 }}
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ delay: index * 0.12 + 0.9 }}
                       >
                         🏆 Achievements:
                       </motion.p>
                       <motion.ul
                         style={styles.achievementList}
                         variants={contentChildVariants}
-                        initial='hidden'
-                        animate='visible'
-                        transition={{ delay: index * 0.15 + 1.0 }}
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ delay: index * 0.12 + 1.0 }}
                       >
                         {edu.achievements.map((ach, achIndex) => (
                           <motion.li
@@ -676,7 +710,7 @@ const EducationEnhanced = () => {
                             style={styles.achievementItem}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.15 + 1.1 + achIndex * 0.1 }}
+                            transition={{ delay: index * 0.12 + 1.1 + achIndex * 0.1 }}
                           >
                             <FaStar style={{ color: '#3b82f6' }} />
                             {ach}
@@ -688,13 +722,13 @@ const EducationEnhanced = () => {
                   {edu.certificateLink && (
                     <motion.a
                       href={edu.certificateLink}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={styles.certificateLink}
                       variants={contentChildVariants}
-                      initial='hidden'
-                      animate='visible'
-                      transition={{ delay: index * 0.15 + 1.2 }}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: index * 0.12 + 1.2 }}
                       whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(59, 130, 246, 0.7)' }}
                     >
                       <FaExternalLinkAlt style={{ fontSize: 'clamp(0.75rem, 1.4vw, 0.95rem)' }} />
@@ -705,14 +739,14 @@ const EducationEnhanced = () => {
                 <motion.div
                   style={{
                     ...styles.iconWrapper,
-                    animation: 'rotateIcon 10s linear infinite',
+                    animation: 'rotateIcon 12s linear infinite',
                   }}
                   variants={contentChildVariants}
-                  initial='hidden'
-                  animate='visible'
-                  transition={{ delay: index * 0.15 + 1.3 }}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: index * 0.12 + 1.3 }}
                 >
-                  <IconComp size='clamp(18px, 2.2vw, 28px)' color='#0d0026' />
+                  <IconComp size="clamp(18px, 2.2vw, 28px)" color="#0d0026" />
                 </motion.div>
               </motion.div>
             );
