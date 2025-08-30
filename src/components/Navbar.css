@@ -1,4 +1,3 @@
-
 /* === 🔝 Animated Navbar === */
 .animated-navbar {
   position: fixed;
@@ -13,13 +12,13 @@
   box-shadow: 0 4px 15px rgba(0, 191, 255, 0.2), 0 -1px 10px rgba(255, 105, 180, 0.1);
   transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease, padding 0.3s ease;
   will-change: transform, opacity, background;
-  transform: perspective(1000px) translateZ(0); /* 3D effect for smoothness */
+  transform: perspective(1000px) translateZ(0);
 }
 
 .animated-navbar:hover {
   background: rgba(0, 15, 30, 0.7);
   box-shadow: 0 6px 20px rgba(0, 191, 255, 0.3), 0 -2px 15px rgba(255, 105, 180, 0.2);
-  transform: perspective(1000px) translateZ(5px); /* Subtle lift on hover */
+  transform: perspective(1000px) translateZ(5px);
 }
 
 /* === 📏 Nav Container === */
@@ -40,7 +39,7 @@
 .nav-logo a {
   font-size: 1.8rem;
   font-weight: 900;
-  background: linear-gradient(45deg, #ff4500, #ff69b4, #00bfff, #a855f7); /* Fixed to gradient */
+  background: linear-gradient(45deg, #ff4500, #ff69b4, #00bfff, #a855f7);
   background-size: 300%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -153,95 +152,10 @@
   filter: brightness(1.4);
 }
 
-/* === 📱 Responsive Design === */
+/* === 📱 Mobile Responsive Design === */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
-  }
-
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100vw;
-    background: rgba(0, 15, 30, 0.9); /* Match navbar background */
-    flex-direction: column;
-    padding: 2rem 1.5rem;
-    gap: 1.5rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    border-radius: 0 0 15px 15px;
-    animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeIn 0.5s ease-out;
-    transform-origin: top;
-    will-change: transform, opacity;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .nav-link a {
-    font-size: 1.3rem;
-    padding: 1.2rem 0;
-    text-align: center;
-    background: linear-gradient(90deg, #3b82f6, #a855f7, #facc15, #00ffcc); /* Restored gradient */
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: gradientFlow 6s linear infinite;
-  }
-
-  .nav-icons {
-    display: none; /* Hide icons in mobile dropdown, shown only on PC */
-  }
-
-  .nav-container {
-    padding: 0 1.5rem;
-    gap: 1.5rem;
-  }
-
-  .nav-logo a {
-    font-size: 1.5rem;
-  }
-}
-
-@media (min-width: 769px) {
-  .nav-links {
-    display: flex; /* Ensure horizontal on PC */
-  }
-
-  .hamburger {
-    display: none; /* Hide hamburger on PC */
-  }
-
-  .nav-icons {
-    display: flex; /* Show icons on PC */
-  }
-}
-
-/* === 📱 Mobile Responsive Design (max-width: 768px) === */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-    cursor: pointer;
-    font-size: 2.5rem;
-    color: #00ffcc;
-    background: linear-gradient(45deg, #00ffcc, #ff33cc);
-    background-clip: text;
-    -webkit-background-clip: text;
-    padding: 0.6rem;
-    border-radius: 50%;
-    transition: transform 0.4s ease, color 0.4s ease, text-shadow 0.4s ease;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
-    margin-left: auto; /* Aligns hamburger to the right */
-    will-change: transform;
-  }
-
-  .hamburger:hover {
-    transform: scale(1.2) rotate(90deg);
-    color: #ff69b4;
-    text-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
   }
 
   .nav-links {
@@ -259,7 +173,7 @@
     animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeIn 0.5s ease-out;
     transform-origin: top;
     will-change: transform, opacity;
-    text-align: center; /* Ensures centered alignment */
+    text-align: center;
   }
 
   .nav-links.open {
@@ -270,14 +184,13 @@
     font-size: 1.4rem;
     padding: 1.2rem 0;
     background: linear-gradient(90deg, #3b82f6, #a855f7, #facc15, #00ffcc);
-    background-size: 300%;
+    background-size: 200%;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    text-decoration: none;
     transition: transform 0.4s ease, text-shadow 0.4s ease;
     text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
-    width: 100%; /* Ensures full width for consistent alignment */
+    width: 100%;
   }
 
   .nav-link a:hover {
@@ -286,55 +199,36 @@
   }
 
   .nav-icons {
-    display: none; /* Hidden in mobile dropdown */
+    display: none;
   }
 
   .nav-container {
     padding: 0 1.2rem;
-    gap: 1rem; /* Reduced gap for tighter alignment */
-    justify-content: space-between; /* Ensures logo and hamburger are aligned */
+    gap: 1rem;
+    max-width: 900px;
+    height: 30px;
+    justify-content: space-between;
     align-items: center;
   }
 
   .nav-logo a {
     font-size: 1.6rem;
-    background: linear-gradient(45deg, #ff4500, #ff69b4, #00bfff, #a855f7);
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-decoration: none;
-    transition: transform 0.4s ease;
-  }
-
-  .nav-logo a:hover {
-    transform: scale(1.1) rotate(5deg);
   }
 }
 
-/* === 📱 Tablet Responsive Design (min-width: 769px and max-width: 1024px) === */
+/* === 📱 Tablet Responsive Design === */
 @media (min-width: 769px) and (max-width: 1024px) {
   .nav-container {
     max-width: 900px;
     padding: 0 2rem;
     height: 30px;
-    gap: 2rem; /* Adjusted for better spacing */
-    justify-content: space-between; /* Ensures even distribution */
+    gap: 2rem;
+    justify-content: space-between;
     align-items: center;
   }
 
   .nav-logo a {
-    font-size: 1.6rem; /* Slightly larger for tablet readability */
-    background: linear-gradient(45deg, #ff4500, #ff69b4, #00bfff, #a855f7);
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    transition: transform 0.4s ease;
-  }
-
-  .nav-logo a:hover {
-    transform: scale(1.1) rotate(5deg);
+    font-size: 1.6rem;
   }
 
   .nav-links {
@@ -346,37 +240,6 @@
   .nav-link a {
     font-size: 1.1rem;
     padding: 0.8rem 0.5rem;
-    background: linear-gradient(90deg, #3b82f6, #a855f7, #facc15, #00ffcc);
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-decoration: none;
-    transition: transform 0.4s ease, text-shadow 0.4s ease;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-  }
-
-  .nav-link a:hover::after,
-  .nav-link a.active-link::after {
-    width: 100%;
-  }
-
-  .nav-link a:hover {
-    transform: translateY(-4px) scale(1.1);
-    text-shadow: 0 0 20px rgba(0, 255, 204, 0.8), 0 0 25px rgba(255, 105, 180, 0.6);
-  }
-
-  .nav-link a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 3px;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, #00ffcc, #ff33cc, #00ffcc);
-    transition: width 0.4s ease;
-    border-radius: 2px;
   }
 
   .nav-icons {
@@ -385,43 +248,45 @@
   }
 
   .nav-icons a {
-    font-size: 1.7rem; /* Adjusted for tablet visibility */
-    background: linear-gradient(90deg, #00ffcc, #ff33cc, #00ffcc);
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    transition: transform 0.4s ease, text-shadow 0.4s ease;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-  }
-
-  .nav-icons a:hover {
-    transform: scale(1.2) rotate(10deg);
-    text-shadow: 0 0 25px rgba(0, 255, 204, 0.9), 0 0 35px rgba(255, 105, 180, 0.7);
+    font-size: 1.7rem;
   }
 
   .hamburger {
-    display: none; /* Hidden on tablet */
+    display: none;
   }
 }
 
 /* === 🎥 Animations === */
 @keyframes gradientFlow {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 300% 0%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-25px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* === 🎨 Additional Enhancements === */
+/* === 🎨 Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
   .nav-logo a,
   .nav-link a,

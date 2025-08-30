@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense, Component } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { FaCode, FaBrain, FaLink, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   SiMongodb,
@@ -173,118 +173,114 @@ const projectData = [
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)',
-    background: 'linear-gradient(165deg, #0d001a, #1a0033, #2a0055, #3b0088)',
-    backgroundSize: '800% 800%',
-    color: '#f0faff',
+    padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)',
+    background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b0088)',
+    backgroundSize: '600% 600%',
+    color: '#f5f7fa',
     overflow: 'hidden',
     position: 'relative',
-    perspective: '2500px',
-    fontFamily: "'Orbitron', 'Inter', sans-serif",
+    perspective: '2000px',
+    fontFamily: "'Inter', 'Montserrat', sans-serif",
     willChange: 'background, transform',
-    animation: 'shimmer 12s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 15% 5%, rgba(255,51,255,0.5), transparent 40%),
-      radial-gradient(circle at 85% 95%, rgba(76,29,149,0.5), transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(59,130,246,0.4), transparent 60%)
+      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
-    animation: 'glowShift 8s ease-in-out infinite',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(500px,70vw,1000px)',
-    height: 'clamp(500px,70vw,1000px)',
-    background: 'linear-gradient(45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
-    top: '-25%',
-    left: '-25%',
-    filter: 'blur(160px)',
-    zIndex: -2,
-    animation: 'rotateGlow 15s linear infinite',
+    width: 'clamp(500px, 65vw, 800px)',
+    height: 'clamp(500px, 65vw, 800px)',
+    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
+    top: '-20%',
+    left: '-20%',
+    filter: 'blur(150px)',
+    zIndex: -1,
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(3rem,5vw,5rem)',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(20px,2.5vw,24px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), 0 0 80px rgba(255,51,255,0.5)',
-    backdropFilter: 'blur(25px)',
-    maxWidth: 'clamp(800px,95vw,1400px)',
-    margin: '0 auto clamp(4rem,8vw,6rem)',
+    padding: 'clamp(2rem, 4vw, 3.5rem)',
+    background: 'rgba(10, 0, 30, 0.85)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(16px, 2.2vw, 20px)',
+    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
+    backdropFilter: 'blur(16px)',
+    maxWidth: 'clamp(700px, 90vw, 1100px)',
+    margin: '0 auto clamp(3rem, 6vw, 5rem)',
     position: 'relative',
     overflow: 'hidden',
   },
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.4), rgba(76,29,149,0.4), transparent)',
-    opacity: 0.6,
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    opacity: 0.45,
     zIndex: -1,
   },
   title: {
-    fontSize: 'clamp(3rem,7vw,6rem)',
+    fontSize: 'clamp(2rem, 5.5vw, 4rem)',
     fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6, #00ccff)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7)',
-    marginBottom: 'clamp(1rem,2.5vw,2rem)',
-    letterSpacing: '0.2em',
-    animation: 'neonFlicker 4s ease-in-out infinite alternate',
+    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
+    letterSpacing: '0.12em',
   },
   titleUnderline: {
-    width: 'clamp(200px,40vw,320px)',
-    height: '8px',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    borderRadius: '8px',
-    margin: '1rem auto',
-    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+    width: 'clamp(160px, 30vw, 240px)',
+    height: '5px',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
+    borderRadius: '5px',
+    margin: '0.6rem auto',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   filterBar: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 'clamp(1.2rem,2.5vw,2rem)',
-    marginBottom: 'clamp(3rem,6vw,5rem)',
+    gap: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    marginBottom: 'clamp(2rem, 4vw, 3rem)',
     flexWrap: 'wrap',
   },
   filterBtn: {
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'rgba(255,51,255,0.2)',
-    border: '2px solid rgba(255,51,255,0.4)',
-    borderRadius: 'clamp(16px,2.2vw,20px)',
-    color: '#f0faff',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'rgba(59, 130, 246, 0.2)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    color: '#e0e7ff',
     cursor: 'pointer',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
-    transition: 'all 0.3s ease',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontWeight: '600',
+    boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)',
   },
   activeFilter: {
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))',
-    gap: 'clamp(2.5rem,5vw,4rem)',
-    maxWidth: 'clamp(900px,95vw,2000px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))',
+    gap: 'clamp(1.8rem, 3.5vw, 3rem)',
+    maxWidth: 'clamp(800px, 95vw, 1600px)',
     margin: '0 auto',
-    perspective: '2500px',
+    perspective: '2000px',
   },
   card: {
-    background: 'rgba(10,0,30,0.9)',
-    borderRadius: 'clamp(20px,3vw,24px)',
-    padding: 'clamp(2.5rem,5vw,3.5rem)',
+    background: 'rgba(10, 0, 30, 0.9)',
+    borderRadius: 'clamp(14px, 2.5vw, 20px)',
+    padding: 'clamp(2rem, 3.5vw, 2.8rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(30px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,51,255,0.4)',
+    backdropFilter: 'blur(18px)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
@@ -294,69 +290,68 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
     zIndex: -1,
-    opacity: 0.6,
-    animation: 'pulseBorder 2s ease-in-out infinite',
+    opacity: 0.45,
   },
   cardTitle: {
-    fontSize: 'clamp(1.8rem,4vw,2.6rem)',
-    color: '#ff33ff',
-    textShadow: '0 0 25px rgba(255,51,255,0.8)',
-    marginBottom: 'clamp(1.2rem,3vw,1.8rem)',
+    fontSize: 'clamp(1.5rem, 3.2vw, 2rem)',
+    color: '#3b82f6',
+    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     fontWeight: '800',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   cardDescription: {
-    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
-    color: '#f0faff',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
-    lineHeight: '1.9',
-    textShadow: '0 0 15px rgba(255,51,255,0.6)',
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   techLabel: {
-    fontSize: 'clamp(1.2rem,2.5vw,1.5rem)',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
     color: '#3b82f6',
     fontWeight: 'bold',
-    marginTop: 'clamp(1.5rem,3.5vw,2rem)',
-    textShadow: '0 0 15px rgba(59,130,246,0.6)',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(15px,3vw,18px)',
-    marginTop: 'clamp(1.2rem,3vw,1.8rem)',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+    gap: 'clamp(10px, 2vw, 12px)',
+    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
     overflow: 'hidden',
   },
   visitBtn: {
     display: 'inline-flex',
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    borderRadius: 'clamp(14px,2.2vw,18px)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
     textDecoration: 'none',
-    fontWeight: '700',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
+    fontWeight: '600',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   copyButton: {
     display: 'inline-flex',
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'rgba(255,51,255,0.2)',
-    border: '2px solid rgba(255,51,255,0.4)',
-    borderRadius: 'clamp(14px,2.2vw,18px)',
-    color: '#f0faff',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'rgba(59, 130, 246, 0.2)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    color: '#e0e7ff',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontWeight: '600',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     cursor: 'pointer',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   loadingButton: {
     opacity: 0.7,
@@ -364,10 +359,10 @@ const styles = {
   },
   spinner: {
     display: 'inline-block',
-    width: 'clamp(1.5rem,3vw,2rem)',
-    height: 'clamp(1.5rem,3vw,2rem)',
-    border: '4px solid rgba(255,51,255,0.3)',
-    borderTop: '4px solid #ff33ff',
+    width: 'clamp(1rem, 2vw, 1.5rem)',
+    height: 'clamp(1rem, 2vw, 1.5rem)',
+    border: '3px solid rgba(59, 130, 246, 0.3)',
+    borderTop: '3px solid #3b82f6',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
@@ -376,119 +371,113 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'clamp(600px,80vw,1000px)',
+    width: 'clamp(500px, 80vw, 800px)',
     maxHeight: '80vh',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(24px,3.5vw,28px)',
-    padding: 'clamp(3rem,6vw,4rem)',
-    boxShadow: '0 50px 100px rgba(0,0,0,0.9), 0 0 100px rgba(255,51,255,0.6)',
-    backdropFilter: 'blur(30px)',
+    background: 'rgba(10, 0, 30, 0.95)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
+    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.4)',
+    backdropFilter: 'blur(20px)',
     zIndex: 1000,
     overflowY: 'auto',
   },
   expandedOverlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.8)',
+    background: 'rgba(0, 0, 0, 0.8)',
     zIndex: 999,
   },
   closeButton: {
     position: 'absolute',
-    top: 'clamp(1rem,2vw,1.5rem)',
-    right: 'clamp(1rem,2vw,1.5rem)',
+    top: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    right: 'clamp(0.8rem, 1.8vw, 1.2rem)',
     background: 'transparent',
     border: 'none',
-    color: '#f0faff',
-    fontSize: 'clamp(1.5rem,3vw,2rem)',
+    color: '#e0e7ff',
+    fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
     cursor: 'pointer',
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)' },
-      header: { padding: 'clamp(3rem,5vw,5rem)' },
-      title: { fontSize: 'clamp(3rem,7vw,6rem)' },
-      grid: { gap: 'clamp(2.5rem,5vw,4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))' },
-      card: { padding: 'clamp(2.5rem,5vw,3.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.8rem,4vw,2.6rem)' },
-      cardDescription: { fontSize: 'clamp(1.1rem,2.5vw,1.4rem)' },
-      holographicGlow: { width: 'clamp(500px,70vw,1000px)', height: 'clamp(500px,70vw,1000px)', top: '-25%', left: '-25%' },
-      expandedCard: { width: 'clamp(600px,80vw,1000px)', padding: 'clamp(3rem,6vw,4rem)' },
+      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4vw, 3.5rem)', maxWidth: 'clamp(700px, 90vw, 1100px)' },
+      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
+      grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))' },
+      card: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
+      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
+      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
+      expandedCard: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
     },
     medium: {
-      container: { padding: 'clamp(3rem,8vw,6rem) clamp(1.5rem,3vw,3rem)' },
-      header: { padding: 'clamp(2rem,4vw,4rem)' },
-      title: { fontSize: 'clamp(2.5rem,6vw,5rem)' },
-      grid: { gap: 'clamp(2rem,4vw,3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px,45vw,360px), 1fr))' },
-      card: { padding: 'clamp(2rem,4vw,3rem)' },
-      cardTitle: { fontSize: 'clamp(1.6rem,3.5vw,2.2rem)' },
-      cardDescription: { fontSize: 'clamp(1rem,2.2vw,1.3rem)' },
-      holographicGlow: { width: 'clamp(400px,60vw,800px)', height: 'clamp(400px,60vw,800px)', top: '-20%', left: '-20%' },
-      expandedCard: { width: 'clamp(500px,80vw,800px)', padding: 'clamp(2.5rem,5vw,3.5rem)' },
+      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
+      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)', maxWidth: 'clamp(600px, 85vw, 900px)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 340px), 1fr))' },
+      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
+      cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
+      holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
+      expandedCard: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
     small: {
-      container: { padding: 'clamp(2rem,6vw,5rem) clamp(1rem,2.5vw,2rem)' },
-      header: { padding: 'clamp(1.5rem,3.5vw,3rem)' },
-      title: { fontSize: 'clamp(2rem,5vw,4rem)' },
-      grid: { gap: 'clamp(1.5rem,3vw,2.5rem)', gridTemplateColumns: '1fr' },
-      card: { padding: 'clamp(1.5rem,3vw,2.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.4rem,3vw,2rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem,2vw,1.2rem)' },
-      holographicGlow: { width: 'clamp(300px,50vw,600px)', height: 'clamp(300px,50vw,600px)', top: '-15%', left: '-15%' },
-      expandedCard: { width: 'clamp(300px,90vw,500px)', padding: 'clamp(2rem,4vw,3rem)' },
+      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
+      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 'clamp(500px, 80vw, 700px)' },
+      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
+      grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: '1fr' },
+      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
+      cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
+      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      expandedCard: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
     },
   },
 };
 
 // Inline Animation Styles
 const animationStyles = `
-  @keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes holographicPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
   @keyframes glowShift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(100px, 100px) scale(1.2); }
+    25% { transform: translate(50px, 50px) scale(1.1); }
+    50% { transform: translate(100px, 0) scale(1.15); }
+    75% { transform: translate(50px, -50px) scale(1.1); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-  @keyframes neonFlicker {
-    0%, 100% { opacity: 1; text-shadow: 0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7); }
-    50% { opacity: 0.8; text-shadow: 0 0 30px rgba(255,51,255,0.7), 0 0 50px rgba(76,29,149,0.5); }
-  }
-  @keyframes pulseBorder {
-    0%, 100% { border-color: rgba(255,51,255,0.4); }
-    50% { border-color: rgba(255,51,255,0.9); }
   }
   @keyframes techCarousel {
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
   }
   @keyframes spin {
-    0% { transform: rotate(0deg); border-top-color: #ff33ff; }
-    100% { transform: rotate(360deg); border-top-color: #3b82f6; }
+    0% { transform: rotate(0deg); border-top-color: #3b82f6; }
+    100% { transform: rotate(360deg); border-top-color: #c026d3; }
   }
 `;
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 2.5, ease: 'easeOut', staggerChildren: 0.4 },
+    rotate: 0,
+    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -120, rotateX: -20 },
+  hidden: { opacity: 0, y: -100, rotateX: -15 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.8, type: 'spring', stiffness: 150, damping: 15 },
+    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 18 },
   },
 };
 
@@ -502,31 +491,26 @@ const filterBtnVariants = {
   },
   exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
   active: {
-    scale: [1, 1.2, 1],
-    boxShadow: ['0 0 15px rgba(255,51,255,0.5)', '0 0 30px rgba(255,51,255,0.9)', '0 0 15px rgba(255,51,255,0.5)'],
+    scale: [1, 1.15, 1],
+    boxShadow: ['0 0 10px rgba(59, 130, 246, 0.3)', '0 0 20px rgba(59, 130, 246, 0.7)', '0 0 10px rgba(59, 130, 246, 0.3)'],
     transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: 180 },
+  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 1.2, type: 'spring', stiffness: 140, damping: 16 },
+    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 16 },
   },
 };
 
 const cardChildVariants = {
-  hidden: { opacity: 0, x: -50, rotate: -15 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    rotate: 0,
-    transition: { duration: 0.8, type: 'spring', stiffness: 160, damping: 15 },
-  },
+  hidden: { opacity: 0, x: -40, rotate: -10 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
 };
 
 const expandedCardVariants = {
@@ -559,7 +543,7 @@ const ProjectCard = React.lazy(() => Promise.resolve({
         aria-label={`View details for ${project.title}`}
         onKeyDown={(e) => e.key === 'Enter' && handleCardClick(project)}
       >
-        <motion.div style={{ ...styles.cardOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
+        <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
         <motion.h3
           style={{
             ...styles.cardTitle,
@@ -568,7 +552,7 @@ const ProjectCard = React.lazy(() => Promise.resolve({
           variants={cardChildVariants}
           transition={{ delay: index * 0.2 + 0.2 }}
         >
-          <FaCode style={{ fontSize: 'clamp(1.6rem,3vw,2rem)' }} />
+          <FaCode style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
           #{index + 1} • {project.title}
         </motion.h3>
         <motion.p
@@ -604,7 +588,7 @@ const ProjectCard = React.lazy(() => Promise.resolve({
           transition={{ delay: index * 0.2 + 0.6 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <FaExternalLinkAlt style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+          <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
           View Project
         </motion.a>
       </motion.article>
@@ -618,9 +602,9 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isCopying, setIsCopying] = useState(false);
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.5], [15, 0]);
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
+  const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -682,7 +666,7 @@ const Projects = () => {
         ...responsiveStyles.container,
         opacity,
         scale,
-        rotateX,
+        rotate,
       }}
       variants={containerVariants}
       initial="hidden"
@@ -697,22 +681,21 @@ const Projects = () => {
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            background: 'radial-gradient(circle, rgba(255,51,255,0.6), rgba(76,29,149,0.4))',
+            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
           }}
           animate={{
-            x: [0, Math.random() * 150 - 75, 0],
-            y: [0, Math.random() * 150 - 75, 0],
-            opacity: [0.3, 1, 0.3],
-            scale: [1, 1.5, 1],
+            y: [0, -30, 0],
+            opacity: [0.2, 0.7, 0.2],
+            scale: [1, 1.4, 1],
             rotate: [0, 360, 0],
           }}
-          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 4 }}
+          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
       {/* Holographic Glow */}
@@ -720,9 +703,8 @@ const Projects = () => {
         style={{
           ...styles.holographicGlow,
           ...responsiveStyles.holographicGlow,
+          animation: 'glowShift 12s ease-in-out infinite',
         }}
-        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
       />
       {/* Header Section */}
       <motion.header
@@ -731,27 +713,30 @@ const Projects = () => {
           ...responsiveStyles.header,
         }}
         variants={headerVariants}
-        transition={{ type: 'spring', stiffness: 130, damping: 14 }}
       >
-        <div style={styles.headerGlow} />
+        <motion.div style={styles.headerGlow} />
         <h2
           style={{
             ...styles.title,
             ...responsiveStyles.title,
+            animation: 'holographicPulse 2.5s ease-in-out infinite alternate',
           }}
         >
           🚀 My Project Showcase
         </h2>
         <motion.div
           style={styles.titleUnderline}
-          initial={{ width: 0, scaleX: 0 }}
-          animate={{ width: 'clamp(200px,40vw,320px)', scaleX: 1 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
+          initial={{ width: 0 }}
+          animate={{ width: 'clamp(160px, 30vw, 240px)' }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
         />
       </motion.header>
       {/* Filter Bar */}
       <motion.div
-        style={styles.filterBar}
+        style={{
+          ...styles.filterBar,
+          ...responsiveStyles.filterBar,
+        }}
         variants={containerVariants}
       >
         <AnimatePresence>
@@ -761,6 +746,7 @@ const Projects = () => {
               style={{
                 ...styles.filterBtn,
                 ...(filter === type ? styles.activeFilter : {}),
+                ...responsiveStyles.filterBtn,
               }}
               onClick={() => setFilter(type)}
               variants={filterBtnVariants}
@@ -786,7 +772,7 @@ const Projects = () => {
       >
         <AnimatePresence>
           <Suspense fallback={
-            <div style={{ textAlign: 'center', color: '#f0faff', padding: '2rem' }}>
+            <div style={{ textAlign: 'center', color: '#e0e7ff', padding: '2rem' }}>
               <span style={styles.spinner} /> Loading projects...
             </div>
           }>
@@ -832,30 +818,32 @@ const Projects = () => {
               role="dialog"
               aria-label={`${selectedProject.title} details`}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 10s linear infinite' }} />
-              <button
+              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+              <motion.button
                 style={styles.closeButton}
                 onClick={handleClose}
                 aria-label="Close project details"
+                whileHover={{ scale: 1.2, rotate: 90, color: '#3b82f6' }}
+                whileTap={{ scale: 0.9 }}
               >
                 ✕
-              </button>
+              </motion.button>
               <motion.h3
                 style={{
                   ...styles.cardTitle,
-                  fontSize: 'clamp(2rem,5vw,3rem)',
-                  marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+                  fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
+                  marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
                 }}
                 variants={cardChildVariants}
               >
-                <FaCode style={{ fontSize: 'clamp(1.8rem,3.5vw,2.2rem)' }} />
+                <FaCode style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
                 #{projectData.indexOf(selectedProject) + 1} • {selectedProject.title}
               </motion.h3>
               <motion.p
                 style={{
                   ...styles.cardDescription,
-                  fontSize: 'clamp(1.2rem,2.8vw,1.6rem)',
-                  lineHeight: '2',
+                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+                  lineHeight: '1.7',
                 }}
                 variants={cardChildVariants}
               >
@@ -874,7 +862,7 @@ const Projects = () => {
                 <TechIcon tech={selectedProject.tech} index={0} />
               </motion.div>
               <motion.div
-                style={{ display: 'flex', gap: 'clamp(1rem,2vw,1.5rem)', marginTop: 'clamp(1.5rem,3.5vw,2rem)' }}
+                style={{ display: 'flex', gap: 'clamp(0.8rem, 1.8vw, 1.2rem)', marginTop: 'clamp(1rem, 2.5vw, 1.5rem)' }}
                 variants={cardChildVariants}
               >
                 <motion.a
@@ -884,12 +872,12 @@ const Projects = () => {
                   rel="noreferrer"
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
                     transition: { duration: 0.3 },
                   }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <FaExternalLinkAlt style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+                  <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                   View Project
                 </motion.a>
                 <motion.button
@@ -901,12 +889,12 @@ const Projects = () => {
                   disabled={isCopying}
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
                     transition: { duration: 0.3 },
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FaLink style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+                  <FaLink style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                   {isCopying ? 'Copying...' : 'Copy Link'}
                 </motion.button>
               </motion.div>

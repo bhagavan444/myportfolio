@@ -1,146 +1,302 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { FaCertificate, FaStar, FaLink, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCertificate, FaStar, FaLink, FaExternalLinkAlt, FaBrain } from 'react-icons/fa';
 
-// Certifications data
+// Certifications data with concepts
 const certifications = [
-  { name: 'C for Everyone – Coursera', file: 'https://drive.google.com/file/d/1_icpofMdYi5iGjbELOY0VHMBloGJDhAA/view?usp=drive_link', issuer: 'Coursera', category: 'Programming' },
-  { name: 'Python for Everyone – Coursera', file: 'https://drive.google.com/file/d/1z2DPeFW4YO2Ct3q2DYW3X_4qj_553FMz/view?usp=drive_link', issuer: 'Coursera', category: 'Programming' },
-  { name: 'Python Django - Infosys Spring Board', file: 'https://drive.google.com/file/d/1QdiX2u-ARCZCEdEmlu4l3ChnQT-SmhKc/view?usp=drive_link', issuer: 'Infosys', category: 'Web Development' },
-  { name: 'JavaScript - Infosys Spring Board', file: 'https://drive.google.com/file/d/1zrscfW3cyWq59mMYsK399CRjgEjA-zbd/view?usp=drive_link', issuer: 'Infosys', category: 'Web Development' },
-  { name: 'Skill Up in Java - Infosys Spring Board', file: 'https://drive.google.com/file/d/1w8hmCAAaP7CFFGMk3GkXfC4IvTAIXuM2/view?usp=drive_link', issuer: 'Infosys', category: 'Programming' },
-  { name: 'React - Infosys Spring Board', file: 'https://drive.google.com/file/d/1yy4OpoVRAX2ZGVPUH9VmorLc2kiXalYf/view?usp=drive_link', issuer: 'Infosys', category: 'Web Development' },
-  { name: 'MLOps - Infosys Spring Board', file: 'https://drive.google.com/file/d/1BmvjGknXs-K5wOfepFcl_CuU8DsFBApP/view?usp=drive_link', issuer: 'Infosys', category: 'Machine Learning' },
-  { name: 'ServiceNow - Infosys Spring Board', file: 'https://drive.google.com/file/d/1DPfQez89EoRKV7zhXhMKevkglMqvRjqI/view?usp=drive_link', issuer: 'Infosys', category: 'Platform Development' },
-  { name: 'ML using Python - Infosys Spring Board', file: 'https://drive.google.com/file/d/1uaTJTnijSpjCsD_ZPHKwen9i3RDYwShK/view?usp=drive_link', issuer: 'Infosys', category: 'Machine Learning' },
-  { name: 'HTML - Infosys Spring Board', file: 'https://drive.google.com/file/d/1NYtaxfhQUfxaL4n6Vv6gJSEQMySy1gqr/view?usp=drive_link', issuer: 'Infosys', category: 'Web Development' },
-  { name: 'CSS - Infosys Spring Board', file: 'https://drive.google.com/file/d/1iC65FGw0MSmjeKIivdnrZVm3GfXOKVvE/view?usp=drive_link', issuer: 'Infosys', category: 'Web Development' },
-  { name: 'AWS Certified', file: 'https://drive.google.com/file/d/17vu2Vd5QnxAHe4iEYv21ADC-Pfs-90U9/view?usp=drive_link', issuer: 'AWS', category: 'Cloud Computing' },
-  { name: 'Mastering Python - Infosys Spring Board', file: 'https://drive.google.com/file/d/1k402Ba4Azvjj823xlxaridsmMy-jahVu/view?usp=drive_link', issuer: 'Infosys', category: 'Programming' },
-  { name: 'R Programming - Infosys Spring Board', file: 'https://drive.google.com/file/d/14MnNRgQKwmCXCeZIr1QG0Q9-GhE1jVJJ/view?usp=sharing', issuer: 'Infosys', category: 'Programming' },
-  { name: 'Continuous Integration and Continuous Delivery - Infosys Spring Board', file: 'https://drive.google.com/file/d/1xccQv29hZCWCvr-JnM-nEfE8meESrWIr/view?usp=sharing', issuer: 'Infosys', category: 'DevOps' },
-  { name: 'Large Language Model - IBM Skills', file: 'https://drive.google.com/file/d/1CyN6_Bm3c68R0NkQWWTOgNAXTv27In_s/view?usp=sharing', issuer: 'IBM', category: 'Machine Learning' },
-  { name: 'Mastering the Art of Programming - IBM Skills', file: 'https://drive.google.com/file/d/1SwQGo_zGZIGcTzzlMApXZU0Wt5ScyWXx/view?usp=sharing', issuer: 'IBM', category: 'Programming' },
-  { name: 'Build Your First Chatbot - IBM Skills', file: 'https://drive.google.com/file/d/1HOr1qGDbIZ_t-Uw3KJU9PGYk65xCW41R/view?usp=sharing', issuer: 'IBM', category: 'AI Development' },
-  { name: 'Software Engineering - Infosys Spring Board', file: 'https://drive.google.com/file/d/1siy3p3J8Y9yr8oSzrXMjf0fZ7V7iNKcl/view?usp=sharing', issuer: 'Infosys', category: 'Software Engineering' },
+  {
+    name: 'C for Everyone – Coursera',
+    file: 'https://drive.google.com/file/d/1_icpofMdYi5iGjbELOY0VHMBloGJDhAA/view?usp=drive_link',
+    issuer: 'Coursera',
+    category: 'Programming',
+    concepts: 'C Syntax, Pointers, Memory Management, Data Structures, File I/O',
+  },
+  {
+    name: 'Python for Everyone – Coursera',
+    file: 'https://drive.google.com/file/d/1z2DPeFW4YO2Ct3q2DYW3X_4qj_553FMz/view?usp=drive_link',
+    issuer: 'Coursera',
+    category: 'Programming',
+    concepts: 'Python Basics, Functions, OOP, Data Analysis, File Handling',
+  },
+  {
+    name: 'Python Django - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1QdiX2u-ARCZCEdEmlu4l3ChnQT-SmhKc/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Web Development',
+    concepts: 'Django Framework, ORM, REST APIs, Templates, Authentication',
+  },
+  {
+    name: 'JavaScript - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1zrscfW3cyWq59mMYsK399CRjgEjA-zbd/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Web Development',
+    concepts: 'JavaScript ES6, DOM Manipulation, Async Programming, Events, APIs',
+  },
+  {
+    name: 'Skill Up in Java - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1w8hmCAAaP7CFFGMk3GkXfC4IvTAIXuM2/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Programming',
+    concepts: 'Java OOP, Collections, Exception Handling, Multithreading, JDBC',
+  },
+  {
+    name: 'React - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1yy4OpoVRAX2ZGVPUH9VmorLc2kiXalYf/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Web Development',
+    concepts: 'React Components, Hooks, State Management, Routing, Redux',
+  },
+  {
+    name: 'MLOps - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1BmvjGknXs-K5wOfepFcl_CuU8DsFBApP/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Machine Learning',
+    concepts: 'Model Deployment, CI/CD for ML, Monitoring, Data Pipelines, Scalability',
+  },
+  {
+    name: 'ServiceNow - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1DPfQez89EoRKV7zhXhMKevkglMqvRjqI/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Platform Development',
+    concepts: 'ServiceNow Platform, Workflows, Scripting, Integrations, IT Service Management',
+  },
+  {
+    name: 'ML using Python - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1uaTJTnijSpjCsD_ZPHKwen9i3RDYwShK/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Machine Learning',
+    concepts: 'Supervised Learning, Unsupervised Learning, Scikit-learn, Pandas, Model Evaluation',
+  },
+  {
+    name: 'HTML - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1NYtaxfhQUfxaL4n6Vv6gJSEQMySy1gqr/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Web Development',
+    concepts: 'HTML5, Semantic Tags, Forms, Accessibility, DOM Structure',
+  },
+  {
+    name: 'CSS - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1iC65FGw0MSmjeKIivdnrZVm3GfXOKVvE/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Web Development',
+    concepts: 'CSS3, Flexbox, Grid, Animations, Responsive Design',
+  },
+  {
+    name: 'AWS Certified',
+    file: 'https://drive.google.com/file/d/17vu2Vd5QnxAHe4iEYv21ADC-Pfs-90U9/view?usp=drive_link',
+    issuer: 'AWS',
+    category: 'Cloud Computing',
+    concepts: 'EC2, S3, Lambda, CloudFormation, VPC',
+  },
+  {
+    name: 'Mastering Python - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1k402Ba4Azvjj823xlxaridsmMy-jahVu/view?usp=drive_link',
+    issuer: 'Infosys',
+    category: 'Programming',
+    concepts: 'Advanced Python, Decorators, Generators, Modules, Concurrency',
+  },
+  {
+    name: 'R Programming - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/14MnNRgQKwmCXCeZIr1QG0Q9-GhE1jVJJ/view?usp=sharing',
+    issuer: 'Infosys',
+    category: 'Programming',
+    concepts: 'R Syntax, Data Visualization, Statistical Analysis, Data Frames, Packages',
+  },
+  {
+    name: 'Continuous Integration and Continuous Delivery - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1xccQv29hZCWCvr-JnM-nEfE8meESrWIr/view?usp=sharing',
+    issuer: 'Infosys',
+    category: 'DevOps',
+    concepts: 'CI/CD Pipelines, Jenkins, Git, Docker, Automation',
+  },
+  {
+    name: 'Large Language Model - IBM Skills',
+    file: 'https://drive.google.com/file/d/1CyN6_Bm3c68R0NkQWWTOgNAXTv27In_s/view?usp=sharing',
+    issuer: 'IBM',
+    category: 'Machine Learning',
+    concepts: 'LLMs, Transformers, Fine-Tuning, NLP, Prompt Engineering',
+  },
+  {
+    name: 'Mastering the Art of Programming - IBM Skills',
+    file: 'https://drive.google.com/file/d/1SwQGo_zGZIGcTzzlMApXZU0Wt5ScyWXx/view?usp=sharing',
+    issuer: 'IBM',
+    category: 'Programming',
+    concepts: 'Algorithm Design, Problem Solving, Code Optimization, Debugging, Best Practices',
+  },
+  {
+    name: 'Build Your First Chatbot - IBM Skills',
+    file: 'https://drive.google.com/file/d/1HOr1qGDbIZ_t-Uw3KJU9PGYk65xCW41R/view?usp=sharing',
+    issuer: 'IBM',
+    category: 'AI Development',
+    concepts: 'Chatbot Design, NLP, Dialogflow, API Integration, User Interaction',
+  },
+  {
+    name: 'Software Engineering - Infosys Spring Board',
+    file: 'https://drive.google.com/file/d/1siy3p3J8Y9yr8oSzrXMjf0fZ7V7iNKcl/view?usp=sharing',
+    issuer: 'Infosys',
+    category: 'Software Engineering',
+    concepts: 'SDLC, Agile, Design Patterns, Testing, UML',
+  },
 ];
 
-// Styles adapted from Projects UI
+// Concepts Component with Carousel Effect
+const Concepts = React.memo(({ concepts, index }) => {
+  const conceptList = concepts.split(', ');
+  return (
+    <motion.div
+      style={{
+        display: 'flex',
+        width: `${conceptList.length * 100}%`,
+        animation: conceptList.length > 3 ? 'conceptsCarousel 20s linear infinite' : 'none',
+      }}
+    >
+      {conceptList.concat(conceptList).map((concept, i) => (
+        <motion.span
+          key={`${concept}-${i}`}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 'clamp(8px, 1.2vw, 10px)',
+            margin: 'clamp(6px, 1vw, 8px)',
+            padding: 'clamp(6px, 1vw, 8px) clamp(10px, 1.8vw, 12px)',
+            background: 'linear-gradient(45deg, rgba(192, 38, 211, 0.3), rgba(76, 29, 149, 0.3))',
+            borderRadius: 'clamp(10px, 1.5vw, 12px)',
+            border: '2px solid rgba(59, 130, 246, 0.4)',
+            boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
+          }}
+          initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: index * 0.08 + i * 0.06, type: 'spring', stiffness: 180, damping: 14 }}
+        >
+          <motion.span
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.08 + i * 0.06 }}
+            style={{ color: '#3b82f6', textShadow: '0 0 15px rgba(59, 130, 246, 0.7)' }}
+          >
+            <FaBrain style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }} />
+          </motion.span>
+          <span style={{ color: '#e0e7ff', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', fontWeight: 600 }}>
+            {concept}
+          </span>
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+});
+
+// Styles adapted from Projects.jsx
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)',
-    background: 'linear-gradient(165deg, #0d001a, #1a0033, #2a0055, #3b0088)',
-    backgroundSize: '800% 800%',
-    color: '#f0faff',
+    padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)',
+    background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b0088)',
+    backgroundSize: '600% 600%',
+    color: '#f5f7fa',
     overflow: 'hidden',
     position: 'relative',
-    perspective: '2500px',
-    fontFamily: "'Orbitron', 'Inter', sans-serif",
+    perspective: '2000px',
+    fontFamily: "'Inter', 'Montserrat', sans-serif",
     willChange: 'background, transform',
-    animation: 'shimmer 12s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 15% 5%, rgba(255,51,255,0.5), transparent 40%),
-      radial-gradient(circle at 85% 95%, rgba(76,29,149,0.5), transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(59,130,246,0.4), transparent 60%)
+      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
-    animation: 'glowShift 8s ease-in-out infinite',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(500px,70vw,1000px)',
-    height: 'clamp(500px,70vw,1000px)',
-    background: 'linear-gradient(45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
-    top: '-25%',
-    left: '-25%',
-    filter: 'blur(160px)',
-    zIndex: -2,
-    animation: 'rotateGlow 15s linear infinite',
+    width: 'clamp(500px, 65vw, 800px)',
+    height: 'clamp(500px, 65vw, 800px)',
+    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
+    top: '-20%',
+    left: '-20%',
+    filter: 'blur(150px)',
+    zIndex: -1,
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(3rem,5vw,5rem)',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(20px,2.5vw,24px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), 0 0 80px rgba(255,51,255,0.5)',
-    backdropFilter: 'blur(25px)',
-    maxWidth: 'clamp(800px,95vw,1400px)',
-    margin: '0 auto clamp(4rem,8vw,6rem)',
+    padding: 'clamp(2rem, 4vw, 3.5rem)',
+    background: 'rgba(10, 0, 30, 0.85)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(16px, 2.2vw, 20px)',
+    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
+    backdropFilter: 'blur(16px)',
+    maxWidth: 'clamp(700px, 90vw, 1100px)',
+    margin: '0 auto clamp(3rem, 6vw, 5rem)',
     position: 'relative',
     overflow: 'hidden',
   },
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.4), rgba(76,29,149,0.4), transparent)',
-    opacity: 0.6,
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    opacity: 0.45,
     zIndex: -1,
   },
   title: {
-    fontSize: 'clamp(3rem,7vw,6rem)',
+    fontSize: 'clamp(2rem, 5.5vw, 4rem)',
     fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6, #00ccff)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7)',
-    marginBottom: 'clamp(1rem,2.5vw,2rem)',
-    letterSpacing: '0.2em',
-    animation: 'neonFlicker 4s ease-in-out infinite alternate',
+    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
+    letterSpacing: '0.12em',
   },
   titleUnderline: {
-    width: 'clamp(200px,40vw,320px)',
-    height: '8px',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    borderRadius: '8px',
-    margin: '1rem auto',
-    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+    width: 'clamp(160px, 30vw, 240px)',
+    height: '5px',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
+    borderRadius: '5px',
+    margin: '0.6rem auto',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   filterBar: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 'clamp(1.2rem,2.5vw,2rem)',
-    marginBottom: 'clamp(3rem,6vw,5rem)',
+    gap: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    marginBottom: 'clamp(2rem, 4vw, 3rem)',
     flexWrap: 'wrap',
   },
   filterBtn: {
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'rgba(255,51,255,0.2)',
-    border: '2px solid rgba(255,51,255,0.4)',
-    borderRadius: 'clamp(16px,2.2vw,20px)',
-    color: '#f0faff',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'rgba(59, 130, 246, 0.2)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    color: '#e0e7ff',
     cursor: 'pointer',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
-    transition: 'all 0.3s ease',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontWeight: '600',
+    boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)',
   },
   activeFilter: {
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))',
-    gap: 'clamp(2.5rem,5vw,4rem)',
-    maxWidth: 'clamp(900px,95vw,2000px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))',
+    gap: 'clamp(1.8rem, 3.5vw, 3rem)',
+    maxWidth: 'clamp(800px, 95vw, 1600px)',
     margin: '0 auto',
-    perspective: '2500px',
+    perspective: '2000px',
   },
   card: {
-    background: 'rgba(10,0,30,0.9)',
-    borderRadius: 'clamp(20px,3vw,24px)',
-    padding: 'clamp(2.5rem,5vw,3.5rem)',
+    background: 'rgba(10, 0, 30, 0.9)',
+    borderRadius: 'clamp(14px, 2.5vw, 20px)',
+    padding: 'clamp(2rem, 3.5vw, 2.8rem)',
     textAlign: 'center',
-    backdropFilter: 'blur(30px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,51,255,0.4)',
+    backdropFilter: 'blur(18px)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
@@ -150,62 +306,76 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
     zIndex: -1,
-    opacity: 0.6,
-    animation: 'pulseBorder 2s ease-in-out infinite',
+    opacity: 0.45,
   },
   certName: {
-    fontSize: 'clamp(1.8rem,4vw,2.6rem)',
-    color: '#ff33ff',
-    textShadow: '0 0 25px rgba(255,51,255,0.8)',
-    marginBottom: 'clamp(1.2rem,3vw,1.8rem)',
+    fontSize: 'clamp(1.5rem, 3.2vw, 2rem)',
+    color: '#3b82f6',
+    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     fontWeight: '800',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   certIssuer: {
-    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
-    color: '#f0faff',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
-    lineHeight: '1.9',
-    textShadow: '0 0 15px rgba(255,51,255,0.6)',
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   certCategory: {
-    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
     color: '#3b82f6',
     fontWeight: 'bold',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
-    textShadow: '0 0 15px rgba(59,130,246,0.6)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+  },
+  certConcepts: {
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#3b82f6',
+    fontWeight: 'bold',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+  },
+  conceptsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 'clamp(10px, 2vw, 12px)',
+    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    overflow: 'hidden',
   },
   certButton: {
     display: 'inline-flex',
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    borderRadius: 'clamp(14px,2.2vw,18px)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
     textDecoration: 'none',
-    fontWeight: '700',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
+    fontWeight: '600',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   copyButton: {
     display: 'inline-flex',
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'rgba(255,51,255,0.2)',
-    border: '2px solid rgba(255,51,255,0.4)',
-    borderRadius: 'clamp(14px,2.2vw,18px)',
-    color: '#f0faff',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'rgba(59, 130, 246, 0.2)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    color: '#e0e7ff',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontWeight: '600',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     cursor: 'pointer',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   loadingButton: {
     opacity: 0.7,
@@ -213,10 +383,10 @@ const styles = {
   },
   spinner: {
     display: 'inline-block',
-    width: 'clamp(1.5rem,3vw,2rem)',
-    height: 'clamp(1.5rem,3vw,2rem)',
-    border: '4px solid rgba(255,51,255,0.3)',
-    borderTop: '4px solid #ff33ff',
+    width: 'clamp(1rem, 2vw, 1.5rem)',
+    height: 'clamp(1rem, 2vw, 1.5rem)',
+    border: '3px solid rgba(59, 130, 246, 0.3)',
+    borderTop: '3px solid #3b82f6',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
@@ -225,115 +395,113 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'clamp(600px,80vw,1000px)',
+    width: 'clamp(500px, 80vw, 800px)',
     maxHeight: '80vh',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(24px,3.5vw,28px)',
-    padding: 'clamp(3rem,6vw,4rem)',
-    boxShadow: '0 50px 100px rgba(0,0,0,0.9), 0 0 100px rgba(255,51,255,0.6)',
-    backdropFilter: 'blur(30px)',
+    background: 'rgba(10, 0, 30, 0.95)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
+    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.4)',
+    backdropFilter: 'blur(20px)',
     zIndex: 1000,
     overflowY: 'auto',
   },
   expandedOverlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.8)',
+    background: 'rgba(0, 0, 0, 0.8)',
     zIndex: 999,
   },
   closeButton: {
     position: 'absolute',
-    top: 'clamp(1rem,2vw,1.5rem)',
-    right: 'clamp(1rem,2vw,1.5rem)',
+    top: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    right: 'clamp(0.8rem, 1.8vw, 1.2rem)',
     background: 'transparent',
     border: 'none',
-    color: '#f0faff',
-    fontSize: 'clamp(1.5rem,3vw,2rem)',
+    color: '#e0e7ff',
+    fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
     cursor: 'pointer',
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)' },
-      header: { padding: 'clamp(3rem,5vw,5rem)' },
-      title: { fontSize: 'clamp(3rem,7vw,6rem)' },
-      grid: { gap: 'clamp(2.5rem,5vw,4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))' },
-      card: { padding: 'clamp(2.5rem,5vw,3.5rem)' },
-      certName: { fontSize: 'clamp(1.8rem,4vw,2.6rem)' },
-      certButton: { padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)' },
-      holographicGlow: { width: 'clamp(500px,70vw,1000px)', height: 'clamp(500px,70vw,1000px)', top: '-25%', left: '-25%' },
-      expandedCard: { width: 'clamp(600px,80vw,1000px)', padding: 'clamp(3rem,6vw,4rem)' },
+      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4vw, 3.5rem)', maxWidth: 'clamp(700px, 90vw, 1100px)' },
+      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
+      grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300 dues, 45vw, 380px), 1fr))' },
+      card: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
+      certName: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
+      certButton: { padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)' },
+      holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
+      expandedCard: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
     },
     medium: {
-      container: { padding: 'clamp(3rem,8vw,6rem) clamp(1.5rem,3vw,3rem)' },
-      header: { padding: 'clamp(2rem,4vw,4rem)' },
-      title: { fontSize: 'clamp(2.5rem,6vw,5rem)' },
-      grid: { gap: 'clamp(2rem,4vw,3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px,45vw,360px), 1fr))' },
-      card: { padding: 'clamp(2rem,4vw,3rem)' },
-      certName: { fontSize: 'clamp(1.6rem,3.5vw,2.2rem)' },
-      certButton: { padding: 'clamp(0.7rem,1.5vw,1rem) clamp(1.5rem,2.5vw,2rem)' },
-      holographicGlow: { width: 'clamp(400px,60vw,800px)', height: 'clamp(400px,60vw,800px)', top: '-20%', left: '-20%' },
-      expandedCard: { width: 'clamp(500px,80vw,800px)', padding: 'clamp(2.5rem,5vw,3.5rem)' },
+      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
+      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)', maxWidth: 'clamp(600px, 85vw, 900px)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 340px), 1fr))' },
+      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
+      certName: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      certButton: { padding: 'clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)' },
+      holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
+      expandedCard: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
     small: {
-      container: { padding: 'clamp(2rem,6vw,5rem) clamp(1rem,2.5vw,2rem)' },
-      header: { padding: 'clamp(1.5rem,3.5vw,3rem)' },
-      title: { fontSize: 'clamp(2rem,5vw,4rem)' },
-      grid: { gap: 'clamp(1.5rem,3vw,2.5rem)', gridTemplateColumns: '1fr' },
-      card: { padding: 'clamp(1.5rem,3vw,2.5rem)' },
-      certName: { fontSize: 'clamp(1.4rem,3vw,2rem)' },
-      certButton: { padding: 'clamp(0.6rem,1.2vw,0.8rem) clamp(1.2rem,2vw,1.6rem)' },
-      holographicGlow: { width: 'clamp(300px,50vw,600px)', height: 'clamp(300px,50vw,600px)', top: '-15%', left: '-15%' },
-      expandedCard: { width: 'clamp(300px,90vw,500px)', padding: 'clamp(2rem,4vw,3rem)' },
+      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
+      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 'clamp(500px, 80vw, 700px)' },
+      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
+      grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: '1fr' },
+      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
+      certName: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      certButton: { padding: 'clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.8vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      expandedCard: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
     },
   },
 };
 
 // Animation styles
 const animationStyles = `
-  @keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes holographicPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
   @keyframes glowShift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(100px, 100px) scale(1.2); }
+    25% { transform: translate(50px, 50px) scale(1.1); }
+    50% { transform: translate(100px, 0) scale(1.15); }
+    75% { transform: translate(50px, -50px) scale(1.1); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  @keyframes neonFlicker {
-    0%, 100% { opacity: 1; text-shadow: 0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7); }
-    50% { opacity: 0.8; text-shadow: 0 0 30px rgba(255,51,255,0.7), 0 0 50px rgba(76,29,149,0.5); }
-  }
-  @keyframes pulseBorder {
-    0%, 100% { border-color: rgba(255,51,255,0.4); }
-    50% { border-color: rgba(255,51,255,0.9); }
+  @keyframes conceptsCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
   }
   @keyframes spin {
-    0% { transform: rotate(0deg); border-top-color: #ff33ff; }
-    100% { transform: rotate(360deg); border-top-color: #3b82f6; }
+    0% { transform: rotate(0deg); border-top-color: #3b82f6; }
+    100% { transform: rotate(360deg); border-top-color: #c026d3; }
   }
 `;
 
 // Animation variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 2.5, ease: 'easeOut', staggerChildren: 0.4 },
+    rotate: 0,
+    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -120, rotateX: -20 },
+  hidden: { opacity: 0, y: -100, rotateX: -15 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.8, type: 'spring', stiffness: 150, damping: 15 },
+    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 18 },
   },
 };
 
@@ -347,31 +515,26 @@ const filterBtnVariants = {
   },
   exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
   active: {
-    scale: [1, 1.2, 1],
-    boxShadow: ['0 0 15px rgba(255,51,255,0.5)', '0 0 30px rgba(255,51,255,0.9)', '0 0 15px rgba(255,51,255,0.5)'],
+    scale: [1, 1.15, 1],
+    boxShadow: ['0 0 10px rgba(59, 130, 246, 0.3)', '0 0 20px rgba(59, 130, 246, 0.7)', '0 0 10px rgba(59, 130, 246, 0.3)'],
     transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: 180 },
+  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 1.2, type: 'spring', stiffness: 140, damping: 16 },
+    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 16 },
   },
 };
 
 const cardChildVariants = {
-  hidden: { opacity: 0, x: -50, rotate: -15 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    rotate: 0,
-    transition: { duration: 0.8, type: 'spring', stiffness: 160, damping: 15 },
-  },
+  hidden: { opacity: 0, x: -40, rotate: -10 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
 };
 
 const expandedCardVariants = {
@@ -391,9 +554,9 @@ const Certifications = () => {
   const [selectedCert, setSelectedCert] = useState(null);
   const [isCopying, setIsCopying] = useState(false);
   const { scrollYProgress } = useScroll();
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.3, 1]), { stiffness: 140, damping: 22 });
-  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.8, 1]), { stiffness: 140, damping: 22 });
-  const rotateX = useSpring(useTransform(scrollYProgress, [0, 0.5], [15, 0]), { stiffness: 140, damping: 22 });
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
+  const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -455,7 +618,7 @@ const Certifications = () => {
         ...responsiveStyles.container,
         opacity,
         scale,
-        rotateX,
+        rotate,
       }}
       variants={containerVariants}
       initial="hidden"
@@ -470,22 +633,21 @@ const Certifications = () => {
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            background: 'radial-gradient(circle, rgba(255,51,255,0.6), rgba(76,29,149,0.4))',
+            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
           }}
           animate={{
-            x: [0, Math.random() * 150 - 75, 0],
-            y: [0, Math.random() * 150 - 75, 0],
-            opacity: [0.3, 1, 0.3],
-            scale: [1, 1.5, 1],
+            y: [0, -30, 0],
+            opacity: [0.2, 0.7, 0.2],
+            scale: [1, 1.4, 1],
             rotate: [0, 360, 0],
           }}
-          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 4 }}
+          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
       {/* Holographic Glow */}
@@ -493,9 +655,8 @@ const Certifications = () => {
         style={{
           ...styles.holographicGlow,
           ...responsiveStyles.holographicGlow,
+          animation: 'glowShift 12s ease-in-out infinite',
         }}
-        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
       />
       {/* Header Section */}
       <motion.header
@@ -504,28 +665,31 @@ const Certifications = () => {
           ...responsiveStyles.header,
         }}
         variants={headerVariants}
-        transition={{ type: 'spring', stiffness: 130, damping: 14 }}
       >
-        <div style={styles.headerGlow} />
+        <motion.div style={styles.headerGlow} />
         <h2
           style={{
             ...styles.title,
             ...responsiveStyles.title,
+            animation: 'holographicPulse 2.5s ease-in-out infinite alternate',
           }}
         >
-          <FaStar style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)', fontSize: 'clamp(2rem,4vw,3rem)' }} />
+          <FaStar style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)', fontSize: 'clamp(1.5rem, 3vw, 2rem)' }} />
           Certifications Showcase
         </h2>
         <motion.div
           style={styles.titleUnderline}
-          initial={{ width: 0, scaleX: 0 }}
-          animate={{ width: 'clamp(200px,40vw,320px)', scaleX: 1 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
+          initial={{ width: 0 }}
+          animate={{ width: 'clamp(160px, 30vw, 240px)' }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
         />
       </motion.header>
       {/* Filter Bar */}
       <motion.div
-        style={styles.filterBar}
+        style={{
+          ...styles.filterBar,
+          ...responsiveStyles.filterBar,
+        }}
         variants={containerVariants}
       >
         <AnimatePresence>
@@ -535,6 +699,7 @@ const Certifications = () => {
               style={{
                 ...styles.filterBtn,
                 ...(filter === category ? styles.activeFilter : {}),
+                ...responsiveStyles.filterBtn,
               }}
               onClick={() => setFilter(category)}
               variants={filterBtnVariants}
@@ -576,7 +741,7 @@ const Certifications = () => {
               aria-label={`View details for ${cert.name}`}
               onKeyDown={(e) => e.key === 'Enter' && handleCardClick(cert)}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
+              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
               <motion.h3
                 style={{
                   ...styles.certName,
@@ -585,7 +750,7 @@ const Certifications = () => {
                 variants={cardChildVariants}
                 transition={{ delay: index * 0.2 + 0.2 }}
               >
-                <FaCertificate style={{ fontSize: 'clamp(1.6rem,3vw,2rem)' }} />
+                <FaCertificate style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
                 #{index + 1} • {cert.name}
               </motion.h3>
               <motion.p
@@ -602,16 +767,33 @@ const Certifications = () => {
               >
                 Category: {cert.category}
               </motion.p>
+              <motion.p
+                style={styles.certConcepts}
+                variants={cardChildVariants}
+                transition={{ delay: index * 0.2 + 0.5 }}
+              >
+                Concepts Learned:
+              </motion.p>
+              <motion.div
+                style={styles.conceptsContainer}
+                variants={cardChildVariants}
+                transition={{ delay: index * 0.2 + 0.6 }}
+              >
+                <Concepts concepts={cert.concepts} index={index} />
+              </motion.div>
               <motion.a
                 href={cert.file}
-                style={styles.certButton}
+                style={{
+                  ...styles.certButton,
+                  ...responsiveStyles.certButton,
+                }}
                 target="_blank"
                 rel="noreferrer"
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.5 }}
+                transition={{ delay: index * 0.2 + 0.7 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <FaExternalLinkAlt style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+                <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                 View Certificate
               </motion.a>
             </motion.article>
@@ -647,30 +829,32 @@ const Certifications = () => {
               role="dialog"
               aria-label={`${selectedCert.name} details`}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 10s linear infinite' }} />
-              <button
+              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+              <motion.button
                 style={styles.closeButton}
                 onClick={handleClose}
                 aria-label="Close certification details"
+                whileHover={{ scale: 1.2, rotate: 90, color: '#3b82f6' }}
+                whileTap={{ scale: 0.9 }}
               >
                 ✕
-              </button>
+              </motion.button>
               <motion.h3
                 style={{
                   ...styles.certName,
-                  fontSize: 'clamp(2rem,5vw,3rem)',
-                  marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+                  fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
+                  marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
                 }}
                 variants={cardChildVariants}
               >
-                <FaCertificate style={{ fontSize: 'clamp(1.8rem,3.5vw,2.2rem)' }} />
+                <FaCertificate style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
                 #{certifications.indexOf(selectedCert) + 1} • {selectedCert.name}
               </motion.h3>
               <motion.p
                 style={{
                   ...styles.certIssuer,
-                  fontSize: 'clamp(1.2rem,2.8vw,1.6rem)',
-                  lineHeight: '2',
+                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+                  lineHeight: '1.7',
                 }}
                 variants={cardChildVariants}
               >
@@ -679,15 +863,27 @@ const Certifications = () => {
               <motion.p
                 style={{
                   ...styles.certCategory,
-                  fontSize: 'clamp(1.2rem,2.8vw,1.6rem)',
-                  lineHeight: '2',
+                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+                  lineHeight: '1.7',
                 }}
                 variants={cardChildVariants}
               >
                 Category: {selectedCert.category}
               </motion.p>
+              <motion.p
+                style={styles.certConcepts}
+                variants={cardChildVariants}
+              >
+                Concepts Learned:
+              </motion.p>
               <motion.div
-                style={{ display: 'flex', gap: 'clamp(1rem,2vw,1.5rem)', marginTop: 'clamp(1.5rem,3.5vw,2rem)' }}
+                style={styles.conceptsContainer}
+                variants={cardChildVariants}
+              >
+                <Concepts concepts={selectedCert.concepts} index={0} />
+              </motion.div>
+              <motion.div
+                style={{ display: 'flex', gap: 'clamp(0.8rem, 1.8vw, 1.2rem)', marginTop: 'clamp(1rem, 2.5vw, 1.5rem)' }}
                 variants={cardChildVariants}
               >
                 <motion.a
@@ -697,12 +893,12 @@ const Certifications = () => {
                   rel="noreferrer"
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
                     transition: { duration: 0.3 },
                   }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <FaExternalLinkAlt style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+                  <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                   View Certificate
                 </motion.a>
                 <motion.button
@@ -714,12 +910,12 @@ const Certifications = () => {
                   disabled={isCopying}
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
                     transition: { duration: 0.3 },
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FaLink style={{ marginRight: 'clamp(0.5rem,1.2vw,0.8rem)' }} />
+                  <FaLink style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                   {isCopying ? 'Copying...' : 'Copy Link'}
                 </motion.button>
               </motion.div>

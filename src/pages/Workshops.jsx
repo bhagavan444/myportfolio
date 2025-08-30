@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { FaCode, FaLaptopCode, FaMobileAlt, FaBrain, FaCogs, FaDatabase, FaExternalLinkAlt } from 'react-icons/fa';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { FaCode, FaLaptopCode, FaMobileAlt, FaBrain, FaCogs, FaDatabase } from 'react-icons/fa';
 import {
   SiMongodb,
   SiExpress,
@@ -95,6 +95,38 @@ const TechIcon = React.memo(({ tech, index }) => {
   );
 });
 
+// Concept tag component with floating animation
+const ConceptTag = React.memo(({ concept, index }) => (
+  <motion.span
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 'clamp(8px,1.2vw,10px)',
+      margin: 'clamp(6px,1vw,8px)',
+      padding: 'clamp(6px,1vw,8px) clamp(10px,1.8vw,12px)',
+      background: 'linear-gradient(45deg, rgba(59,130,246,0.3), rgba(192,38,211,0.3))',
+      borderRadius: 'clamp(10px,1.5vw,12px)',
+      border: '2px solid rgba(59,130,246,0.4)',
+      boxShadow: '0 0 15px rgba(59,130,246,0.5)',
+    }}
+    initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+    transition={{ delay: index * 0.08, type: 'spring', stiffness: 180, damping: 14 }}
+  >
+    <motion.span
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: index * 0.08 }}
+      style={{ color: '#3b82f6', textShadow: '0 0 15px rgba(59,130,246,0.7)' }}
+    >
+      <FaCogs style={{ fontSize: 'clamp(0.8rem,1.5vw,1rem)' }} />
+    </motion.span>
+    <span style={{ color: '#f0faff', fontSize: 'clamp(0.9rem,2vw,1.1rem)', fontWeight: 600 }}>
+      {concept}
+    </span>
+  </motion.span>
+));
+
 // Workshop Data
 const workshops = [
   {
@@ -102,48 +134,54 @@ const workshops = [
     type: 'Machine Learning',
     description: 'Hands-on experience with supervised and unsupervised learning techniques. Explored model building, evaluation, and tuning using Scikit-learn.',
     tech: 'Python, Scikit-learn, Pandas, Numpy',
+    concepts: ['Supervised Learning', 'Unsupervised Learning', 'Model Evaluation', 'Feature Engineering'],
     icon: FaBrain,
-    achievements: ['Built a predictive model with 95% accuracy', 'Won best project award'],
+    achievements: ['Built a predictive model with 95% accuracy'],
   },
   {
     title: '🧠 Deep Learning (DL)',
     type: 'Deep Learning',
     description: 'Built CNNs for image classification using TensorFlow and Keras. Understood backpropagation, activation functions, and optimization techniques.',
-    tech: 'Python, TensorFlow, Keras',
-    icon: FaCogs,
-    achievements: ['Developed a real-time image classifier', 'Presented at a tech conference'],
+    tech: 'Python, TensorFlow, Keras, Neural Networks, Numpy, Pandas, Scikit-learn, Matplotlib, Seaborn',
+    concepts: ['Convolutional Neural Networks', 'Backpropagation', 'Activation Functions', 'Hyperparameter Tuning'],
+    icon: FaBrain,
+    achievements: [ 'Presented at a tech conference'],
   },
   {
     title: '📱 Mobile App Development',
     type: 'Mobile Development',
     description: 'Developed cross-platform mobile apps using Flutter. Focused on UI/UX principles, navigation, and state management with REST API integration.',
-    tech: 'Flutter, Dart',
+    tech: 'Flutter, Dart, Firebase, Cloudinary, JavaScript, TF-IDF, NLTK, LangChain, OpenAI, Python, Flask',
+    concepts: ['State Management', 'REST APIs', 'UI/UX Design', 'Cross-Platform Development'],
     icon: FaMobileAlt,
-    achievements: ['Published app on Google Play Store', 'Received 4.5-star rating'],
+    achievements: ['Build a small Mobile App'],
   },
   {
     title: '🌐 Web Development',
     type: 'Web Development',
     description: 'Created responsive web applications using HTML, CSS, JavaScript, and React. Mastered component-based architecture and frontend optimization.',
     tech: 'HTML, CSS3, JavaScript, React',
+    concepts: ['Component Architecture', 'Responsive Design', 'State Management', 'Frontend Optimization'],
     icon: FaCode,
-    achievements: ['Optimized site for 2s load time', 'Led a team of 3 developers'],
+    achievements: ['Built and deployed a personal portfolio website'],
   },
   {
     title: '🤖 Introduction to Artificial Intelligence',
     type: 'Artificial Intelligence',
     description: 'Explored AI fundamentals, real-world use cases, ethical considerations, and logic-based AI systems through interactive sessions.',
-    tech: 'Python, OpenAI API',
+    tech: 'Python, OpenAI API, Flask, HTML, CSS, JavaScript, React, Firebase Auth, Cloudinary, TF-IDF, NLTK, LangChain',
+    concepts: ['AI Ethics', 'Logic-Based AI', 'Natural Language Processing', 'API Integration'],
     icon: FaLaptopCode,
-    achievements: ['Created an AI chatbot prototype', 'Top performer in workshop'],
+    achievements: ['Created an AI chatbot prototype'],
   },
   {
     title: '💻 Full Stack Development Bootcamp',
     type: 'Full Stack Development',
     description: 'Completed a comprehensive MERN stack bootcamp. Built and deployed full-stack apps with Express.js, MongoDB, React, and Node.js.',
-    tech: 'MongoDB, Express.js, React, Node.js, Socket.io',
+    tech: 'MongoDB, Express.js, React, Node.js, JavaScript, Socket.io',
+    concepts: ['MERN Stack', 'REST APIs', 'Database Design', 'Real-Time Communication'],
     icon: FaDatabase,
-    achievements: ['Deployed app with 99.9% uptime', 'Integrated real-time chat feature'],
+    achievements: ['Integrated real-time chat feature'],
   },
 ];
 
@@ -151,126 +189,122 @@ const workshops = [
 const styles = {
   container: {
     minHeight: '100vh',
-    padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)',
-    background: 'linear-gradient(165deg, #0d001a, #1a0033, #2a0055, #3b0088)',
-    backgroundSize: '800% 800%',
-    color: '#f0faff',
+    padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)',
+    background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b0088)',
+    backgroundSize: '600% 600%',
+    color: '#f5f7fa',
     overflow: 'hidden',
     position: 'relative',
-    perspective: '2500px',
-    fontFamily: "'Orbitron', 'Inter', sans-serif",
+    perspective: '2000px',
+    fontFamily: "'Inter', 'Montserrat', sans-serif",
     willChange: 'background, transform',
-    animation: 'shimmer 12s ease-in-out infinite',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 15% 5%, rgba(255,51,255,0.5), transparent 40%),
-      radial-gradient(circle at 85% 95%, rgba(76,29,149,0.5), transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(59,130,246,0.4), transparent 60%)
+      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
-    animation: 'glowShift 8s ease-in-out infinite',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(500px,70vw,1000px)',
-    height: 'clamp(500px,70vw,1000px)',
-    background: 'linear-gradient(45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
-    top: '-25%',
-    left: '-25%',
-    filter: 'blur(160px)',
-    zIndex: -2,
-    animation: 'rotateGlow 15s linear infinite',
+    width: 'clamp(500px, 65vw, 800px)',
+    height: 'clamp(500px, 65vw, 800px)',
+    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
+    top: '-20%',
+    left: '-20%',
+    filter: 'blur(150px)',
+    zIndex: -1,
   },
   header: {
     textAlign: 'center',
-    padding: 'clamp(3rem,5vw,5rem)',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(20px,2.5vw,24px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), 0 0 80px rgba(255,51,255,0.5)',
-    backdropFilter: 'blur(25px)',
-    maxWidth: 'clamp(800px,95vw,1400px)',
-    margin: '0 auto clamp(4rem,8vw,6rem)',
+    padding: 'clamp(2rem, 4vw, 3.5rem)',
+    background: 'rgba(10, 0, 30, 0.85)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(16px, 2.2vw, 20px)',
+    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
+    backdropFilter: 'blur(16px)',
+    maxWidth: 'clamp(700px, 90vw, 1100px)',
+    margin: '0 auto clamp(3rem, 6vw, 5rem)',
     position: 'relative',
     overflow: 'hidden',
   },
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.4), rgba(76,29,149,0.4), transparent)',
-    opacity: 0.6,
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    opacity: 0.45,
     zIndex: -1,
   },
   title: {
-    fontSize: 'clamp(3rem,7vw,6rem)',
+    fontSize: 'clamp(2rem, 5.5vw, 4rem)',
     fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6, #00ccff)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7)',
-    marginBottom: 'clamp(1rem,2.5vw,2rem)',
-    letterSpacing: '0.2em',
-    animation: 'neonFlicker 4s ease-in-out infinite alternate',
+    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
+    letterSpacing: '0.12em',
   },
   titleUnderline: {
-    width: 'clamp(200px,40vw,320px)',
-    height: '8px',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    borderRadius: '8px',
-    margin: '1rem auto',
-    boxShadow: '0 0 30px rgba(255,51,255,0.9)',
+    width: 'clamp(160px, 30vw, 240px)',
+    height: '5px',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
+    borderRadius: '5px',
+    margin: '0.6rem auto',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   introText: {
-    fontSize: 'clamp(1.1rem,2.8vw,1.5rem)',
-    color: '#f0faff',
-    maxWidth: 'clamp(600px,85vw,1000px)',
-    margin: '0 auto clamp(1.5rem,3vw,2rem)',
-    lineHeight: '1.9',
-    textShadow: '0 0 15px rgba(255,51,255,0.6)',
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    maxWidth: 'clamp(500px, 80vw, 800px)',
+    margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   filterBar: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 'clamp(1.2rem,2.5vw,2rem)',
-    marginBottom: 'clamp(3rem,6vw,5rem)',
+    gap: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    marginBottom: 'clamp(2rem, 4vw, 3rem)',
     flexWrap: 'wrap',
   },
   filterBtn: {
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'rgba(255,51,255,0.2)',
-    border: '2px solid rgba(255,51,255,0.4)',
-    borderRadius: 'clamp(16px,2.2vw,20px)',
-    color: '#f0faff',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'rgba(59, 130, 246, 0.2)',
+    border: '1px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    color: '#e0e7ff',
     cursor: 'pointer',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    fontWeight: '700',
-    boxShadow: '0 0 15px rgba(255,51,255,0.5)',
-    transition: 'all 0.3s ease',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontWeight: '600',
+    boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)',
   },
   activeFilter: {
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
+    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    boxShadow: '0 0 25px rgba(255,51,255,0.9)',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))',
-    gap: 'clamp(2.5rem,5vw,4rem)',
-    maxWidth: 'clamp(900px,95vw,2000px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))',
+    gap: 'clamp(1.8rem, 3.5vw, 3rem)',
+    maxWidth: 'clamp(800px, 95vw, 1600px)',
     margin: '0 auto',
-    perspective: '2500px',
+    perspective: '2000px',
   },
   tile: {
-    background: 'rgba(10,0,30,0.9)',
-    borderRadius: 'clamp(20px,3vw,24px)',
-    padding: 'clamp(2.5rem,5vw,3.5rem)',
+    background: 'rgba(10, 0, 30, 0.9)',
+    borderRadius: 'clamp(14px, 2.5vw, 20px)',
+    padding: 'clamp(2rem, 3.5vw, 2.8rem)',
     textAlign: 'left',
-    backdropFilter: 'blur(30px)',
-    boxShadow: '0 40px 80px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,51,255,0.4)',
+    backdropFilter: 'blur(18px)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
@@ -280,171 +314,163 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(255,51,255,0.5), rgba(76,29,149,0.5), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
     zIndex: -1,
-    opacity: 0.6,
-    animation: 'rotateGlow 10s linear infinite',
+    opacity: 0.45,
   },
   tileTitle: {
-    fontSize: 'clamp(1.8rem,4vw,2.6rem)',
-    color: '#ff33ff',
-    textShadow: '0 0 25px rgba(255,51,255,0.8)',
-    marginBottom: 'clamp(1.2rem,3vw,1.8rem)',
+    fontSize: 'clamp(1.5rem, 3.2vw, 2rem)',
+    color: '#3b82f6',
+    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     fontWeight: '800',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   tileDescription: {
-    fontSize: 'clamp(1.1rem,2.5vw,1.4rem)',
-    color: '#f0faff',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
-    lineHeight: '1.9',
-    textShadow: '0 0 15px rgba(255,51,255,0.6)',
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   techLabel: {
-    fontSize: 'clamp(1.2rem,2.5vw,1.5rem)',
-    color: '#3b82f6',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    color: '#c026d3',
     fontWeight: 'bold',
-    marginTop: 'clamp(1.5rem,3.5vw,2rem)',
-    textShadow: '0 0 15px rgba(59,130,246,0.6)',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   techContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(15px,3vw,18px)',
-    marginTop: 'clamp(1.2rem,3vw,1.8rem)',
-    marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+    gap: 'clamp(10px, 2vw, 12px)',
+    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    overflow: 'hidden',
+  },
+  conceptsLabel: {
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    color: '#c026d3',
+    fontWeight: 'bold',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+  },
+  conceptsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 'clamp(10px, 2vw, 12px)',
+    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
+    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
     overflow: 'hidden',
   },
   achievementsLabel: {
-    fontSize: 'clamp(1.2rem,2.5vw,1.5rem)',
-    color: '#3b82f6',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+    color: '#c026d3',
     fontWeight: 'bold',
-    marginTop: 'clamp(1.5rem,3.5vw,2rem)',
-    textShadow: '0 0 15px rgba(59,130,246,0.6)',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
   },
   achievementList: {
     listStyleType: 'none',
     padding: 0,
-    marginTop: 'clamp(0.8rem,1.5vw,1.2rem)',
+    marginTop: 'clamp(0.5rem, 1vw, 0.8rem)',
   },
   achievementItem: {
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    color: '#f0faff',
-    marginBottom: 'clamp(0.6rem,1.2vw,1rem)',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    color: '#e0e7ff',
+    marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)',
     display: 'flex',
     alignItems: 'center',
-    gap: 'clamp(0.5rem,1vw,0.8rem)',
-  },
-  linkContainer: {
-    display: 'flex',
-    gap: 'clamp(1rem,2vw,1.5rem)',
-    flexWrap: 'wrap',
-  },
-  link: {
-    display: 'inline-flex',
-    padding: 'clamp(0.8rem,1.8vw,1.2rem) clamp(1.8rem,3vw,2.5rem)',
-    background: 'linear-gradient(90deg, #ff33ff, #3b82f6)',
-    color: '#f0faff',
-    borderRadius: 'clamp(14px,2.2vw,18px)',
-    textDecoration: 'none',
-    fontWeight: '700',
-    fontSize: 'clamp(1.1rem,2.2vw,1.3rem)',
-    boxShadow: '0 0 20px rgba(255,51,255,0.7)',
-    alignItems: 'center',
-    gap: 'clamp(0.5rem,1.2vw,0.8rem)',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   expandedTile: {
     position: 'fixed',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'clamp(600px,80vw,1000px)',
+    width: 'clamp(500px, 80vw, 800px)',
     maxHeight: '80vh',
-    background: 'rgba(10,0,30,0.95)',
-    borderRadius: 'clamp(24px,3.5vw,28px)',
-    padding: 'clamp(3rem,6vw,4rem)',
-    boxShadow: '0 50px 100px rgba(0,0,0,0.9), 0 0 100px rgba(255,51,255,0.6)',
-    backdropFilter: 'blur(30px)',
+    background: 'rgba(10, 0, 30, 0.95)',
+    borderRadius: 'clamp(20px, 3vw, 24px)',
+    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
+    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.4)',
+    backdropFilter: 'blur(20px)',
     zIndex: 1000,
     overflowY: 'auto',
   },
   expandedOverlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.8)',
+    background: 'rgba(0, 0, 0, 0.8)',
     zIndex: 999,
   },
   closeButton: {
     position: 'absolute',
-    top: 'clamp(1rem,2vw,1.5rem)',
-    right: 'clamp(1rem,2vw,1.5rem)',
+    top: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    right: 'clamp(0.8rem, 1.8vw, 1.2rem)',
     background: 'transparent',
     border: 'none',
-    color: '#f0faff',
-    fontSize: 'clamp(1.5rem,3vw,2rem)',
+    color: '#e0e7ff',
+    fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
     cursor: 'pointer',
   },
   responsive: {
     large: {
-      container: { padding: 'clamp(4rem,10vw,8rem) clamp(2rem,4vw,4rem)' },
-      header: { padding: 'clamp(3rem,5vw,5rem)' },
-      title: { fontSize: 'clamp(3rem,7vw,6rem)' },
-      grid: { gap: 'clamp(2.5rem,5vw,4rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(340px,50vw,420px), 1fr))' },
-      tile: { padding: 'clamp(2.5rem,5vw,3.5rem)' },
-      tileTitle: { fontSize: 'clamp(1.8rem,4vw,2.6rem)' },
-      tileDescription: { fontSize: 'clamp(1.1rem,2.5vw,1.4rem)' },
-      holographicGlow: { width: 'clamp(500px,70vw,1000px)', height: 'clamp(500px,70vw,1000px)', top: '-25%', left: '-25%' },
-      expandedTile: { width: 'clamp(600px,80vw,1000px)', padding: 'clamp(3rem,6vw,4rem)' },
+      container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
+      header: { padding: 'clamp(2rem, 4vw, 3.5rem)', maxWidth: 'clamp(700px, 90vw, 1100px)' },
+      title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
+      introText: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)', maxWidth: 'clamp(500px, 80vw, 800px)' },
+      grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))' },
+      tile: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
+      tileTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
+      tileDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
+      expandedTile: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
     },
     medium: {
-      container: { padding: 'clamp(3rem,8vw,6rem) clamp(1.5rem,3vw,3rem)' },
-      header: { padding: 'clamp(2rem,4vw,4rem)' },
-      title: { fontSize: 'clamp(2.5rem,6vw,5rem)' },
-      grid: { gap: 'clamp(2rem,4vw,3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px,45vw,360px), 1fr))' },
-      tile: { padding: 'clamp(2rem,4vw,3rem)' },
-      tileTitle: { fontSize: 'clamp(1.6rem,3.5vw,2.2rem)' },
-      tileDescription: { fontSize: 'clamp(1rem,2.2vw,1.3rem)' },
-      holographicGlow: { width: 'clamp(400px,60vw,800px)', height: 'clamp(400px,60vw,800px)', top: '-20%', left: '-20%' },
-      expandedTile: { width: 'clamp(500px,80vw,800px)', padding: 'clamp(2.5rem,5vw,3.5rem)' },
+      container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
+      header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)', maxWidth: 'clamp(600px, 85vw, 900px)' },
+      title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      introText: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', maxWidth: 'clamp(400px, 75vw, 600px)' },
+      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 340px), 1fr))' },
+      tile: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
+      tileTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      tileDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
+      holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
+      expandedTile: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
     small: {
-      container: { padding: 'clamp(2rem,6vw,5rem) clamp(1rem,2.5vw,2rem)' },
-      header: { padding: 'clamp(1.5rem,3.5vw,3rem)' },
-      title: { fontSize: 'clamp(2rem,5vw,4rem)' },
-      grid: { gap: 'clamp(1.5rem,3vw,2.5rem)', gridTemplateColumns: '1fr' },
-      tile: { padding: 'clamp(1.5rem,3vw,2.5rem)' },
-      tileTitle: { fontSize: 'clamp(1.4rem,3vw,2rem)' },
-      tileDescription: { fontSize: 'clamp(0.9rem,2vw,1.2rem)' },
-      holographicGlow: { width: 'clamp(300px,50vw,600px)', height: 'clamp(300px,50vw,600px)', top: '-15%', left: '-15%' },
-      expandedTile: { width: 'clamp(300px,90vw,500px)', padding: 'clamp(2rem,4vw,3rem)' },
+      container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
+      header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 'clamp(500px, 80vw, 700px)' },
+      title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
+      introText: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)', maxWidth: 'clamp(300px, 70vw, 500px)' },
+      grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: '1fr' },
+      tile: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
+      tileTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      tileDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
+      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
+      expandedTile: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
     },
   },
 };
 
 // Inline Animation Styles
 const animationStyles = `
-  @keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes holographicPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
   @keyframes glowShift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(100px, 100px) scale(1.2); }
+    25% { transform: translate(50px, 50px) scale(1.1); }
+    50% { transform: translate(100px, 0) scale(1.15); }
+    75% { transform: translate(50px, -50px) scale(1.1); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-  @keyframes neonFlicker {
-    0%, 100% { opacity: 1; text-shadow: 0 0 50px rgba(255,51,255,0.9), 0 0 80px rgba(76,29,149,0.7); }
-    50% { opacity: 0.8; text-shadow: 0 0 30px rgba(255,51,255,0.7), 0 0 50px rgba(76,29,149,0.5); }
-  }
-  @keyframes pulseBorder {
-    0%, 100% { border-color: rgba(255,51,255,0.4); }
-    50% { border-color: rgba(255,51,255,0.9); }
   }
   @keyframes techCarousel {
     0% { transform: translateX(0); }
@@ -454,21 +480,22 @@ const animationStyles = `
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 2.5, ease: 'easeOut', staggerChildren: 0.4 },
+    rotate: 0,
+    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -120, rotateX: -20 },
+  hidden: { opacity: 0, y: -100, rotateX: -15 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.8, type: 'spring', stiffness: 150, damping: 15 },
+    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 18 },
   },
 };
 
@@ -482,31 +509,26 @@ const filterBtnVariants = {
   },
   exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
   active: {
-    scale: [1, 1.2, 1],
-    boxShadow: ['0 0 15px rgba(255,51,255,0.5)', '0 0 30px rgba(255,51,255,0.9)', '0 0 15px rgba(255,51,255,0.5)'],
+    scale: [1, 1.15, 1],
+    boxShadow: ['0 0 10px rgba(59, 130, 246, 0.3)', '0 0 20px rgba(59, 130, 246, 0.7)', '0 0 10px rgba(59, 130, 246, 0.3)'],
     transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 150, scale: 0.7, rotateY: 180 },
+  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     rotateY: 0,
-    transition: { duration: 1.2, type: 'spring', stiffness: 140, damping: 16 },
+    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 16 },
   },
 };
 
 const tileChildVariants = {
-  hidden: { opacity: 0, x: -50, rotate: -15 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    rotate: 0,
-    transition: { duration: 0.8, type: 'spring', stiffness: 160, damping: 15 },
-  },
+  hidden: { opacity: 0, x: -40, rotate: -10 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
 };
 
 const expandedTileVariants = {
@@ -525,9 +547,9 @@ const Workshops = () => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [selectedWorkshop, setSelectedWorkshop] = useState(null);
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.5], [15, 0]);
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
+  const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -559,6 +581,18 @@ const Workshops = () => {
     );
   }, []);
 
+  const getConceptTags = useCallback((concepts) => {
+    return (
+      <motion.div
+        style={{ display: 'flex', width: `${concepts.length * 100}%`, animation: concepts.length > 3 ? 'techCarousel 20s linear infinite' : 'none' }}
+      >
+        {concepts.concat(concepts).map((c, i) => (
+          <ConceptTag key={`${c}-${i}`} concept={c} index={i} />
+        ))}
+      </motion.div>
+    );
+  }, []);
+
   const handleTileClick = useCallback((workshop) => {
     setSelectedWorkshop(workshop);
   }, []);
@@ -575,7 +609,7 @@ const Workshops = () => {
         ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].container,
         opacity,
         scale,
-        rotateX,
+        rotate,
       }}
       variants={containerVariants}
       initial="hidden"
@@ -590,22 +624,21 @@ const Workshops = () => {
           key={i}
           style={{
             position: 'absolute',
-            width: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            height: `clamp(0.8rem, calc(0.1vw + ${1 + i * 0.3}rem), ${2 + i * 0.4}rem)`,
-            background: 'radial-gradient(circle, rgba(255,51,255,0.6), rgba(76,29,149,0.4))',
+            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
           }}
           animate={{
-            x: [0, Math.random() * 150 - 75, 0],
-            y: [0, Math.random() * 150 - 75, 0],
-            opacity: [0.3, 1, 0.3],
-            scale: [1, 1.5, 1],
+            y: [0, -30, 0],
+            opacity: [0.2, 0.7, 0.2],
+            scale: [1, 1.4, 1],
             rotate: [0, 360, 0],
           }}
-          transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 4 }}
+          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
       {/* Holographic Glow */}
@@ -613,9 +646,8 @@ const Workshops = () => {
         style={{
           ...styles.holographicGlow,
           ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].holographicGlow,
+          animation: 'glowShift 12s ease-in-out infinite',
         }}
-        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
       />
       {/* Header Section */}
       <motion.header
@@ -624,22 +656,22 @@ const Workshops = () => {
           ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].header,
         }}
         variants={headerVariants}
-        transition={{ type: 'spring', stiffness: 130, damping: 14 }}
       >
-        <div style={styles.headerGlow} />
+        <motion.div style={styles.headerGlow} />
         <h2
           style={{
             ...styles.title,
             ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].title,
+            animation: 'holographicPulse 2.5s ease-in-out infinite alternate',
           }}
         >
           📖 My Workshop Journey
         </h2>
         <motion.div
           style={styles.titleUnderline}
-          initial={{ width: 0, scaleX: 0 }}
-          animate={{ width: 'clamp(200px,40vw,320px)', scaleX: 1 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
+          initial={{ width: 0 }}
+          animate={{ width: 'clamp(160px, 30vw, 240px)' }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
         />
         <p
           style={{
@@ -709,16 +741,16 @@ const Workshops = () => {
                 aria-label={`View details for ${workshop.title}`}
                 onKeyDown={(e) => e.key === 'Enter' && handleTileClick(workshop)}
               >
-                <motion.div style={{ ...styles.tileOverlay, animation: 'pulseBorder 2s ease-in-out infinite' }} />
+                <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 8s linear infinite' }} />
                 <motion.h3
                   style={{
                     ...styles.tileTitle,
                     ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileTitle,
                   }}
                   variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.2 }}
+                  transition={{ delay: index * 0.15 + 0.2 }}
                 >
-                  <IconComp style={{ fontSize: 'clamp(1.6rem,3vw,2rem)' }} />
+                  <IconComp style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
                   #{index + 1} • {workshop.title}
                 </motion.h3>
                 <motion.p
@@ -727,37 +759,55 @@ const Workshops = () => {
                     ...styles.responsive[windowWidth <= 480 ? 'small' : windowWidth <= 768 ? 'medium' : 'large'].tileDescription,
                   }}
                   variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.3 }}
+                  transition={{ delay: index * 0.15 + 0.3 }}
                 >
                   <span style={styles.label}>Description:</span> {workshop.description}
                 </motion.p>
                 <motion.p
                   style={styles.techLabel}
                   variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.4 }}
+                  transition={{ delay: index * 0.15 + 0.4 }}
                 >
                   🔧 Tech Used:
                 </motion.p>
                 <motion.div
                   style={styles.techContainer}
                   variants={tileChildVariants}
-                  transition={{ delay: index * 0.2 + 0.5 }}
+                  transition={{ delay: index * 0.15 + 0.5 }}
                 >
                   {getTechIcons(workshop.tech)}
                 </motion.div>
+                {workshop.concepts && (
+                  <>
+                    <motion.p
+                      style={styles.conceptsLabel}
+                      variants={tileChildVariants}
+                      transition={{ delay: index * 0.15 + 0.6 }}
+                    >
+                      🧠 Concepts Learned:
+                    </motion.p>
+                    <motion.div
+                      style={styles.conceptsContainer}
+                      variants={tileChildVariants}
+                      transition={{ delay: index * 0.15 + 0.7 }}
+                    >
+                      {getConceptTags(workshop.concepts)}
+                    </motion.div>
+                  </>
+                )}
                 {workshop.achievements && (
                   <>
                     <motion.p
                       style={styles.achievementsLabel}
                       variants={tileChildVariants}
-                      transition={{ delay: index * 0.2 + 0.6 }}
+                      transition={{ delay: index * 0.15 + 0.8 }}
                     >
                       🏆 Achievements:
                     </motion.p>
                     <motion.ul
                       style={styles.achievementList}
                       variants={tileChildVariants}
-                      transition={{ delay: index * 0.2 + 0.7 }}
+                      transition={{ delay: index * 0.15 + 0.9 }}
                     >
                       {workshop.achievements.map((ach, achIndex) => (
                         <motion.li
@@ -765,9 +815,9 @@ const Workshops = () => {
                           style={styles.achievementItem}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.2 + 0.8 + achIndex * 0.1 }}
+                          transition={{ delay: index * 0.15 + 1.0 + achIndex * 0.1 }}
                         >
-                          <FaBrain style={{ color: '#3b82f6' }} />
+                          <FaBrain style={{ color: '#c026d3', fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                           {ach}
                         </motion.li>
                       ))}
@@ -804,7 +854,7 @@ const Workshops = () => {
               animate="visible"
               exit="exit"
             >
-              <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 10s linear infinite' }} />
+              <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 8s linear infinite' }} />
               <button
                 style={styles.closeButton}
                 onClick={handleClose}
@@ -815,19 +865,19 @@ const Workshops = () => {
               <motion.h3
                 style={{
                   ...styles.tileTitle,
-                  fontSize: 'clamp(2rem,5vw,3rem)',
-                  marginBottom: 'clamp(1.5rem,3.5vw,2rem)',
+                  fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
+                  marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
                 }}
                 variants={tileChildVariants}
               >
-                <selectedWorkshop.icon style={{ fontSize: 'clamp(1.8rem,3.5vw,2.2rem)' }} />
+                <selectedWorkshop.icon style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
                 #{workshops.indexOf(selectedWorkshop) + 1} • {selectedWorkshop.title}
               </motion.h3>
               <motion.p
                 style={{
                   ...styles.tileDescription,
-                  fontSize: 'clamp(1.2rem,2.8vw,1.6rem)',
-                  lineHeight: '2',
+                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+                  lineHeight: '1.7',
                 }}
                 variants={tileChildVariants}
               >
@@ -845,6 +895,22 @@ const Workshops = () => {
               >
                 {getTechIcons(selectedWorkshop.tech)}
               </motion.div>
+              {selectedWorkshop.concepts && (
+                <>
+                  <motion.p
+                    style={styles.conceptsLabel}
+                    variants={tileChildVariants}
+                  >
+                    🧠 Concepts Learned:
+                  </motion.p>
+                  <motion.div
+                    style={styles.conceptsContainer}
+                    variants={tileChildVariants}
+                  >
+                    {getConceptTags(selectedWorkshop.concepts)}
+                  </motion.div>
+                </>
+              )}
               {selectedWorkshop.achievements && (
                 <>
                   <motion.p
@@ -865,7 +931,7 @@ const Workshops = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: achIndex * 0.1 }}
                       >
-                        <FaBrain style={{ color: '#3b82f6' }} />
+                        <FaBrain style={{ color: '#c026d3', fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                         {ach}
                       </motion.li>
                     ))}
