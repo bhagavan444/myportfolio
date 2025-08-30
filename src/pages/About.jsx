@@ -149,7 +149,7 @@ const aboutData = [
   {
     title: '🎯 Career Objectives',
     items: [
-      'Seeking roles in Full Stack Development, Machine Learning, or Data Science.',
+      'Seeking roles in Full Stack Development, Machine Learning, Data Science, AI, Cloud Computing, DevOps or related fields.',
       'Aim is to apply skills on real-world problems, work in agile teams, and grow as an engineer.',
     ],
     skills: 'Agile, CI/CD',
@@ -168,7 +168,7 @@ const aboutData = [
   },
   {
     title: '🚀 Core Technologies',
-    skills: 'HTML5, CSS3, JavaScript, React, Node.js, Express, MongoDB, Tailwind CSS, Python, Flask, TensorFlow, Git, GitHub, Database',
+    skills: 'HTML5, CSS3, JavaScript, React, Node.js, Express, MongoDB, Tailwind CSS, Python, Flask, TensorFlow, Git, GitHub, Database, AWS Lambda, REST APIs',
     items: [],
     icon: FaStar,
   },

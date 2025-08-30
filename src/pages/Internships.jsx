@@ -134,7 +134,7 @@ const internshipData = [
     description:
       'Completed a certified internship in AI, ML & Data Science (AIMLDS). Worked on real-time datasets, implemented preprocessing, exploratory data analysis (EDA), and built predictive models using Python, Pandas, NumPy, and scikit-learn.',
     tech: 'Python, Pandas, Numpy, Scikit-learn',
-    concepts: ['Data Preprocessing', 'Exploratory Data Analysis', 'Predictive Modeling', 'Feature Engineering'],
+    concepts: ['Data Preprocessing', 'Exploratory Data Analysis', 'Predictive Modeling', 'Feature Engineering', 'Model Evaluation', 'Data Visualization', 'Regression', 'Classification', 'Clustering', 'Time Series Analysis', 'Natural Language Processing', 'Deep Learning', 'Model Deployment', 'Data Ethics', 'Big Data Basics', 'AI/ML Workflows',],
     certificateLink: 'https://drive.google.com/file/d/1yQQqBf32o8d3sYlheDCdaLTKj5_hepfY/view?usp=sharing',
     githubLink: 'https://github.com/bhagavan444',
     icon: FaBriefcase,
@@ -147,7 +147,7 @@ const internshipData = [
     description:
       'Successfully completed a certified internship in Artificial Intelligence & Machine Learning focused on image classification. Developed a deep learning-based Fruit and Vegetable Disease Classifier using transfer learning with MobileNetV2. Implemented model training, validation, and Flask-based deployment for real-time disease detection.',
     tech: 'Python, TensorFlow, Keras, Flask, React, CSS3',
-    concepts: ['Transfer Learning', 'Image Classification', 'Model Deployment', 'Deep Learning'],
+    concepts: ['Transfer Learning', 'Image Classification', 'Model Deployment', 'Deep Learning', 'Data Augmentation', 'Convolutional Neural Networks (CNNs)', 'Flask Web Framework', 'RESTful APIs', 'Frontend Integration', 'Model Evaluation', 'Hyperparameter Tuning', 'Cross-Validation', 'Data Preprocessing', 'Visualization with Matplotlib/Seaborn', 'Version Control with Git', 'Cloud Deployment Basics'],
     certificateLink: 'https://drive.google.com/file/d/1-_8ZI8uZ3DcrFpfZ3pts7VSYrAqPN5Zw/view?usp=sharing',
     githubLink: 'https://github.com/bhagavan444/smartbidgeproject',
     icon: FaBriefcase,

@@ -115,10 +115,10 @@ const educationData = [
     college: 'Ramachandra College of Engineering',
     cgpa: '7.5 (Present)',
     maxCgpa: 10,
-    skills: 'Python, TensorFlow, Pandas, Numpy, Scikit-learn, Data Structures, Algorithms, DBMS, Docker, Kubernetes, AWS',
+    skills: 'Python, TensorFlow, Pandas, Numpy, Scikit-learn, Data Structures, Algorithms, DBMS, Docker, Kubernetes, AWS,Java, HTML, CSS3, JavaScript, React, R, Machine Learning, Deep Learning, Data Science, Computer Networks, Operating Systems, Java',
     certificateLink: null,
     icon: FaUniversity,
-    achievements: [ 'Top 5% in Data Science projects'],
+    achievements: ['Active member of the AI and Data Science'],
   },
   {
     sno: 2,

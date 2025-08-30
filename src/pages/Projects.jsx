@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense, Component } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { FaCode, FaBrain, FaLink, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCode, FaLink, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   SiMongodb,
   SiExpress,
@@ -31,7 +31,7 @@ class ProjectCardErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="text-center text-white p-8 bg-gray-900/50 rounded-xl">
+        <div style={{ textAlign: 'center', color: '#e0e7ff', padding: '2rem', background: 'rgba(10, 0, 30, 0.9)', borderRadius: '12px' }}>
           Error loading project card. Please try again.
         </div>
       );
@@ -40,28 +40,33 @@ class ProjectCardErrorBoundary extends Component {
   }
 }
 
-// Tech Icon Component with Carousel Effect
+// Tech Icon Component
 const TechIcon = React.memo(({ tech, index }) => {
   const iconMap = useMemo(() => ({
     MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
     Express: { icon: <SiExpress />, label: 'Express.js' },
+    'Express.js': { icon: <SiExpress />, label: 'Express.js' },
     React: { icon: <SiReact />, label: 'React.js' },
+    'React.js': { icon: <SiReact />, label: 'React.js' },
     Node: { icon: <SiNodedotjs />, label: 'Node.js' },
+    'Node.js': { icon: <SiNodedotjs />, label: 'Node.js' },
     Flask: { icon: <SiFlask />, label: 'Flask' },
     Python: { icon: <SiPython />, label: 'Python' },
     Firebase: { icon: <SiFirebase />, label: 'Firebase' },
     'Firebase Auth': { icon: <SiFirebase />, label: 'Firebase Auth' },
     HTML: { icon: <SiHtml5 />, label: 'HTML' },
     CSS: { icon: <SiCss3 />, label: 'CSS3' },
+    CSS3: { icon: <SiCss3 />, label: 'CSS3' },
     'HTML/CSS': { icon: [<SiHtml5 key="html" />, <SiCss3 key="css" />], label: 'HTML/CSS' },
     'Scikit-learn': { icon: <SiScikitlearn />, label: 'Scikit-learn' },
     TensorFlow: { icon: <SiTensorflow />, label: 'TensorFlow' },
     Pandas: { icon: <SiPandas />, label: 'Pandas' },
     Numpy: { icon: <SiNumpy />, label: 'Numpy' },
-    'TF-IDF': { icon: <FaBrain />, label: 'TF-IDF' },
-    NLTK: { icon: <FaBrain />, label: 'NLTK' },
-    Keras: { icon: <FaBrain />, label: 'Keras' },
-    LangChain: { icon: <FaBrain />, label: 'LangChain' },
+    Numpys: { icon: <SiNumpy />, label: 'Numpy' },
+    'TF-IDF': { icon: <FaCode />, label: 'TF-IDF' },
+    NLTK: { icon: <FaCode />, label: 'NLTK' },
+    Keras: { icon: <FaCode />, label: 'Keras' },
+    LangChain: { icon: <FaCode />, label: 'LangChain' },
     'Cloud Computing': { icon: <SiAmazon />, label: 'Cloud Computing' },
     Django: { icon: <SiDjango />, label: 'Django' },
     'Tailwind CSS': { icon: <SiTailwindcss />, label: 'Tailwind CSS' },
@@ -243,6 +248,14 @@ const styles = {
     margin: '0.6rem auto',
     boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
   },
+  introText: {
+    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    color: '#e0e7ff',
+    maxWidth: 'clamp(500px, 80vw, 800px)',
+    margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
+    lineHeight: '1.7',
+    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+  },
   filterBar: {
     display: 'flex',
     justifyContent: 'center',
@@ -274,7 +287,7 @@ const styles = {
     margin: '0 auto',
     perspective: '2000px',
   },
-  card: {
+  tile: {
     background: 'rgba(10, 0, 30, 0.9)',
     borderRadius: 'clamp(14px, 2.5vw, 20px)',
     padding: 'clamp(2rem, 3.5vw, 2.8rem)',
@@ -286,7 +299,7 @@ const styles = {
     overflow: 'hidden',
     cursor: 'pointer',
   },
-  cardOverlay: {
+  tileOverlay: {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
@@ -294,7 +307,7 @@ const styles = {
     zIndex: -1,
     opacity: 0.45,
   },
-  cardTitle: {
+  tileTitle: {
     fontSize: 'clamp(1.5rem, 3.2vw, 2rem)',
     color: '#3b82f6',
     textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
@@ -304,7 +317,7 @@ const styles = {
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
-  cardDescription: {
+  tileDescription: {
     fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
     color: '#e0e7ff',
     marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
@@ -313,7 +326,7 @@ const styles = {
   },
   techLabel: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#3b82f6',
+    color: '#c026d3',
     fontWeight: 'bold',
     marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
     textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
@@ -326,12 +339,18 @@ const styles = {
     marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
     overflow: 'hidden',
   },
-  visitBtn: {
+  linkContainer: {
+    display: 'flex',
+    gap: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    flexWrap: 'wrap',
+    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+  },
+  link: {
     display: 'inline-flex',
     padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
     background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    borderRadius: 'clamp(10px, 1.8vw, 14px)',
     textDecoration: 'none',
     fontWeight: '600',
     fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
@@ -366,7 +385,7 @@ const styles = {
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
-  expandedCard: {
+  expandedTile: {
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -402,34 +421,37 @@ const styles = {
       container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
       header: { padding: 'clamp(2rem, 4vw, 3.5rem)', maxWidth: 'clamp(700px, 90vw, 1100px)' },
       title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
+      introText: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)', maxWidth: 'clamp(500px, 80vw, 800px)' },
       grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))' },
-      card: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
-      cardTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
-      cardDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
+      tile: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
+      tileTitle: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
+      tileDescription: { fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)' },
       holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
-      expandedCard: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
+      expandedTile: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
     },
     medium: {
       container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
       header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)', maxWidth: 'clamp(600px, 85vw, 900px)' },
       title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
+      introText: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', maxWidth: 'clamp(400px, 75vw, 600px)' },
       grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 340px), 1fr))' },
-      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
-      cardTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      cardDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
+      tile: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
+      tileTitle: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      tileDescription: { fontSize: 'clamp(0.9rem, 2vw, 1.15rem)' },
       holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
-      expandedCard: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
+      expandedTile: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
     small: {
       container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
       header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 'clamp(500px, 80vw, 700px)' },
       title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
+      introText: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)', maxWidth: 'clamp(300px, 70vw, 500px)' },
       grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: '1fr' },
-      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
-      cardTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      cardDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
+      tile: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
+      tileTitle: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      tileDescription: { fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)' },
       holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
-      expandedCard: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
+      expandedTile: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
     },
   },
 };
@@ -497,7 +519,7 @@ const filterBtnVariants = {
   },
 };
 
-const cardVariants = {
+const tileVariants = {
   hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
   visible: {
     opacity: 1,
@@ -508,12 +530,12 @@ const cardVariants = {
   },
 };
 
-const cardChildVariants = {
+const tileChildVariants = {
   hidden: { opacity: 0, x: -40, rotate: -10 },
   visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
 };
 
-const expandedCardVariants = {
+const expandedTileVariants = {
   hidden: { opacity: 0, scale: 0.5, rotateY: 90, x: '-50%', y: '-50%' },
   visible: {
     opacity: 1,
@@ -524,73 +546,79 @@ const expandedCardVariants = {
   exit: { opacity: 0, scale: 0.5, rotateY: -90, transition: { duration: 0.6 } },
 };
 
-// Lazy-loaded Project Card
-const ProjectCard = React.lazy(() => Promise.resolve({
-  default: ({ project, index, handleCardClick, styles, responsiveStyles }) => (
+// Lazy-loaded Project Tile
+const ProjectTile = React.lazy(() => Promise.resolve({
+  default: ({ project, index, handleTileClick, styles, responsiveStyles }) => (
     <ProjectCardErrorBoundary>
       <motion.article
         style={{
-          ...styles.card,
-          ...responsiveStyles.card,
+          ...styles.tile,
+          ...responsiveStyles.tile,
         }}
-        variants={cardVariants}
+        variants={tileVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-100px' }}
-        onClick={() => handleCardClick(project)}
+        onClick={() => handleTileClick(project)}
         tabIndex={0}
         role="button"
         aria-label={`View details for ${project.title}`}
-        onKeyDown={(e) => e.key === 'Enter' && handleCardClick(project)}
+        onKeyDown={(e) => e.key === 'Enter' && handleTileClick(project)}
       >
-        <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+        <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 8s linear infinite' }} />
         <motion.h3
           style={{
-            ...styles.cardTitle,
-            ...responsiveStyles.cardTitle,
+            ...styles.tileTitle,
+            ...responsiveStyles.tileTitle,
           }}
-          variants={cardChildVariants}
-          transition={{ delay: index * 0.2 + 0.2 }}
+          variants={tileChildVariants}
+          transition={{ delay: index * 0.15 + 0.2 }}
         >
-          <FaCode style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
+          <FaCode style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
           #{index + 1} • {project.title}
         </motion.h3>
         <motion.p
           style={{
-            ...styles.cardDescription,
-            ...responsiveStyles.cardDescription,
+            ...styles.tileDescription,
+            ...responsiveStyles.tileDescription,
           }}
-          variants={cardChildVariants}
-          transition={{ delay: index * 0.2 + 0.3 }}
+          variants={tileChildVariants}
+          transition={{ delay: index * 0.15 + 0.3 }}
         >
-          <span style={{ fontWeight: 'bold' }}>Description:</span> {project.description}
+          {project.description}
         </motion.p>
         <motion.p
           style={styles.techLabel}
-          variants={cardChildVariants}
-          transition={{ delay: index * 0.2 + 0.4 }}
+          variants={tileChildVariants}
+          transition={{ delay: index * 0.15 + 0.4 }}
         >
           🔧 Tech Used:
         </motion.p>
         <motion.div
           style={styles.techContainer}
-          variants={cardChildVariants}
-          transition={{ delay: index * 0.2 + 0.5 }}
+          variants={tileChildVariants}
+          transition={{ delay: index * 0.15 + 0.5 }}
         >
           <TechIcon tech={project.tech} index={index} />
         </motion.div>
-        <motion.a
-          href={project.link}
-          style={styles.visitBtn}
-          target="_blank"
-          rel="noreferrer"
-          variants={cardChildVariants}
-          transition={{ delay: index * 0.2 + 0.6 }}
-          onClick={(e) => e.stopPropagation()}
+        <motion.div
+          style={styles.linkContainer}
+          variants={tileChildVariants}
+          transition={{ delay: index * 0.15 + 0.6 }}
         >
-          <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
-          View Project
-        </motion.a>
+          <motion.a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.link}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
+            View Project
+          </motion.a>
+        </motion.div>
       </motion.article>
     </ProjectCardErrorBoundary>
   ),
@@ -640,7 +668,7 @@ const Projects = () => {
     [windowWidth]
   );
 
-  const handleCardClick = useCallback((project) => {
+  const handleTileClick = useCallback((project) => {
     setSelectedProject(project);
   }, []);
 
@@ -730,6 +758,14 @@ const Projects = () => {
           animate={{ width: 'clamp(160px, 30vw, 240px)' }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
         />
+        <p
+          style={{
+            ...styles.introText,
+            ...responsiveStyles.introText,
+          }}
+        >
+          Explore my collection of innovative projects, showcasing expertise in Full Stack development and Machine Learning with cutting-edge technologies.
+        </p>
       </motion.header>
       {/* Filter Bar */}
       <motion.div
@@ -777,11 +813,11 @@ const Projects = () => {
             </div>
           }>
             {filteredProjects.map((project, index) => (
-              <ProjectCard
+              <ProjectTile
                 key={project.title}
                 project={project}
                 index={index}
-                handleCardClick={handleCardClick}
+                handleTileClick={handleTileClick}
                 styles={styles}
                 responsiveStyles={responsiveStyles}
               />
@@ -789,7 +825,7 @@ const Projects = () => {
           </Suspense>
         </AnimatePresence>
       </motion.div>
-      {/* Expanded Card Modal */}
+      {/* Expanded Tile Modal */}
       <AnimatePresence>
         {selectedProject && (
           <>
@@ -807,10 +843,10 @@ const Projects = () => {
             <motion.div
               ref={modalRef}
               style={{
-                ...styles.expandedCard,
-                ...responsiveStyles.expandedCard,
+                ...styles.expandedTile,
+                ...responsiveStyles.expandedTile,
               }}
-              variants={expandedCardVariants}
+              variants={expandedTileVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
@@ -818,7 +854,7 @@ const Projects = () => {
               role="dialog"
               aria-label={`${selectedProject.title} details`}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+              <motion.div style={{ ...styles.tileOverlay, animation: 'rotateGlow 8s linear infinite' }} />
               <motion.button
                 style={styles.closeButton}
                 onClick={handleClose}
@@ -830,54 +866,51 @@ const Projects = () => {
               </motion.button>
               <motion.h3
                 style={{
-                  ...styles.cardTitle,
+                  ...styles.tileTitle,
                   fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
                   marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
                 }}
-                variants={cardChildVariants}
+                variants={tileChildVariants}
               >
-                <FaCode style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
+                <FaCode style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }} />
                 #{projectData.indexOf(selectedProject) + 1} • {selectedProject.title}
               </motion.h3>
               <motion.p
                 style={{
-                  ...styles.cardDescription,
+                  ...styles.tileDescription,
                   fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
                   lineHeight: '1.7',
                 }}
-                variants={cardChildVariants}
+                variants={tileChildVariants}
               >
-                <span style={{ fontWeight: 'bold' }}>Description:</span> {selectedProject.description}
+                {selectedProject.description}
               </motion.p>
               <motion.p
                 style={styles.techLabel}
-                variants={cardChildVariants}
+                variants={tileChildVariants}
               >
                 🔧 Tech Used:
               </motion.p>
               <motion.div
                 style={styles.techContainer}
-                variants={cardChildVariants}
+                variants={tileChildVariants}
               >
                 <TechIcon tech={selectedProject.tech} index={0} />
               </motion.div>
               <motion.div
-                style={{ display: 'flex', gap: 'clamp(0.8rem, 1.8vw, 1.2rem)', marginTop: 'clamp(1rem, 2.5vw, 1.5rem)' }}
-                variants={cardChildVariants}
+                style={styles.linkContainer}
+                variants={tileChildVariants}
               >
                 <motion.a
                   href={selectedProject.link}
-                  style={styles.visitBtn}
                   target="_blank"
-                  rel="noreferrer"
-                  whileHover={{
-                    scale: 1.1,
-                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
-                    transition: { duration: 0.3 },
-                  }}
+                  rel="noopener noreferrer"
+                  style={styles.link}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)' }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
+                  <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                   View Project
                 </motion.a>
                 <motion.button
@@ -887,14 +920,10 @@ const Projects = () => {
                   }}
                   onClick={() => handleCopyLink(selectedProject.link)}
                   disabled={isCopying}
-                  whileHover={{
-                    scale: 1.1,
-                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
-                    transition: { duration: 0.3 },
-                  }}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)' }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FaLink style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
+                  <FaLink style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                   {isCopying ? 'Copying...' : 'Copy Link'}
                 </motion.button>
               </motion.div>

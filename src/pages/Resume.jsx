@@ -8,10 +8,10 @@ import {
 import { FiEye, FiDownload, FiX } from "react-icons/fi";
 import resumePDF from "../assets/bhagavanresume.pdf";
 
-// --- COMPONENT: Animated Starfield Background ---
-const Starfield = ({ starCount = 100 }) => {
+// --- COMPONENT: Enhanced Animated Starfield Background ---
+const Starfield = ({ starCount = 120 }) => {
   return (
-    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+    <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
       {[...Array(starCount)].map((_, i) => {
         const size = Math.random() * 2 + 1;
         const duration = Math.random() * 2 + 1;
@@ -19,29 +19,49 @@ const Starfield = ({ starCount = 100 }) => {
           <motion.div
             key={`star-${i}`}
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               width: size,
               height: size,
-              background: 'white',
-              borderRadius: '50%',
+              background: "white",
+              borderRadius: "50%",
+              boxShadow: "0 0 5px rgba(255, 255, 255, 0.3)",
             }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0] }}
+            animate={{ opacity: [0, 1, 0, 0.5] }}
             transition={{
               duration: duration,
               repeat: Infinity,
-              repeatType: 'loop',
+              repeatType: "loop",
               delay: Math.random() * 3,
             }}
           />
         );
       })}
+      {/* Comet Trail Effect */}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={`comet-${i}`}
+          style={{
+            position: "absolute",
+            width: 2,
+            height: 2,
+            background: "rgba(255, 255, 255, 0.8)",
+            borderRadius: "50%",
+            boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
+          }}
+          initial={{ x: "100%", y: `${Math.random() * 100}%`, opacity: 0 }}
+          animate={{
+            x: "-100%",
+            opacity: [0, 1, 0],
+            transition: { duration: 3 + i * 0.5, repeat: Infinity, ease: "linear" },
+          }}
+        />
+      ))}
     </div>
   );
 };
-
 
 // Custom styles object for cleaner JSX
 const styles = {
@@ -51,7 +71,9 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)",
-    background: "#050214",
+    background: "linear-gradient(135deg, #050214, #1a0033, #2a0055)",
+    backgroundSize: "200% 200%",
+    animation: "bgShift 10s ease infinite",
     color: "#e0e7ff",
     overflow: "hidden",
     position: "relative",
@@ -69,16 +91,17 @@ const styles = {
     border: "1px solid rgba(124, 58, 237, 0.2)",
     boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)",
   },
-  cardBorder: {
+  cardGlow: {
     position: "absolute",
     inset: 0,
     borderRadius: "24px",
-    padding: "1px",
+    padding: "2px",
     background: "linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(91, 33, 182, 0.2))",
     WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
     WebkitMaskComposite: "xor",
     maskComposite: "exclude",
     pointerEvents: "none",
+    animation: "holographicPulse 2s infinite alternate",
   },
   title: {
     fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)",
@@ -88,7 +111,7 @@ const styles = {
     background: "linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)",
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
-    textShadow: "0 0 30px rgba(167, 139, 250, 0.5)",
+    textShadow: "0 0 30px rgba(167, 139, 250, 0.6)",
   },
   description: {
     fontSize: "clamp(1.1rem, 2vw, 1.3rem)",
@@ -96,6 +119,7 @@ const styles = {
     maxWidth: "700px",
     margin: "0 auto clamp(2rem, 4vw, 3rem)",
     lineHeight: 1.8,
+    textShadow: "0 0 10px rgba(167, 139, 250, 0.3)",
   },
   buttonGroup: {
     display: "flex",
@@ -116,12 +140,23 @@ const styles = {
     gap: "0.75rem",
     position: "relative",
     overflow: "hidden",
+    boxShadow: "0 0 10px rgba(124, 58, 237, 0.4)",
+  },
+  buttonGlow: {
+    position: "absolute",
+    top: 0,
+    left: "-100%",
+    width: "200%",
+    height: "100%",
+    background: "linear-gradient(90deg, rgba(0, 198, 255, 0.3), rgba(124, 58, 237, 0.3), transparent)",
+    transform: "skewX(-30deg)",
+    animation: "shinePulse 1.5s infinite",
   },
   modalOverlay: {
     position: "fixed",
     inset: 0,
-    background: "rgba(5, 2, 20, 0.8)",
-    backdropFilter: "blur(8px)",
+    background: "rgba(5, 2, 20, 0.85)",
+    backdropFilter: "blur(10px)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -138,6 +173,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.4)",
+    animation: "zoomIn 0.6s ease-out",
   },
   closeButton: {
     position: "absolute",
@@ -154,6 +190,7 @@ const styles = {
     color: "#c4b5fd",
     cursor: "pointer",
     zIndex: 10,
+    transition: "transform 0.3s ease",
   },
 };
 
@@ -161,7 +198,6 @@ const Resume = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mouse tracking is kept for the background glow effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -170,7 +206,7 @@ const Resume = () => {
     ([latestX, latestY]) =>
       `radial-gradient(circle at ${latestX + window.innerWidth / 2}px ${
         latestY + window.innerHeight / 2
-      }px, rgba(0, 198, 255, 0.2), transparent 40%)`
+      }px, rgba(0, 198, 255, 0.25), transparent 40%)`
   );
 
   const handleMouseMove = (e) => {
@@ -201,23 +237,24 @@ const Resume = () => {
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8, y: 100 },
     visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.8, type: "spring", stiffness: 100, damping: 15 } },
+    //hover: { rotateX: 5, rotateY: -5, transition: { duration: 0.3, ease: "easeOut" } },
   };
-  
+
   const modalVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-    exit: { opacity: 0 }
+    exit: { opacity: 0, transition: { duration: 0.3 } },
   };
 
   const modalContentVariants = {
     hidden: { scale: 0.8, y: 50, opacity: 0 },
     visible: { scale: 1, y: 0, opacity: 1, transition: { duration: 0.6, type: "spring" } },
-    exit: { scale: 0.8, opacity: 0, transition: { duration: 0.4 } }
+    exit: { scale: 0.8, opacity: 0, transition: { duration: 0.4 } },
   };
 
   const LoadingIndicator = () => (
     <motion.div
-      style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+      style={{ display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", height: "100%" }}
       transition={{ staggerChildren: 0.15 }}
       initial="start"
       animate="end"
@@ -225,27 +262,27 @@ const Resume = () => {
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          style={{ width: "15px", height: "60px", background: `linear-gradient(to top, #7c3aed, #00c6ff)`, borderRadius: '5px' }}
+          style={{ width: "15px", height: "60px", background: `linear-gradient(to top, #7c3aed, #00c6ff)`, borderRadius: "5px", boxShadow: "0 0 5px #00c6ff" }}
           variants={{ start: { y: "0%" }, end: { y: "100%" } }}
           transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
         />
       ))}
     </motion.div>
   );
-  
+
   const ButtonShine = ({ isActive }) => (
     <motion.div
       style={{
-        position: 'absolute',
+        position: "absolute",
         top: 0,
-        left: '-150%',
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.4) 50%, transparent 80%)',
-        transform: 'skewX(-25deg)',
+        left: "-150%",
+        width: "200%",
+        height: "100%",
+        background: "linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%)",
+        transform: "skewX(-25deg)",
       }}
-      animate={{ left: isActive ? '150%' : '-150%' }}
-      transition={{ duration: 0.7, ease: 'easeInOut' }}
+      animate={{ left: isActive ? "150%" : "-150%" }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
     />
   );
 
@@ -259,18 +296,16 @@ const Resume = () => {
     >
       <Starfield />
 
-      <motion.div
-        style={{ position: "absolute", inset: 0, background: backgroundGradient }}
-      />
-      
+      <motion.div style={{ position: "absolute", inset: 0, background: backgroundGradient }} />
+
       <motion.article
-        style={styles.card} // Card rotation style removed here
+        style={styles.card}
         variants={cardVariants}
-        whileHover={{ y: -10, boxShadow: "0 30px 70px rgba(0, 0, 0, 0.3)" }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        whileHover="hover"
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <div style={styles.cardBorder} />
-        <motion.h2 style={styles.title} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { delay: 0.2, type: 'spring' } } }}>
+        <div style={styles.cardGlow} />
+        <motion.h2 style={styles.title} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { delay: 0.2, type: "spring" } } }}>
           My Digital Résumé
         </motion.h2>
 
@@ -281,28 +316,30 @@ const Resume = () => {
         <motion.div style={styles.buttonGroup} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: 0.6, duration: 0.8 } } }}>
           <motion.button
             style={{ ...styles.button, background: "linear-gradient(90deg, #7c3aed, #00c6ff)" }}
-            whileHover="hover"
+            whileHover={{ scale: 1.05, boxShadow: "0 0 15px #00c6ff" }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsModalOpen(true)}
             aria-label="Preview Resume"
           >
-             <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <motion.span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "0.75rem" }}>
               <FiEye /> Preview
             </motion.span>
+            <div style={styles.buttonGlow} />
             <ButtonShine isActive={true} />
           </motion.button>
 
           <motion.a
             href={resumePDF}
             download="Bhagavan-Resume.pdf"
-            style={{ ...styles.button, background: "rgba(255, 255, 255, 0.1)", textDecoration: 'none' }}
-            whileHover="hover"
+            style={{ ...styles.button, background: "rgba(255, 255, 255, 0.1)", textDecoration: "none" }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 15px #00c6ff" }}
             whileTap={{ scale: 0.98 }}
             aria-label="Download Resume"
           >
-            <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <FiDownload /> Download
+            <motion.span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <FiDownload /> Download
             </motion.span>
+            <div style={styles.buttonGlow} />
             <ButtonShine isActive={true} />
           </motion.a>
         </motion.div>
@@ -326,17 +363,17 @@ const Resume = () => {
               <motion.button
                 style={styles.closeButton}
                 onClick={() => setIsModalOpen(false)}
-                whileHover={{ scale: 1.1, background: "rgba(0, 198, 255, 0.2)", rotate: 90, color: '#00c6ff' }}
+                whileHover={{ scale: 1.1, background: "rgba(0, 198, 255, 0.3)", transform: "rotate(90deg)", color: "#00c6ff" }}
                 whileTap={{ scale: 0.9 }}
               >
                 <FiX size={24} />
               </motion.button>
-              
-              <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', color: '#9ca3af', fontSize: '0.9rem', zIndex: 5 }}>
+
+              <div style={{ position: "absolute", top: "1.5rem", left: "1.5rem", color: "#9ca3af", fontSize: "0.9rem", zIndex: 5 }}>
                 Press 'Esc' to close
               </div>
 
-              <div style={{ flex: 1, marginTop: '3.5rem', borderRadius: '8px', overflow: 'hidden' }}>
+              <div style={{ flex: 1, marginTop: "3.5rem", borderRadius: "8px", overflow: "hidden" }}>
                 {isLoading ? (
                   <LoadingIndicator />
                 ) : (
@@ -359,3 +396,4 @@ const Resume = () => {
 };
 
 export default Resume;
+

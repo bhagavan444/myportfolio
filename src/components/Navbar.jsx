@@ -178,7 +178,7 @@ const Navbar = () => {
           transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.1 }}
         >
           <Link to="/home" style={logoStyle} onMouseEnter={(e) => (e.target.style.transform = "scale(1.12) rotate(5deg)")} onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}>
-            MyPortfolio
+            G.Bhagavan
           </Link>
         </motion.div>
 
