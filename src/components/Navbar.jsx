@@ -28,13 +28,13 @@ const Navbar = () => {
     { label: "Home", path: "home" },
     { label: "About", path: "about" },
     { label: "Education", path: "education" },
-    { label: "Internships", path: "Internships" },
     { label: "Workshops", path: "workshops" },
-    { label: "Hackathons", path: "Hackathons" },
     { label: "Skills", path: "myskills" },
+    { label: "Certifications", path: "certifications" },
+    { label: "Internships", path: "Internships" },
+    { label: "Hackathons", path: "Hackathons" },
     { label: "Projects", path: "projects" },
     { label: "Resume", path: "resume" },
-    { label: "Certifications", path: "certifications" },
     { label: "Contact", path: "contact" },
   ];
 

@@ -164,15 +164,15 @@ const Concepts = React.memo(({ concepts, index }) => {
             border: '2px solid rgba(59, 130, 246, 0.4)',
             boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
           }}
-          initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+          initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: index * 0.08 + i * 0.06, type: 'spring', stiffness: 180, damping: 14 }}
+          transition={{ delay: index * 0.05 + i * 0.03, type: 'spring', stiffness: 200, damping: 15 }}
         >
           <motion.span
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.08 + i * 0.06 }}
-            style={{ color: '#3b82f6', textShadow: '0 0 15px rgba(59, 130, 246, 0.7)' }}
+            transition={{ delay: index * 0.05 + i * 0.03 }}
+            style={{ color: '#3b82f6', textShadow: '0 0 10px rgba(59, 130, 246, 0.7)' }}
           >
             <FaBrain style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }} />
           </motion.span>
@@ -191,11 +191,11 @@ const styles = {
     minHeight: '100vh',
     padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)',
     background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b0088)',
-    backgroundSize: '600% 600%',
+    backgroundSize: '400% 400%',
     color: '#f5f7fa',
     overflow: 'hidden',
     position: 'relative',
-    perspective: '2000px',
+    perspective: '1000px',
     fontFamily: "'Inter', 'Montserrat', sans-serif",
     willChange: 'background, transform',
   },
@@ -203,31 +203,31 @@ const styles = {
     position: 'absolute',
     inset: 0,
     background: `
-      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
+      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.3), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.2), transparent 70%)
     `,
     zIndex: -1,
     pointerEvents: 'none',
   },
   holographicGlow: {
     position: 'absolute',
-    width: 'clamp(500px, 65vw, 800px)',
-    height: 'clamp(500px, 65vw, 800px)',
-    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
-    top: '-20%',
-    left: '-20%',
-    filter: 'blur(150px)',
+    width: 'clamp(400px, 60vw, 700px)',
+    height: 'clamp(400px, 60vw, 700px)',
+    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent 60%)',
+    top: '-15%',
+    left: '-15%',
+    filter: 'blur(120px)',
     zIndex: -1,
   },
   header: {
     textAlign: 'center',
     padding: 'clamp(2rem, 4vw, 3.5rem)',
-    background: 'rgba(10, 0, 30, 0.85)',
-    border: '1px solid rgba(59, 130, 246, 0.4)',
+    background: 'rgba(10, 0, 30, 0.9)',
+    border: '1px solid rgba(59, 130, 246, 0.3)',
     borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
-    backdropFilter: 'blur(16px)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.25)',
+    backdropFilter: 'blur(12px)',
     maxWidth: 'clamp(700px, 90vw, 1100px)',
     margin: '0 auto clamp(3rem, 6vw, 5rem)',
     position: 'relative',
@@ -236,8 +236,8 @@ const styles = {
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
-    opacity: 0.45,
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.3), rgba(192, 38, 211, 0.3), transparent)',
+    opacity: 0.4,
     zIndex: -1,
   },
   title: {
@@ -247,17 +247,17 @@ const styles = {
     background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    textShadow: '0 0 30px rgba(59, 130, 246, 0.6), 0 0 50px rgba(192, 38, 211, 0.4)',
     marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
-    letterSpacing: '0.12em',
+    letterSpacing: '0.1em',
   },
   titleUnderline: {
     width: 'clamp(160px, 30vw, 240px)',
-    height: '5px',
+    height: '4px',
     background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
-    borderRadius: '5px',
+    borderRadius: '4px',
     margin: '0.6rem auto',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
   },
   filterBar: {
     display: 'flex',
@@ -268,35 +268,35 @@ const styles = {
   },
   filterBtn: {
     padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
-    background: 'rgba(59, 130, 246, 0.2)',
-    border: '1px solid rgba(59, 130, 246, 0.4)',
+    background: 'rgba(59, 130, 246, 0.15)',
+    border: '1px solid rgba(59, 130, 246, 0.3)',
     borderRadius: 'clamp(12px, 1.8vw, 16px)',
     color: '#e0e7ff',
     cursor: 'pointer',
     fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
     fontWeight: '600',
-    boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)',
+    boxShadow: '0 0 10px rgba(59, 130, 246, 0.25)',
   },
   activeFilter: {
     background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300px, 45vw, 380px), 1fr))',
-    gap: 'clamp(1.8rem, 3.5vw, 3rem)',
-    maxWidth: 'clamp(800px, 95vw, 1600px)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 360px), 1fr))',
+    gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+    maxWidth: 'clamp(800px, 95vw, 1400px)',
     margin: '0 auto',
-    perspective: '2000px',
+    perspective: '1000px',
   },
   card: {
-    background: 'rgba(10, 0, 30, 0.9)',
-    borderRadius: 'clamp(14px, 2.5vw, 20px)',
-    padding: 'clamp(2rem, 3.5vw, 2.8rem)',
+    background: 'rgba(10, 0, 30, 0.85)',
+    borderRadius: 'clamp(14px, 2vw, 18px)',
+    padding: 'clamp(1.8rem, 3vw, 2.5rem)',
     textAlign: 'center',
-    backdropFilter: 'blur(18px)',
-    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(59, 130, 246, 0.2)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
@@ -306,14 +306,14 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
+    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.25), rgba(192, 38, 211, 0.25), transparent)',
     zIndex: -1,
-    opacity: 0.45,
+    opacity: 0.4,
   },
   certName: {
-    fontSize: 'clamp(1.5rem, 3.2vw, 2rem)',
+    fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
     color: '#3b82f6',
-    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
+    textShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     fontWeight: '800',
     display: 'flex',
@@ -322,103 +322,103 @@ const styles = {
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   certIssuer: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
+    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
     color: '#e0e7ff',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
-    lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
+    lineHeight: '1.6',
+    textShadow: '0 0 8px rgba(59, 130, 246, 0.3)',
   },
   certCategory: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#3b82f6',
+    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+    color: '#c026d3',
     fontWeight: 'bold',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
+    textShadow: '0 0 8px rgba(59, 130, 246, 0.3)',
   },
   certConcepts: {
-    fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#3b82f6',
+    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+    color: '#c026d3',
     fontWeight: 'bold',
-    marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    marginTop: 'clamp(0.8rem, 2vw, 1.2rem)',
+    textShadow: '0 0 8px rgba(59, 130, 246, 0.3)',
   },
   conceptsContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'clamp(10px, 2vw, 12px)',
-    marginTop: 'clamp(0.8rem, 2vw, 1rem)',
-    marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+    gap: 'clamp(8px, 1.5vw, 10px)',
+    marginTop: 'clamp(0.6rem, 1.5vw, 1rem)',
+    marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     overflow: 'hidden',
   },
   certButton: {
     display: 'inline-flex',
-    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    padding: 'clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)',
     background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
     color: '#f0faff',
-    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    borderRadius: 'clamp(10px, 1.5vw, 14px)',
     textDecoration: 'none',
     fontWeight: '600',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
+    fontSize: 'clamp(0.85rem, 1.6vw, 1rem)',
+    boxShadow: '0 0 12px rgba(59, 130, 246, 0.4)',
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   copyButton: {
     display: 'inline-flex',
-    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
-    background: 'rgba(59, 130, 246, 0.2)',
-    border: '1px solid rgba(59, 130, 246, 0.4)',
-    borderRadius: 'clamp(12px, 1.8vw, 16px)',
+    padding: 'clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)',
+    background: 'rgba(59, 130, 246, 0.15)',
+    border: '1px solid rgba(59, 130, 246, 0.3)',
+    borderRadius: 'clamp(10px, 1.5vw, 14px)',
     color: '#e0e7ff',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    fontSize: 'clamp(0.85rem, 1.6vw, 1rem)',
     fontWeight: '600',
-    boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
+    boxShadow: '0 0 12px rgba(59, 130, 246, 0.4)',
     cursor: 'pointer',
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
   loadingButton: {
-    opacity: 0.7,
+    opacity: 0.6,
     cursor: 'not-allowed',
   },
   spinner: {
     display: 'inline-block',
-    width: 'clamp(1rem, 2vw, 1.5rem)',
-    height: 'clamp(1rem, 2vw, 1.5rem)',
-    border: '3px solid rgba(59, 130, 246, 0.3)',
-    borderTop: '3px solid #3b82f6',
+    width: 'clamp(0.9rem, 1.8vw, 1.2rem)',
+    height: 'clamp(0.9rem, 1.8vw, 1.2rem)',
+    border: '2px solid rgba(59, 130, 246, 0.3)',
+    borderTop: '2px solid #3b82f6',
     borderRadius: '50%',
-    animation: 'spin 0.8s linear infinite',
+    animation: 'spin 0.7s linear infinite',
   },
   expandedCard: {
     position: 'fixed',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'clamp(500px, 80vw, 800px)',
-    maxHeight: '80vh',
-    background: 'rgba(10, 0, 30, 0.95)',
-    borderRadius: 'clamp(20px, 3vw, 24px)',
-    padding: 'clamp(2.5rem, 5vw, 3.5rem)',
-    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.4)',
-    backdropFilter: 'blur(20px)',
+    width: 'clamp(450px, 75vw, 700px)',
+    maxHeight: '75vh',
+    background: 'rgba(10, 0, 30, 0.9)',
+    borderRadius: 'clamp(16px, 2.5vw, 20px)',
+    padding: 'clamp(2rem, 4vw, 3rem)',
+    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.7), 0 0 50px rgba(59, 130, 246, 0.3)',
+    backdropFilter: 'blur(15px)',
     zIndex: 1000,
     overflowY: 'auto',
   },
   expandedOverlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0, 0, 0, 0.8)',
+    background: 'rgba(0, 0, 0, 0.7)',
     zIndex: 999,
   },
   closeButton: {
     position: 'absolute',
-    top: 'clamp(0.8rem, 1.8vw, 1.2rem)',
-    right: 'clamp(0.8rem, 1.8vw, 1.2rem)',
+    top: 'clamp(0.6rem, 1.5vw, 1rem)',
+    right: 'clamp(0.6rem, 1.5vw, 1rem)',
     background: 'transparent',
     border: 'none',
     color: '#e0e7ff',
-    fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+    fontSize: 'clamp(1rem, 2vw, 1.5rem)',
     cursor: 'pointer',
   },
   responsive: {
@@ -426,49 +426,47 @@ const styles = {
       container: { padding: 'clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)' },
       header: { padding: 'clamp(2rem, 4vw, 3.5rem)', maxWidth: 'clamp(700px, 90vw, 1100px)' },
       title: { fontSize: 'clamp(2rem, 5.5vw, 4rem)' },
-      grid: { gap: 'clamp(1.8rem, 3.5vw, 3rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(300 dues, 45vw, 380px), 1fr))' },
-      card: { padding: 'clamp(2rem, 3.5vw, 2.8rem)' },
-      certName: { fontSize: 'clamp(1.5rem, 3.2vw, 2rem)' },
-      certButton: { padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)' },
-      holographicGlow: { width: 'clamp(500px, 65vw, 800px)', height: 'clamp(500px, 65vw, 800px)', top: '-20%', left: '-20%' },
-      expandedCard: { width: 'clamp(500px, 80vw, 800px)', padding: 'clamp(2.5rem, 5vw, 3.5rem)' },
+      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 360px), 1fr))' },
+      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
+      certName: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
+      certButton: { padding: 'clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)' },
+      holographicGlow: { width: 'clamp(400px, 60vw, 700px)', height: 'clamp(400px, 60vw, 700px)', top: '-15%', left: '-15%' },
+      expandedCard: { width: 'clamp(450px, 75vw, 700px)', padding: 'clamp(2rem, 4vw, 3rem)' },
     },
     medium: {
       container: { padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)' },
       header: { padding: 'clamp(1.8rem, 3.5vw, 3rem)', maxWidth: 'clamp(600px, 85vw, 900px)' },
       title: { fontSize: 'clamp(1.8rem, 5vw, 3.5rem)' },
-      grid: { gap: 'clamp(1.5rem, 3vw, 2.5rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 40vw, 340px), 1fr))' },
-      card: { padding: 'clamp(1.8rem, 3vw, 2.5rem)' },
-      certName: { fontSize: 'clamp(1.4rem, 3vw, 1.8rem)' },
-      certButton: { padding: 'clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)' },
-      holographicGlow: { width: 'clamp(400px, 55vw, 600px)', height: 'clamp(400px, 55vw, 600px)', top: '-15%', left: '-15%' },
-      expandedCard: { width: 'clamp(400px, 80vw, 600px)', padding: 'clamp(2rem, 4vw, 3rem)' },
+      grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(260px, 35vw, 320px), 1fr))' },
+      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
+      certName: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
+      certButton: { padding: 'clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.8vw, 1.2rem)' },
+      holographicGlow: { width: 'clamp(350px, 50vw, 600px)', height: 'clamp(350px, 50vw, 600px)', top: '-12%', left: '-12%' },
+      expandedCard: { width: 'clamp(400px, 75vw, 600px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
     },
     small: {
       container: { padding: 'clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)' },
       header: { padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 'clamp(500px, 80vw, 700px)' },
       title: { fontSize: 'clamp(1.6rem, 4.5vw, 3rem)' },
-      grid: { gap: 'clamp(1.2rem, 2.5vw, 2rem)', gridTemplateColumns: '1fr' },
-      card: { padding: 'clamp(1.5rem, 2.5vw, 2rem)' },
-      certName: { fontSize: 'clamp(1.3rem, 2.8vw, 1.6rem)' },
-      certButton: { padding: 'clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.8vw, 1.2rem)' },
-      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-12%', left: '-12%' },
-      expandedCard: { width: 'clamp(300px, 90vw, 500px)', padding: 'clamp(1.8rem, 3.5vw, 2.5rem)' },
+      grid: { gap: 'clamp(1rem, 2vw, 1.5rem)', gridTemplateColumns: '1fr' },
+      card: { padding: 'clamp(1.2rem, 2vw, 1.8rem)' },
+      certName: { fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' },
+      certButton: { padding: 'clamp(0.4rem, 0.8vw, 0.6rem) clamp(0.8rem, 1.5vw, 1rem)' },
+      holographicGlow: { width: 'clamp(300px, 45vw, 500px)', height: 'clamp(300px, 45vw, 500px)', top: '-10%', left: '-10%' },
+      expandedCard: { width: 'clamp(300px, 85vw, 500px)', padding: 'clamp(1.5rem, 3vw, 2rem)' },
     },
   },
 };
 
-// Animation styles
+// Animation styles optimized for performance
 const animationStyles = `
   @keyframes holographicPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
   }
   @keyframes glowShift {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(50px, 50px) scale(1.1); }
-    50% { transform: translate(100px, 0) scale(1.15); }
-    75% { transform: translate(50px, -50px) scale(1.1); }
+    50% { transform: translate(30px, 30px) scale(1.1); }
   }
   @keyframes rotateGlow {
     0% { transform: rotate(0deg); }
@@ -476,76 +474,84 @@ const animationStyles = `
   }
   @keyframes conceptsCarousel {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-50%); }
   }
   @keyframes spin {
-    0% { transform: rotate(0deg); border-top-color: #3b82f6; }
-    100% { transform: rotate(360deg); border-top-color: #c026d3; }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes aurora {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 400% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.6); }
+    50% { opacity: 0.9; transform: scale(1.1); }
+  }
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(80px) rotate(360deg); }
   }
 `;
 
-// Animation variants
+// Animation variants optimized for performance
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
+  hidden: { opacity: 0, scale: 0.9 },
   visible: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
-    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
+    transition: { duration: 1.2, ease: 'easeOut', staggerChildren: 0.15 },
   },
 };
 
 const headerVariants = {
-  hidden: { opacity: 0, y: -100, rotateX: -15 },
+  hidden: { opacity: 0, y: -50 },
   visible: {
     opacity: 1,
     y: 0,
-    rotateX: 0,
-    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 18 },
+    transition: { duration: 1, type: 'spring', stiffness: 120, damping: 15 },
   },
 };
 
 const filterBtnVariants = {
-  hidden: { opacity: 0, scale: 0.7, y: 40 },
+  hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
     scale: 1,
-    y: 0,
-    transition: { duration: 0.6, type: 'spring', stiffness: 170, damping: 13 },
+    transition: { duration: 0.4, type: 'spring', stiffness: 150, damping: 12 },
   },
-  exit: { opacity: 0, scale: 0.7, y: 40, transition: { duration: 0.5 } },
+  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.3 } },
   active: {
-    scale: [1, 1.15, 1],
-    boxShadow: ['0 0 10px rgba(59, 130, 246, 0.3)', '0 0 20px rgba(59, 130, 246, 0.7)', '0 0 10px rgba(59, 130, 246, 0.3)'],
-    transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
+    scale: [1, 1.1, 1],
+    transition: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 120, scale: 0.8, rotateY: -25 },
+  hidden: { opacity: 0, y: 50, scale: 0.9 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    rotateY: 0,
-    transition: { duration: 1, type: 'spring', stiffness: 140, damping: 16 },
+    transition: { duration: 0.6, type: 'spring', stiffness: 120, damping: 14 },
   },
 };
 
 const cardChildVariants = {
-  hidden: { opacity: 0, x: -40, rotate: -10 },
-  visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
 };
 
 const expandedCardVariants = {
-  hidden: { opacity: 0, scale: 0.5, rotateY: 90, x: '-50%', y: '-50%' },
+  hidden: { opacity: 0, scale: 0.7, y: '-50%' },
   visible: {
     opacity: 1,
     scale: 1,
-    rotateY: 0,
-    transition: { duration: 0.8, type: 'spring', stiffness: 120, damping: 14 },
+    y: '-50%',
+    transition: { duration: 0.5, type: 'spring', stiffness: 100, damping: 12 },
   },
-  exit: { opacity: 0, scale: 0.5, rotateY: -90, transition: { duration: 0.6 } },
+  exit: { opacity: 0, scale: 0.7, transition: { duration: 0.4 } },
 };
 
 const Certifications = () => {
@@ -554,9 +560,8 @@ const Certifications = () => {
   const [selectedCert, setSelectedCert] = useState(null);
   const [isCopying, setIsCopying] = useState(false);
   const { scrollYProgress } = useScroll();
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
-  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
-  const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.5, 1]), { stiffness: 120, damping: 15 });
+  const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.9, 1]), { stiffness: 120, damping: 15 });
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -618,7 +623,7 @@ const Certifications = () => {
         ...responsiveStyles.container,
         opacity,
         scale,
-        rotate,
+        animation: 'aurora 12s ease infinite',
       }}
       variants={containerVariants}
       initial="hidden"
@@ -628,26 +633,67 @@ const Certifications = () => {
     >
       <style>{animationStyles}</style>
       {/* Background Particles */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(15)].map((_, i) => (
         <motion.div
-          key={i}
+          key={`particle-${i}`}
           style={{
             position: 'absolute',
-            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
+            width: `clamp(0.4rem, calc(0.1vw + ${0.4 + i * 0.08}rem), ${0.8 + i * 0.1}rem)`,
+            height: `clamp(0.4rem, calc(0.1vw + ${0.4 + i * 0.08}rem), ${0.8 + i * 0.1}rem)`,
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), rgba(192, 38, 211, 0.3))',
             borderRadius: '50%',
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
             pointerEvents: 'none',
+            zIndex: -2,
           }}
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.7, 0.2],
-            scale: [1, 1.4, 1],
-            rotate: [0, 360, 0],
+            y: [0, -20, 0],
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.8, 1.2, 0.8],
           }}
-          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 3 + i * 0.2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.1 }}
+        />
+      ))}
+      {/* Sparkling Stars */}
+      {[...Array(10)].map((_, i) => (
+        <motion.div
+          key={`star-${i}`}
+          style={{
+            position: 'absolute',
+            width: `clamp(0.3rem, calc(0.08vw + ${0.2 + i * 0.05}rem), ${0.5 + i * 0.08}rem)`,
+            height: `clamp(0.3rem, calc(0.08vw + ${0.2 + i * 0.05}rem), ${0.5 + i * 0.08}rem)`,
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent)',
+            borderRadius: '50%',
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            pointerEvents: 'none',
+            zIndex: -2,
+          }}
+          animate={{
+            opacity: [0.3, 0.9, 0.3],
+            scale: [0.6, 1.1, 0.6],
+          }}
+          transition={{ duration: 2 + i * 0.2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
+        />
+      ))}
+      {/* Orbiting Particles */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={`orbit-${i}`}
+          style={{
+            position: 'absolute',
+            width: 'clamp(6px, 0.8vw, 10px)',
+            height: 'clamp(6px, 0.8vw, 10px)',
+            background: 'rgba(192, 38, 211, 0.6)',
+            borderRadius: '50%',
+            top: '50%',
+            left: '50%',
+            pointerEvents: 'none',
+            zIndex: -2,
+          }}
+          animate={{ x: [0, 80 * Math.cos(i * 1.256), 0], y: [0, 80 * Math.sin(i * 1.256), 0] }}
+          transition={{ duration: 4 + i * 0.4, repeat: Infinity, ease: 'linear', delay: i * 0.2 }}
         />
       ))}
       {/* Holographic Glow */}
@@ -655,7 +701,7 @@ const Certifications = () => {
         style={{
           ...styles.holographicGlow,
           ...responsiveStyles.holographicGlow,
-          animation: 'glowShift 12s ease-in-out infinite',
+          animation: 'glowShift 10s ease-in-out infinite',
         }}
       />
       {/* Header Section */}
@@ -671,17 +717,17 @@ const Certifications = () => {
           style={{
             ...styles.title,
             ...responsiveStyles.title,
-            animation: 'holographicPulse 2.5s ease-in-out infinite alternate',
+            animation: 'holographicPulse 2s ease-in-out infinite alternate',
           }}
         >
-          <FaStar style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)', fontSize: 'clamp(1.5rem, 3vw, 2rem)' }} />
+          <FaStar style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)', fontSize: 'clamp(1.4rem, 2.8vw, 1.8rem)' }} />
           Certifications Showcase
         </h2>
         <motion.div
           style={styles.titleUnderline}
           initial={{ width: 0 }}
           animate={{ width: 'clamp(160px, 30vw, 240px)' }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
         />
       </motion.header>
       {/* Filter Bar */}
@@ -699,14 +745,14 @@ const Certifications = () => {
               style={{
                 ...styles.filterBtn,
                 ...(filter === category ? styles.activeFilter : {}),
-                ...responsiveStyles.filterBtn,
+                ...responsiveStyles.certButton,
               }}
               onClick={() => setFilter(category)}
               variants={filterBtnVariants}
               initial="hidden"
               animate={filter === category ? 'active' : 'visible'}
               exit="exit"
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               aria-pressed={filter === category}
               aria-label={`Filter by ${category}`}
             >
@@ -734,50 +780,51 @@ const Certifications = () => {
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: '-80px' }}
               onClick={() => handleCardClick(cert)}
               tabIndex={0}
               role="button"
               aria-label={`View details for ${cert.name}`}
               onKeyDown={(e) => e.key === 'Enter' && handleCardClick(cert)}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)' }}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 6s linear infinite' }} />
               <motion.h3
                 style={{
                   ...styles.certName,
                   ...responsiveStyles.certName,
                 }}
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.2 }}
+                transition={{ delay: index * 0.1 }}
               >
-                <FaCertificate style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
+                <FaCertificate style={{ fontSize: 'clamp(1.2rem, 2.2vw, 1.5rem)' }} />
                 #{index + 1} • {cert.name}
               </motion.h3>
               <motion.p
                 style={styles.certIssuer}
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.3 }}
+                transition={{ delay: index * 0.1 + 0.1 }}
               >
                 Issued by: {cert.issuer}
               </motion.p>
               <motion.p
                 style={styles.certCategory}
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.4 }}
+                transition={{ delay: index * 0.1 + 0.2 }}
               >
                 Category: {cert.category}
               </motion.p>
               <motion.p
                 style={styles.certConcepts}
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.5 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
               >
                 Concepts Learned:
               </motion.p>
               <motion.div
                 style={styles.conceptsContainer}
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.6 }}
+                transition={{ delay: index * 0.1 + 0.4 }}
               >
                 <Concepts concepts={cert.concepts} index={index} />
               </motion.div>
@@ -790,8 +837,9 @@ const Certifications = () => {
                 target="_blank"
                 rel="noreferrer"
                 variants={cardChildVariants}
-                transition={{ delay: index * 0.2 + 0.7 }}
+                transition={{ delay: index * 0.1 + 0.5 }}
                 onClick={(e) => e.stopPropagation()}
+                whileHover={{ scale: 1.1 }}
               >
                 <FaExternalLinkAlt style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
                 View Certificate
@@ -829,7 +877,7 @@ const Certifications = () => {
               role="dialog"
               aria-label={`${selectedCert.name} details`}
             >
-              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 8s linear infinite' }} />
+              <motion.div style={{ ...styles.cardOverlay, animation: 'rotateGlow 6s linear infinite' }} />
               <motion.button
                 style={styles.closeButton}
                 onClick={handleClose}
@@ -842,19 +890,19 @@ const Certifications = () => {
               <motion.h3
                 style={{
                   ...styles.certName,
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
-                  marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
+                  fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
+                  marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
                 }}
                 variants={cardChildVariants}
               >
-                <FaCertificate style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)' }} />
+                <FaCertificate style={{ fontSize: 'clamp(1.2rem, 2.2vw, 1.5rem)' }} />
                 #{certifications.indexOf(selectedCert) + 1} • {selectedCert.name}
               </motion.h3>
               <motion.p
                 style={{
                   ...styles.certIssuer,
-                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-                  lineHeight: '1.7',
+                  fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                  lineHeight: '1.6',
                 }}
                 variants={cardChildVariants}
               >
@@ -863,8 +911,8 @@ const Certifications = () => {
               <motion.p
                 style={{
                   ...styles.certCategory,
-                  fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-                  lineHeight: '1.7',
+                  fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                  lineHeight: '1.6',
                 }}
                 variants={cardChildVariants}
               >
@@ -883,7 +931,7 @@ const Certifications = () => {
                 <Concepts concepts={selectedCert.concepts} index={0} />
               </motion.div>
               <motion.div
-                style={{ display: 'flex', gap: 'clamp(0.8rem, 1.8vw, 1.2rem)', marginTop: 'clamp(1rem, 2.5vw, 1.5rem)' }}
+                style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)', marginTop: 'clamp(0.8rem, 2vw, 1.2rem)' }}
                 variants={cardChildVariants}
               >
                 <motion.a
@@ -893,8 +941,7 @@ const Certifications = () => {
                   rel="noreferrer"
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
-                    transition: { duration: 0.3 },
+                    boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
                   }}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -910,13 +957,19 @@ const Certifications = () => {
                   disabled={isCopying}
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
-                    transition: { duration: 0.3 },
+                    boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <FaLink style={{ marginRight: 'clamp(0.3rem, 0.8vw, 0.5rem)' }} />
-                  {isCopying ? 'Copying...' : 'Copy Link'}
+                  {isCopying ? (
+                    <>
+                      <span style={styles.spinner} />
+                      Copying...
+                    </>
+                  ) : (
+                    'Copy Link'
+                  )}
                 </motion.button>
               </motion.div>
             </motion.div>

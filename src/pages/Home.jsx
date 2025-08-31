@@ -738,7 +738,7 @@ const Home = () => {
           <motion.h2
             style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2.5s ease-in-out infinite alternate' }}
           >
-            👋 Hi, I'm <span style={{ color: '#3b82f6' }}>Siva Satya Sai Bhagavan</span>
+            👋 Hi, I'm <span style={{ color: '#3b82f6' }}>Bhagavan GopalaJosyula</span>
           </motion.h2>
           <motion.div
             style={styles.titleUnderline}
