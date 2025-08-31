@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { FaLinkedin, FaGithub, FaEnvelope, FaTwitter, FaStar } from "react-icons/fa";
+import { FiX, FiSend } from "react-icons/fi";
 
 // Custom Debounce Function
 const debounce = (func, wait) => {
@@ -12,101 +13,134 @@ const debounce = (func, wait) => {
   };
 };
 
-// Inline Styles
+// Starfield Component (from Resume.jsx)
+const Starfield = ({ starCount = 120 }) => {
+  return (
+    <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+      {[...Array(starCount)].map((_, i) => {
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 2 + 1;
+        return (
+          <motion.div
+            key={`star-${i}`}
+            style={{
+              position: "absolute",
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: size,
+              height: size,
+              background: "white",
+              borderRadius: "50%",
+              boxShadow: "0 0 5px rgba(255, 255, 255, 0.3)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0, 0.5] }}
+            transition={{
+              duration: duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              delay: Math.random() * 3,
+            }}
+          />
+        );
+      })}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={`comet-${i}`}
+          style={{
+            position: "absolute",
+            width: 2,
+            height: 2,
+            background: "rgba(255, 255, 255, 0.8)",
+            borderRadius: "50%",
+            boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
+          }}
+          initial={{ x: "100%", y: `${Math.random() * 100}%`, opacity: 0 }}
+          animate={{
+            x: "-100%",
+            opacity: [0, 1, 0],
+            transition: { duration: 3 + i * 0.5, repeat: Infinity, ease: "linear" },
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Button Shine Component (from Resume.jsx)
+const ButtonShine = ({ isActive }) => (
+  <motion.div
+    style={{
+      position: "absolute",
+      top: 0,
+      left: "-150%",
+      width: "200%",
+      height: "100%",
+      background: "linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%)",
+      transform: "skewX(-25deg)",
+    }}
+    animate={{ left: isActive ? "150%" : "-150%" }}
+    transition={{ duration: 1.2, ease: "easeInOut" }}
+  />
+);
+
+// Styles (aligned with Resume.jsx)
 const styles = {
   container: {
     minHeight: "100vh",
-    padding: "clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)",
-    background: "linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b0088)",
-    backgroundSize: "600% 600%",
-    color: "#f5f7fa",
-    position: "relative",
-    fontFamily: "'Inter', 'Montserrat', sans-serif",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)",
+    background: "linear-gradient(135deg, #050214, #1a0033, #2a0055)",
+    backgroundSize: "200% 200%",
+    animation: "bgShift 10s ease infinite",
+    color: "#e0e7ff",
     overflow: "hidden",
-  },
-  overlay: {
-    position: "absolute",
-    inset: 0,
-    background: `
-      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
-    `,
-    zIndex: -1,
-    pointerEvents: "none",
-  },
-  holographicGlow: {
-    position: "absolute",
-    width: "clamp(500px, 65vw, 800px)",
-    height: "clamp(500px, 65vw, 800px)",
-    background: "radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)",
-    top: "-20%",
-    left: "-20%",
-    filter: "blur(150px)",
-    zIndex: -2,
-    animation: "glowShift 10s ease-in-out infinite",
-  },
-  particle: {
-    position: "absolute",
-    width: "clamp(0.5rem, 0.1vw, 1rem)",
-    height: "clamp(0.5rem, 0.1vw, 1rem)",
-    background: "radial-gradient(circle, #3b82f6, #c026d3)",
-    borderRadius: "50%",
-    opacity: 0.7,
-    pointerEvents: "none",
+    position: "relative",
+    perspective: "1200px",
   },
   card: {
-    background: "rgba(10, 0, 30, 0.9)",
-    borderRadius: "clamp(14px, 2.5vw, 20px)",
-    padding: "clamp(2rem, 3.5vw, 2.8rem)",
-    maxWidth: "clamp(500px, 80vw, 800px)",
-    margin: "0 auto",
+    background: "rgba(12, 5, 32, 0.6)",
+    backdropFilter: "blur(20px) saturate(180%)",
+    width: "clamp(300px, 90vw, 900px)",
+    borderRadius: "24px",
+    padding: "clamp(2rem, 4vw, 4rem)",
     textAlign: "center",
-    backdropFilter: "blur(18px)",
-    boxShadow: "0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)",
     position: "relative",
-    overflow: "hidden",
     transformStyle: "preserve-3d",
+    border: "1px solid rgba(124, 58, 237, 0.2)",
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)",
   },
   cardGlow: {
     position: "absolute",
     inset: 0,
-    borderRadius: "inherit",
-    background: "conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)",
-    zIndex: -1,
-    opacity: 0.45,
-    animation: "rotateGlow 6s linear infinite",
+    borderRadius: "24px",
+    padding: "2px",
+    background: "linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(91, 33, 182, 0.2))",
+    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+    WebkitMaskComposite: "xor",
+    maskComposite: "exclude",
+    pointerEvents: "none",
+    animation: "holographicPulse 2s infinite alternate",
   },
   title: {
-    fontSize: "clamp(1.5rem, 3.2vw, 2rem)",
-    fontWeight: 800,
+    fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)",
+    fontWeight: "900",
+    marginBottom: "clamp(1rem, 2vw, 1.5rem)",
     color: "transparent",
-    background: "linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)",
+    background: "linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)",
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
-    textShadow: "0 0 18px rgba(59, 130, 246, 0.6)",
-    marginBottom: "clamp(0.8rem, 2vw, 1.2rem)",
-    letterSpacing: "0.12em",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "clamp(0.3rem, 0.8vw, 0.5rem)",
-  },
-  titleAccent: {
-    width: "clamp(160px, 30vw, 240px)",
-    height: "5px",
-    background: "linear-gradient(90deg, #3b82f6, #c026d3)",
-    borderRadius: "5px",
-    margin: "0.6rem auto 1.5rem",
-    boxShadow: "0 0 20px rgba(59, 130, 246, 0.7)",
+    textShadow: "0 0 30px rgba(167, 139, 250, 0.6)",
   },
   description: {
-    fontSize: "clamp(0.95rem, 2.2vw, 1.2rem)",
-    color: "#e0e7ff",
-    maxWidth: "clamp(500px, 80vw, 800px)",
-    margin: "0 auto clamp(1rem, 2vw, 1.5rem)",
-    lineHeight: "1.7",
-    textShadow: "0 0 10px rgba(59, 130, 246, 0.4)",
+    fontSize: "clamp(1.1rem, 2vw, 1.3rem)",
+    color: "#d1d5db",
+    maxWidth: "700px",
+    margin: "0 auto clamp(2rem, 4vw, 3rem)",
+    lineHeight: 1.8,
+    textShadow: "0 0 10px rgba(167, 139, 250, 0.3)",
   },
   form: {
     display: "flex",
@@ -117,99 +151,103 @@ const styles = {
     margin: "0 auto",
   },
   input: {
-    padding: "clamp(0.6rem, 1.5vw, 1rem)",
+    padding: "clamp(0.8rem, 1.5vw, 1.2rem)",
     fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
-    border: "1px solid rgba(59, 130, 246, 0.4)",
+    border: "1px solid rgba(124, 58, 237, 0.4)",
     borderRadius: "clamp(12px, 1.8vw, 16px)",
     background: "rgba(255, 255, 255, 0.05)",
     color: "#e0e7ff",
     outline: "none",
     transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-    boxShadow: "inset 0 0 5px rgba(59, 130, 246, 0.2)",
+    boxShadow: "inset 0 0 5px rgba(124, 58, 237, 0.2)",
   },
   textarea: {
-    padding: "clamp(0.6rem, 1.5vw, 1rem)",
+    padding: "clamp(0.8rem, 1.5vw, 1.2rem)",
     fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
-    border: "1px solid rgba(59, 130, 246, 0.4)",
+    border: "1px solid rgba(124, 58, 237, 0.4)",
     borderRadius: "clamp(12px, 1.8vw, 16px)",
     background: "rgba(255, 255, 255, 0.05)",
     color: "#e0e7ff",
     outline: "none",
     minHeight: "clamp(100px, 20vw, 140px)",
     transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-    boxShadow: "inset 0 0 5px rgba(59, 130, 246, 0.2)",
+    boxShadow: "inset 0 0 5px rgba(124, 58, 237, 0.2)",
   },
   button: {
-    padding: "clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)",
-    background: "linear-gradient(90deg, #3b82f6, #c026d3)",
+    padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.5rem)",
     border: "none",
-    borderRadius: "clamp(12px, 1.8vw, 16px)",
-    fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
-    fontWeight: 600,
-    color: "#f0faff",
+    borderRadius: "50px",
+    fontSize: "clamp(1rem, 2vw, 1.2rem)",
+    fontWeight: "600",
+    color: "#fff",
     cursor: "pointer",
-    boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    gap: "clamp(0.3rem, 0.8vw, 0.5rem)",
+    gap: "0.75rem",
     position: "relative",
     overflow: "hidden",
+    background: "linear-gradient(90deg, #7c3aed, #00c6ff)",
+    boxShadow: "0 0 10px rgba(124, 58, 237, 0.4)",
   },
   buttonDisabled: {
     opacity: 0.6,
     cursor: "not-allowed",
   },
   resetButton: {
-    padding: "clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)",
-    background: "rgba(59, 130, 246, 0.2)",
-    border: "1px solid rgba(59, 130, 246, 0.4)",
-    borderRadius: "clamp(12px, 1.8vw, 16px)",
-    fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
-    fontWeight: 600,
-    color: "#e0e7ff",
+    padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.5rem)",
+    border: "none",
+    borderRadius: "50px",
+    fontSize: "clamp(1rem, 2vw, 1.2rem)",
+    fontWeight: "600",
+    color: "#fff",
     cursor: "pointer",
-    boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    gap: "clamp(0.3rem, 0.8vw, 0.5rem)",
+    gap: "0.75rem",
+    position: "relative",
+    overflow: "hidden",
+    background: "rgba(255, 255, 255, 0.1)",
+    boxShadow: "0 0 10px rgba(124, 58, 237, 0.4)",
+  },
+  buttonGlow: {
+    position: "absolute",
+    top: 0,
+    left: "-100%",
+    width: "200%",
+    height: "100%",
+    background: "linear-gradient(90deg, rgba(0, 198, 255, 0.3), rgba(124, 58, 237, 0.3), transparent)",
+    transform: "skewX(-30deg)",
+    animation: "shinePulse 1.5s infinite",
   },
   socialContainer: {
     display: "flex",
-    gap: "clamp(0.8rem, 1.8vw, 1.2rem)",
+    gap: "clamp(1rem, 3vw, 2rem)",
     justifyContent: "center",
     marginTop: "clamp(1rem, 2.5vw, 1.5rem)",
   },
   socialIcon: {
     fontSize: "clamp(1.5rem, 3vw, 2rem)",
-    color: "#e0e7ff",
+    color: "#fff",
     transition: "transform 0.3s ease, color 0.3s ease",
     position: "relative",
-    background: "linear-gradient(45deg, #3b82f6, #c026d3)",
-    WebkitBackgroundClip: "text",
-    backgroundClip: "text",
-    color: "transparent",
   },
   tooltip: {
     position: "absolute",
     top: "-clamp(2rem, 4vw, 2.5rem)",
-    background: "rgba(10, 0, 30, 0.9)",
+    background: "rgba(12, 5, 32, 0.95)",
     color: "#e0e7ff",
     padding: "clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.6rem, 1.2vw, 0.8rem)",
     borderRadius: "clamp(6px, 1vw, 8px)",
     fontSize: "clamp(0.8rem, 1.5vw, 0.9rem)",
-    boxShadow: "0 0 10px rgba(59, 130, 246, 0.4)",
+    boxShadow: "0 0 10px rgba(124, 58, 237, 0.4)",
     zIndex: 10,
     whiteSpace: "nowrap",
   },
   feedback: {
     marginTop: "clamp(0.8rem, 1.8vw, 1.2rem)",
     padding: "clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)",
-    background: "rgba(59, 130, 246, 0.2)",
-    border: "1px solid rgba(59, 130, 246, 0.4)",
+    background: "rgba(124, 58, 237, 0.2)",
+    border: "1px solid rgba(124, 58, 237, 0.4)",
     borderRadius: "clamp(12px, 1.8vw, 16px)",
     color: "#e0e7ff",
     fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
@@ -230,105 +268,82 @@ const styles = {
     color: "#e0e7ff",
     textAlign: "right",
     marginTop: "clamp(0.3rem, 0.8vw, 0.5rem)",
-    textShadow: "0 0 10px rgba(59, 130, 246, 0.4)",
+    textShadow: "0 0 10px rgba(124, 58, 237, 0.4)",
   },
   spinner: {
     display: "inline-block",
-    width: "clamp(1rem, 2vw, 1.5rem)",
-    height: "clamp(1rem, 2vw, 1.5rem)",
-    border: "3px solid rgba(59, 130, 246, 0.3)",
-    borderTop: "3px solid #3b82f6",
+    width: "clamp(1rem, 2vw, 1.2rem)",
+    height: "clamp(1rem, 2vw, 1.2rem)",
+    border: "2px solid rgba(124, 58, 237, 0.3)",
+    borderTop: "2px solid #7c3aed",
     borderRadius: "50%",
-    animation: "spin 0.8s linear infinite",
+    animation: "spin 0.7s linear infinite",
     marginRight: "clamp(0.3rem, 0.8vw, 0.5rem)",
   },
   responsive: {
     large: {
-      container: { padding: "clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem)" },
-      card: { padding: "clamp(2rem, 3.5vw, 2.8rem)", maxWidth: "clamp(500px, 80vw, 800px)" },
-      title: { fontSize: "clamp(1.5rem, 3.2vw, 2rem)" },
-      description: { fontSize: "clamp(0.95rem, 2.2vw, 1.2rem)", maxWidth: "clamp(500px, 80vw, 800px)" },
-      input: { padding: "clamp(0.6rem, 1.5vw, 1rem)" },
-      button: { padding: "clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)" },
-      holographicGlow: { width: "clamp(500px, 65vw, 800px)", height: "clamp(500px, 65vw, 800px)", top: "-20%", left: "-20%" },
+      container: { padding: "clamp(2rem, 5vw, 5rem) clamp(1rem, 2vw, 3rem)" },
+      card: { padding: "clamp(2rem, 4vw, 4rem)", width: "clamp(300px, 90vw, 900px)" },
+      title: { fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)" },
+      description: { fontSize: "clamp(1.1rem, 2vw, 1.3rem)", maxWidth: "700px" },
+      input: { padding: "clamp(0.8rem, 1.5vw, 1.2rem)" },
+      button: { padding: "clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.5rem)" },
     },
     medium: {
-      container: { padding: "clamp(2.5rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem)" },
-      card: { padding: "clamp(1.8rem, 3vw, 2.5rem)", maxWidth: "clamp(400px, 80vw, 600px)" },
-      title: { fontSize: "clamp(1.4rem, 3vw, 1.8rem)" },
-      description: { fontSize: "clamp(0.9rem, 2vw, 1.15rem)", maxWidth: "clamp(400px, 75vw, 600px)" },
-      input: { padding: "clamp(0.5rem, 1.2vw, 0.8rem)" },
-      button: { padding: "clamp(0.5rem, 1.2vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)" },
-      holographicGlow: { width: "clamp(400px, 55vw, 600px)", height: "clamp(400px, 55vw, 600px)", top: "-15%", left: "-15%" },
+      container: { padding: "clamp(1.5rem, 4vw, 4rem) clamp(0.8rem, 1.8vw, 2rem)" },
+      card: { padding: "clamp(1.8rem, 3vw, 3rem)", width: "clamp(280px, 85vw, 700px)" },
+      title: { fontSize: "clamp(1.8rem, 4vw, 3rem)" },
+      description: { fontSize: "clamp(1rem, 1.8vw, 1.2rem)", maxWidth: "600px" },
+      input: { padding: "clamp(0.6rem, 1.2vw, 1rem)" },
+      button: { padding: "clamp(0.6rem, 1.2vw, 1rem) clamp(1.2rem, 2vw, 2rem)" },
     },
     small: {
-      container: { padding: "clamp(2rem, 5vw, 4rem) clamp(0.8rem, 2vw, 1.5rem)" },
-      card: { padding: "clamp(1.5rem, 2.5vw, 2rem)", maxWidth: "clamp(300px, 90vw, 500px)" },
-      title: { fontSize: "clamp(1.3rem, 2.8vw, 1.6rem)" },
-      description: { fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)", maxWidth: "clamp(300px, 70vw, 500px)" },
-      input: { padding: "clamp(0.4rem, 1vw, 0.6rem)" },
-      button: { padding: "clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.8vw, 1.2rem)" },
-      holographicGlow: { width: "clamp(300px, 45vw, 500px)", height: "clamp(300px, 45vw, 500px)", top: "-12%", left: "-12%" },
+      container: { padding: "clamp(1rem, 3vw, 3rem) clamp(0.6rem, 1.5vw, 1.5rem)" },
+      card: { padding: "clamp(1.5rem, 2.5vw, 2.5rem)", width: "clamp(260px, 90vw, 500px)" },
+      title: { fontSize: "clamp(1.6rem, 3.5vw, 2.5rem)" },
+      description: { fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)", maxWidth: "500px" },
+      input: { padding: "clamp(0.5rem, 1vw, 0.8rem)" },
+      button: { padding: "clamp(0.5rem, 1vw, 0.8rem) clamp(1rem, 1.8vw, 1.5rem)" },
     },
   },
 };
 
-// Animation Styles
+// Animation Styles (aligned with Resume.jsx)
 const animationStyles = `
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  @keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 200% 50%; }
+    100% { background-position: 0% 50%; }
   }
   @keyframes holographicPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
   }
-  @keyframes glowShift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(50px, 50px) scale(1.1); }
+  @keyframes shinePulse {
+    0% { left: -150%; }
+    100% { left: 150%; }
   }
-  @keyframes rotateGlow {
+  @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  @keyframes particleFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(20px, -20px) scale(1.2); }
-  }
 `;
 
-// Animation Variants
-const containerVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 1.2, ease: "easeOut" },
-  },
-};
-
+// Animation Variants (aligned with Resume.jsx)
 const cardVariants = {
-  hidden: { opacity: 0, y: 60, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.8, type: "spring", stiffness: 120, damping: 14 },
-  },
-  hover: {
-    rotateX: 5,
-    rotateY: -5,
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
+  hidden: { opacity: 0, scale: 0.8, y: 100 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.8, type: "spring", stiffness: 100, damping: 15 } },
+  //hover: { rotateX: 5, rotateY: -5, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 const formChildVariants = {
-  hidden: { opacity: 0, x: -20, scale: 0.95 },
-  visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.4, type: "spring" } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } },
 };
 
 const socialVariants = {
   hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.2 } },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.4 } },
 };
 
 const feedbackVariants = {
@@ -353,9 +368,22 @@ const Contact = () => {
   const [emailError, setEmailError] = useState("");
   const [formError, setFormError] = useState("");
   const [messageLength, setMessageLength] = useState(0);
-  const { scrollYProgress } = useScroll();
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.6, 1]), { stiffness: 120, damping: 18 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
   const maxMessageLength = 500;
+
+  const backgroundGradient = useTransform(
+    [mouseX, mouseY],
+    ([latestX, latestY]) =>
+      `radial-gradient(circle at ${latestX + window.innerWidth / 2}px ${
+        latestY + window.innerHeight / 2
+      }px, rgba(0, 198, 255, 0.25), transparent 40%)`
+  );
+
+  const handleMouseMove = useCallback((e) => {
+    mouseX.set(e.clientX - window.innerWidth / 2);
+    mouseY.set(e.clientY - window.innerHeight / 2);
+  }, [mouseX, mouseY]);
 
   const handleResize = useCallback(
     debounce(() => setWindowWidth(window.innerWidth), 100),
@@ -428,73 +456,36 @@ const Contact = () => {
 
   return (
     <motion.section
-      style={{
-        ...styles.container,
-        ...responsiveStyles.container,
-        opacity,
-      }}
-      variants={containerVariants}
+      style={{ ...styles.container, ...responsiveStyles.container }}
+      onMouseMove={handleMouseMove}
       initial="hidden"
       animate="visible"
+      transition={{ duration: 1.0 }}
       role="region"
       aria-label="Contact section"
     >
       <style>{animationStyles}</style>
-      <motion.div style={styles.overlay} />
-      <motion.div style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow }} />
-      {/* Dynamic Particles */}
-      {[...Array(15)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          style={{
-            ...styles.particle,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.5, 0.8, 0.5],
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
-      <motion.div
-        style={{
-          ...styles.card,
-          ...responsiveStyles.card,
-        }}
+      <Starfield />
+      <motion.div style={{ position: "absolute", inset: 0, background: backgroundGradient }} />
+      <motion.article
+        style={{ ...styles.card, ...responsiveStyles.card }}
         variants={cardVariants}
-        whileHover="hover"
+        
       >
         <div style={styles.cardGlow} />
+        <motion.h2
+          style={{ ...styles.title, ...responsiveStyles.title }}
+          variants={formChildVariants}
+        >
+          <FaStar style={{ fontSize: "clamp(1.8rem, 3vw, 2.2rem)" }} />
+          Connect With Me
+        </motion.h2>
         <motion.p
-          style={{
-            ...styles.description,
-            ...responsiveStyles.description,
-            marginBottom: "1.5rem",
-          }}
+          style={{ ...styles.description, ...responsiveStyles.description }}
           variants={formChildVariants}
         >
           I'm thrilled to connect with you! Whether it's a project idea, a question, or just a friendly chat, I'm all ears. Let's create something amazing together.
         </motion.p>
-        <motion.h2
-          style={{
-            ...styles.title,
-            ...responsiveStyles.title,
-            animation: "holographicPulse 2s ease-in-out infinite alternate",
-          }}
-          variants={formChildVariants}
-        >
-          <FaStar style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.6rem)" }} />
-          Connect With Me
-        </motion.h2>
-        <motion.div
-          style={styles.titleAccent}
-          initial={{ width: 0 }}
-          animate={{ width: "clamp(160px, 30vw, 240px)" }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        />
         <motion.form
           ref={form}
           onSubmit={sendEmail}
@@ -520,15 +511,19 @@ const Contact = () => {
               }}
               whileFocus={{
                 scale: 1.02,
-                boxShadow: "0 0 15px rgba(59, 130, 246, 0.6)",
-                borderColor: "#3b82f6",
+                boxShadow: "0 0 15px rgba(124, 58, 237, 0.6)",
+                borderColor: "#7c3aed",
               }}
               variants={formChildVariants}
               aria-label={input.label}
             />
           ))}
           {emailError && (
-            <motion.p style={styles.error} variants={formChildVariants}>
+            <motion.p
+              style={styles.error}
+              variants={formChildVariants}
+              role="alert"
+            >
               {emailError}
             </motion.p>
           )}
@@ -542,8 +537,8 @@ const Contact = () => {
             }}
             whileFocus={{
               scale: 1.01,
-              boxShadow: "0 0 15px rgba(59, 130, 246, 0.6)",
-              borderColor: "#3b82f6",
+              boxShadow: "0 0 15px rgba(124, 58, 237, 0.6)",
+              borderColor: "#7c3aed",
             }}
             variants={formChildVariants}
             onChange={handleMessageChange}
@@ -560,12 +555,16 @@ const Contact = () => {
             {messageLength}/{maxMessageLength} characters
           </motion.p>
           {formError && (
-            <motion.p style={styles.error} variants={formChildVariants}>
+            <motion.p
+              style={styles.error}
+              variants={formChildVariants}
+              role="alert"
+            >
               {formError}
             </motion.p>
           )}
           <motion.div
-            style={{ display: "flex", gap: "clamp(0.8rem, 1.8vw, 1.2rem)", marginTop: "clamp(0.8rem, 1.8vw, 1.2rem)" }}
+            style={{ display: "flex", gap: "clamp(1rem, 3vw, 2rem)", flexWrap: "wrap", justifyContent: "center" }}
             variants={formChildVariants}
           >
             <motion.button
@@ -575,23 +574,27 @@ const Contact = () => {
                 ...responsiveStyles.button,
                 ...(isSubmitting ? styles.buttonDisabled : {}),
               }}
-              whileHover={!isSubmitting ? { scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.7)" } : {}}
-              whileTap={!isSubmitting ? { scale: 0.97 } : {}}
+              whileHover={!isSubmitting ? { scale: 1.05, boxShadow: "0 0 15px #00c6ff" } : {}}
+              whileTap={!isSubmitting ? { scale: 0.98 } : {}}
               variants={formChildVariants}
               disabled={isSubmitting}
               aria-label="Send message"
             >
-              {isSubmitting ? (
-                <>
-                  <span style={styles.spinner} />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <FaEnvelope style={{ marginRight: "clamp(0.3rem, 0.8vw, 0.5rem)" }} />
-                  Send Message
-                </>
-              )}
+              <motion.span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                {isSubmitting ? (
+                  <>
+                    <span style={styles.spinner} />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <FiSend style={{ marginRight: "clamp(0.3rem, 0.8vw, 0.5rem)" }} />
+                    Send Message
+                  </>
+                )}
+              </motion.span>
+              <div style={styles.buttonGlow} />
+              <ButtonShine isActive={!isSubmitting} />
             </motion.button>
             <motion.button
               type="button"
@@ -599,17 +602,25 @@ const Contact = () => {
                 ...styles.resetButton,
                 ...responsiveStyles.button,
               }}
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.7)" }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 15px #00c6ff" }}
+              whileTap={{ scale: 0.98 }}
               variants={formChildVariants}
               onClick={resetForm}
               aria-label="Reset form"
             >
-              Reset Form
+              <motion.span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <FiX style={{ marginRight: "clamp(0.3rem, 0.8vw, 0.5rem)" }} />
+                Reset Form
+              </motion.span>
+              <div style={styles.buttonGlow} />
+              <ButtonShine isActive={true} />
             </motion.button>
           </motion.div>
         </motion.form>
-        <motion.div style={styles.socialContainer} variants={socialVariants}>
+        <motion.div
+          style={{ ...styles.socialContainer, ...responsiveStyles.socialContainer }}
+          variants={socialVariants}
+        >
           {socialLinks.map((social) => (
             <motion.a
               key={social.key}
@@ -617,7 +628,7 @@ const Contact = () => {
               target="_blank"
               rel="noreferrer"
               style={styles.socialIcon}
-              whileHover={{ scale: 1.2, textShadow: "0 0 15px #3b82f6" }}
+              whileHover={{ scale: 1.2, boxShadow: "0 0 15px #00c6ff" }}
               whileTap={{ scale: 0.95 }}
               variants={socialVariants}
               aria-label={`Visit my ${social.label} profile`}
@@ -635,11 +646,7 @@ const Contact = () => {
           ))}
         </motion.div>
         <motion.p
-          style={{
-            ...styles.description,
-            ...responsiveStyles.description,
-            marginTop: "1.5rem",
-          }}
+          style={{ ...styles.description, ...responsiveStyles.description, marginTop: "clamp(1rem, 2.5vw, 1.5rem)" }}
           variants={formChildVariants}
         >
           Thanks for reaching out! I’m always eager to explore new opportunities and collaborations. Expect a reply soon!
@@ -658,7 +665,7 @@ const Contact = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.article>
     </motion.section>
   );
 };

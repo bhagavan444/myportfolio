@@ -1,21 +1,101 @@
 import React, { useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { FaStar, FaFacebookF, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaGithub, FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaDatabase, FaGitAlt, FaPython } from 'react-icons/fa';
 import { SiMongodb, SiTailwindcss, SiExpress, SiFlask, SiTensorflow } from 'react-icons/si';
 import profile from '../assets/profile.jpg';
+
+// Custom Debounce Function
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
+// Starfield Component (aligned with Resume.jsx and Contact.jsx)
+const Starfield = ({ starCount = 120 }) => {
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+      {[...Array(starCount)].map((_, i) => {
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 2 + 1;
+        return (
+          <motion.div
+            key={`star-${i}`}
+            style={{
+              position: 'absolute',
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: size,
+              height: size,
+              background: 'white',
+              borderRadius: '50%',
+              boxShadow: '0 0 5px rgba(255, 255, 255, 0.3)',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0, 0.5] }}
+            transition={{
+              duration: duration,
+              repeat: Infinity,
+              repeatType: 'loop',
+              delay: Math.random() * 3,
+            }}
+          />
+        );
+      })}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={`comet-${i}`}
+          style={{
+            position: 'absolute',
+            width: 2,
+            height: 2,
+            background: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '50%',
+            boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+          }}
+          initial={{ x: '100%', y: `${Math.random() * 100}%`, opacity: 0 }}
+          animate={{
+            x: '-100%',
+            opacity: [0, 1, 0],
+            transition: { duration: 3 + i * 0.5, repeat: Infinity, ease: 'linear' },
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Button Shine Component (aligned with Resume.jsx and Contact.jsx)
+const ButtonShine = ({ isActive }) => (
+  <motion.div
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: '-150%',
+      width: '200%',
+      height: '100%',
+      background: 'linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%)',
+      transform: 'skewX(-25deg)',
+    }}
+    animate={{ left: isActive ? '150%' : '-150%' }}
+    transition={{ duration: 1.2, ease: 'easeInOut' }}
+  />
+);
 
 // Context for Responsive Styles
 const ResponsiveContext = React.createContext({});
 
 const useResponsiveStyles = () => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const handleResize = useCallback(debounce(() => setWindowWidth(window.innerWidth), 100), []);
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [handleResize]);
 
   return useMemo(() => windowWidth <= 480 ? styles.responsive.small :
                         windowWidth <= 768 ? styles.responsive.medium :
@@ -51,16 +131,16 @@ const TechIcon = memo(({ tech, index }) => {
         gap: 'clamp(6px, 1vw, 8px)',
         margin: 'clamp(4px, 0.8vw, 6px)',
         padding: 'clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 10px)',
-        background: 'rgba(59, 130, 246, 0.15)',
+        background: 'rgba(124, 58, 237, 0.15)',
         borderRadius: 'clamp(8px, 1.2vw, 10px)',
-        border: '1px solid rgba(59, 130, 246, 0.3)',
+        border: '1px solid rgba(124, 58, 237, 0.3)',
         position: 'relative',
       }}
       whileHover={{
         scale: 1.15,
         rotate: 5,
-        boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
-        background: 'rgba(59, 130, 246, 0.3)',
+        boxShadow: '0 0 20px rgba(124, 58, 237, 0.7)',
+        background: 'rgba(124, 58, 237, 0.3)',
       }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400 }}
@@ -74,7 +154,7 @@ const TechIcon = memo(({ tech, index }) => {
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.08 }}
-            style={{ color: '#3b82f6', textShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }}
+            style={{ color: '#7c3aed', textShadow: '0 0 10px rgba(124, 58, 237, 0.5)' }}
           >
             {techData.icon}
           </motion.span>
@@ -90,12 +170,14 @@ const TechIcon = memo(({ tech, index }) => {
               bottom: '100%',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: 'rgba(10, 0, 30, 0.9)',
+              background: 'rgba(12, 5, 32, 0.95)',
               padding: '5px 10px',
               borderRadius: '5px',
               fontSize: '0.8rem',
               whiteSpace: 'nowrap',
               zIndex: 10,
+              color: '#e0e7ff',
+              boxShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
             }}
           >
             {techData.tooltip}
@@ -160,59 +242,42 @@ const homeData = [
     button: { text: 'Let’s Connect →', path: '/contact' },
     icon: FaStar,
     socials: [
-      //{ icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook' },
-      //{ icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-      //{ icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
       { icon: FaLinkedin, href: 'https://www.linkedin.com/in/siva-satya-sai-bhagavan-gopalajosyula-1624a027b/', label: 'LinkedIn' },
-      //{ icon: FaYoutube, href: 'https://youtube.com', label: 'YouTube' },
       { icon: FaGithub, href: 'https://github.com/bhagavan444', label: 'GitHub' },
     ],
   },
 ];
 
-// Styles
+// Styles (aligned with Resume.jsx and Contact.jsx)
 const styles = {
   container: {
     minHeight: '100vh',
     padding: 'clamp(3rem, 8vw, 7rem) clamp(1.5rem, 3.5vw, 3rem)',
-    background: 'linear-gradient(155deg, #0d0026, #1a0033, #2a0055, #3b82f6)',
-    backgroundSize: '600% 600%',
-    color: '#f5f7fa',
+    background: 'linear-gradient(135deg, #050214, #1a0033, #2a0055)',
+    backgroundSize: '200% 200%',
+    animation: 'bgShift 10s ease infinite',
+    color: '#e0e7ff',
     overflowX: 'hidden',
     position: 'relative',
-    perspective: '2000px',
+    perspective: '1200px',
     fontFamily: "'Inter', 'Montserrat', sans-serif",
     willChange: 'background, transform',
   },
   overlay: {
     position: 'absolute',
     inset: 0,
-    background: `
-      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(192, 38, 211, 0.4), transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.3), transparent 70%)
-    `,
+    background: 'radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.25), transparent 70%)',
     zIndex: -1,
     pointerEvents: 'none',
-  },
-  holographicGlow: {
-    position: 'absolute',
-    width: 'clamp(500px, 70vw, 800px)',
-    height: 'clamp(500px, 70vw, 800px)',
-    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 60%)',
-    top: '-20%',
-    left: '-20%',
-    filter: 'blur(150px)',
-    zIndex: -1,
   },
   header: {
     textAlign: 'center',
     padding: 'clamp(2.5rem, 4.5vw, 4rem)',
-    background: 'rgba(10, 0, 30, 0.85)',
-    border: '1px solid rgba(59, 130, 246, 0.4)',
-    borderRadius: 'clamp(16px, 2.2vw, 20px)',
-    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.3)',
-    backdropFilter: 'blur(16px)',
+    background: 'rgba(12, 5, 32, 0.6)',
+    border: '1px solid rgba(124, 58, 237, 0.2)',
+    borderRadius: 'clamp(16px, 2.2vw, 24px)',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(20px) saturate(180%)',
     maxWidth: 'clamp(700px, 90vw, 1100px)',
     margin: '0 auto clamp(3rem, 6vw, 5rem)',
     position: 'relative',
@@ -221,36 +286,40 @@ const styles = {
   headerGlow: {
     position: 'absolute',
     inset: 0,
-    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
-    opacity: 0.45,
-    zIndex: -1,
+    borderRadius: '24px',
+    background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(91, 33, 182, 0.2))',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    pointerEvents: 'none',
+    animation: 'holographicPulse 2s infinite alternate',
   },
   title: {
     fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
     fontWeight: 900,
     color: 'transparent',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3, #4c1d95)',
+    background: 'linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
-    textShadow: '0 0 35px rgba(59, 130, 246, 0.7), 0 0 60px rgba(192, 38, 211, 0.5)',
+    textShadow: '0 0 35px rgba(167, 139, 250, 0.6)',
     marginBottom: 'clamp(0.6rem, 1.8vw, 1.2rem)',
     letterSpacing: '0.12em',
   },
   titleUnderline: {
     width: 'clamp(160px, 30vw, 240px)',
     height: '5px',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
+    background: 'linear-gradient(90deg, #7c3aed, #00c6ff)',
     borderRadius: '5px',
     margin: '0.6rem auto',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    boxShadow: '0 0 20px rgba(124, 58, 237, 0.7)',
   },
   introText: {
     fontSize: 'clamp(0.95rem, 2.2vw, 1.2rem)',
-    color: '#e0e7ff',
+    color: '#d1d5db',
     maxWidth: 'clamp(500px, 80vw, 800px)',
     margin: '0 auto clamp(1rem, 2vw, 1.5rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 10px rgba(167, 139, 250, 0.3)',
   },
   timeline: {
     position: 'relative',
@@ -264,9 +333,9 @@ const styles = {
     bottom: 0,
     left: '50%',
     width: 'clamp(3px, 0.5vw, 7px)',
-    background: 'linear-gradient(to bottom, #3b82f6, #c026d3)',
+    background: 'linear-gradient(to bottom, #7c3aed, #00c6ff)',
     transform: 'translateX(-50%)',
-    boxShadow: '0 0 20px rgba(59, 130, 246, 0.7)',
+    boxShadow: '0 0 20px rgba(124, 58, 237, 0.7)',
   },
   item: {
     display: 'flex',
@@ -275,14 +344,14 @@ const styles = {
     marginBottom: 'clamp(1.8rem, 3.5vw, 3rem)',
   },
   content: {
-    background: 'rgba(10, 0, 30, 0.9)',
-    border: '1px solid rgba(59, 130, 246, 0.3)',
+    background: 'rgba(12, 5, 32, 0.6)',
+    border: '1px solid rgba(124, 58, 237, 0.2)',
     borderRadius: 'clamp(14px, 2.5vw, 20px)',
     padding: 'clamp(2rem, 4vw, 3rem)',
     width: 'clamp(300px, 45%, 600px)',
     textAlign: 'left',
-    backdropFilter: 'blur(18px)',
-    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(59, 130, 246, 0.25)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
     transformStyle: 'preserve-3d',
     position: 'relative',
     overflow: 'hidden',
@@ -293,14 +362,17 @@ const styles = {
     position: 'absolute',
     inset: 0,
     borderRadius: 'inherit',
-    background: 'conic-gradient(from 45deg, rgba(59, 130, 246, 0.35), rgba(192, 38, 211, 0.35), transparent)',
-    zIndex: -1,
-    opacity: 0.45,
+    background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(91, 33, 182, 0.2))',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    pointerEvents: 'none',
+    animation: 'holographicPulse 2s infinite alternate',
   },
   cardTitle: {
     fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-    color: '#3b82f6',
-    textShadow: '0 0 18px rgba(59, 130, 246, 0.6)',
+    color: '#7c3aed',
+    textShadow: '0 0 18px rgba(124, 58, 237, 0.6)',
     marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)',
     fontWeight: '800',
     display: 'flex',
@@ -312,14 +384,14 @@ const styles = {
     color: '#e0e7ff',
     marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
     lineHeight: '1.7',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 10px rgba(167, 139, 250, 0.3)',
   },
   techLabel: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#c026d3',
+    color: '#00c6ff',
     fontWeight: 'bold',
     marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
   },
   techContainer: {
     display: 'flex',
@@ -329,18 +401,20 @@ const styles = {
     marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
   },
   button: {
-    padding: 'clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.2rem, 2vw, 1.6rem)',
-    background: 'linear-gradient(90deg, #3b82f6, #c026d3)',
-    color: '#f5f7fa',
-    borderRadius: 'clamp(10px, 1.5vw, 14px)',
-    textDecoration: 'none',
+    padding: 'clamp(0.8rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.5rem)',
+    background: 'linear-gradient(90deg, #7c3aed, #00c6ff)',
+    border: 'none',
+    borderRadius: '50px',
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
     fontWeight: '600',
-    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-    boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)',
+    color: '#fff',
+    cursor: 'pointer',
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 'clamp(0.3rem, 0.7vw, 0.5rem)',
-    cursor: 'pointer',
+    gap: '0.75rem',
+    position: 'relative',
+    overflow: 'hidden',
+    boxShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
   },
   socials: {
     display: 'flex',
@@ -350,13 +424,14 @@ const styles = {
   },
   socialIcon: {
     fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
-    color: '#3b82f6',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.5)',
+    color: '#fff',
+    textShadow: '0 0 10px rgba(124, 58, 237, 0.5)',
+    position: 'relative',
   },
   profilePic: {
     borderRadius: '50%',
-    border: '4px solid rgba(59, 130, 246, 0.7)',
-    boxShadow: '0 0 40px rgba(59, 130, 246, 0.6)',
+    border: '4px solid rgba(124, 58, 237, 0.7)',
+    boxShadow: '0 0 40px rgba(124, 58, 237, 0.6)',
     width: 'clamp(150px, 20vw, 200px)',
     height: 'clamp(150px, 20vw, 200px)',
     objectFit: 'cover',
@@ -368,18 +443,18 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    background: 'linear-gradient(135deg, #3b82f6, #c026d3)',
+    background: 'linear-gradient(135deg, #7c3aed, #00c6ff)',
     borderRadius: '50%',
     padding: 'clamp(0.5rem, 1.2vw, 1rem)',
-    boxShadow: '0 0 25px rgba(59, 130, 246, 0.9)',
+    boxShadow: '0 0 25px rgba(124, 58, 237, 0.9)',
     zIndex: 3,
   },
   achievementsLabel: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    color: '#3b82f6',
+    color: '#7c3aed',
     fontWeight: 'bold',
     marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
-    textShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+    textShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
   },
   achievementList: {
     listStyleType: 'none',
@@ -431,40 +506,34 @@ const styles = {
   },
 };
 
-// Animation Styles
+// Animation Styles (aligned with Resume.jsx and Contact.jsx)
 const animationStyles = `
+  @keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 200% 50%; }
+    100% { background-position: 0% 50%; }
+  }
   @keyframes holographicPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
   }
-  @keyframes glowShift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(50px, 50px) scale(1.1); }
-    50% { transform: translate(100px, 0) scale(1.15); }
-    75% { transform: translate(50px, -50px) scale(1.1); }
-  }
-  @keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  @keyframes shinePulse {
+    0% { left: -150%; }
+    100% { left: 150%; }
   }
   @keyframes rotateIcon {
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
   }
-  @keyframes particleFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
-  }
 `;
 
 // Animation Variants
 const containerVariants = {
-  hidden: { opacity: 0, scale: 0.85, rotate: -5 },
+  hidden: { opacity: 0, scale: 0.85 },
   visible: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
-    transition: { duration: 2, ease: 'easeOut', staggerChildren: 0.3 },
+    transition: { duration: 1.5, ease: 'easeOut', staggerChildren: 0.3 },
   },
 };
 
@@ -474,7 +543,7 @@ const headerVariants = {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    transition: { duration: 1.5, type: 'spring', stiffness: 150, damping: 18 },
+    transition: { duration: 1.2, type: 'spring', stiffness: 150, damping: 18 },
   },
 };
 
@@ -490,8 +559,8 @@ const itemVariants = {
 };
 
 const contentChildVariants = {
-  hidden: { opacity: 0, x: -40, rotate: -10 },
-  visible: { opacity: 1, x: 0, rotate: 0, transition: { duration: 0.6 } },
+  hidden: { opacity: 0, x: -40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
 };
 
 const profilePicVariants = {
@@ -537,14 +606,14 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
         whileHover={{
           scale: 1.05,
           rotateY: 5,
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 50px rgba(59, 130, 246, 0.3)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4), 0 0 50px rgba(124, 58, 237, 0.3)',
         }}
         whileTap={{ scale: 0.98 }}
         tabIndex={0}
         onKeyDown={(e) => handleKeyDown(e, () => section.button && navigate(section.button.path))}
       >
         <motion.div
-          style={{ ...styles.contentOverlay, animation: 'rotateGlow 8s linear infinite' }}
+          style={styles.contentOverlay}
         />
         <motion.h3
           id={`section-title-${index}`}
@@ -557,18 +626,18 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
         </motion.h3>
         {section.items.length > 0 && (
           <motion.ul
-            style={{ ...styles.achievementList }}
+            style={styles.achievementList}
             variants={contentChildVariants}
             transition={{ delay: index * 0.15 + 0.3 }}
           >
             {section.items.map((item, i) => (
               <motion.li
                 key={i}
-                style={{ ...styles.achievementItem }}
+                style={styles.achievementItem}
                 variants={contentChildVariants}
                 transition={{ delay: index * 0.15 + 0.4 + i * 0.1 }}
               >
-                <FaStar style={{ color: '#3b82f6' }} />
+                <FaStar style={{ color: '#7c3aed' }} />
                 {item}
               </motion.li>
             ))}
@@ -599,20 +668,17 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
             style={styles.button}
             variants={contentChildVariants}
             transition={{ delay: index * 0.15 + 0.9 }}
-            whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(59, 130, 246, 0.7)' }}
+            whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(124, 58, 237, 0.7)' }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(section.button.path)}
             onKeyDown={(e) => handleKeyDown(e, () => navigate(section.button.path))}
             aria-label={`Navigate to ${section.button.text}`}
           >
-            {section.button.text}
-            <motion.div
-              style={{ marginLeft: '8px' }}
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            >
+            <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              {section.button.text}
               <FaStar size={14} />
-            </motion.div>
+            </motion.span>
+            <ButtonShine isActive={true} />
           </motion.button>
         )}
         {section.socials && (
@@ -630,8 +696,7 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
                 style={styles.socialIcon}
                 whileHover={{
                   scale: 1.2,
-                  rotate: 360,
-                  boxShadow: '0 0 15px rgba(59, 130, 246, 0.7)',
+                  boxShadow: '0 0 15px rgba(124, 58, 237, 0.7)',
                 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: 'spring', stiffness: 350 }}
@@ -640,17 +705,25 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
                 onKeyDown={(e) => handleKeyDown(e, () => window.open(social.href, '_blank'))}
               >
                 <social.icon />
-                <motion.div
+                <motion.span
                   style={{
                     position: 'absolute',
-                    width: 'clamp(20px, 3vw, 30px)',
-                    height: 'clamp(20px, 3vw, 30px)',
-                    borderRadius: '50%',
-                    background: 'rgba(59, 130, 246, 0.3)',
+                    top: '-clamp(2rem, 4vw, 2.5rem)',
+                    background: 'rgba(12, 5, 32, 0.95)',
+                    color: '#e0e7ff',
+                    padding: 'clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.6rem, 1.2vw, 0.8rem)',
+                    borderRadius: 'clamp(6px, 1vw, 8px)',
+                    fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)',
+                    boxShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
+                    zIndex: 10,
+                    whiteSpace: 'nowrap',
                   }}
-                  animate={{ scale: [0, 2, 0], opacity: [0.6, 0] }}
-                  transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                />
+                  initial={{ opacity: 0, y: 10 }}
+                  whileHover={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {social.label}
+                </motion.span>
               </motion.a>
             ))}
           </motion.div>
@@ -664,7 +737,7 @@ const TimelineItem = memo(({ section, index, navigate, responsiveStyles }) => {
         variants={contentChildVariants}
         transition={{ delay: index * 0.15 + 1.1 }}
       >
-        <IconComp size='clamp(18px, 2.2vw, 28px)' color='#0d0026' />
+        <IconComp size='clamp(18px, 2.2vw, 28px)' color='#fff' />
       </motion.div>
     </motion.div>
   );
@@ -677,68 +750,58 @@ const Home = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const responsiveStyles = useResponsiveStyles();
   const { scrollYProgress } = useScroll({ target: ref });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
   const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
   const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
-  const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
+
+  const backgroundGradient = useTransform(
+    [mouseX, mouseY],
+    ([latestX, latestY]) =>
+      `radial-gradient(circle at ${latestX + window.innerWidth / 2}px ${
+        latestY + window.innerHeight / 2
+      }px, rgba(0, 198, 255, 0.25), transparent 40%)`
+  );
+
+  const handleMouseMove = useCallback((e) => {
+    mouseX.set(e.clientX - window.innerWidth / 2);
+    mouseY.set(e.clientY - window.innerHeight / 2);
+  }, [mouseX, mouseY]);
 
   return (
     <ResponsiveContext.Provider value={responsiveStyles}>
       <motion.section
         ref={ref}
-        style={{ ...styles.container, ...responsiveStyles.container, opacity, scale, rotate }}
+        style={{ ...styles.container, ...responsiveStyles.container, opacity, scale }}
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? 'visible' : 'hidden'}
+        onMouseMove={handleMouseMove}
         role="region"
         aria-label="Portfolio Home Section"
       >
         <style>{animationStyles}</style>
-        {/* Dynamic Background Particles */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-              height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
-              borderRadius: '50%',
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              pointerEvents: 'none',
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.4, 1],
-              rotate: [0, 360, 0],
-            }}
-            transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        ))}
-        {/* Holographic Glow */}
-        <motion.div
-          style={{ ...styles.holographicGlow, ...responsiveStyles.holographicGlow, animation: 'glowShift 12s ease-in-out infinite' }}
-        />
-        {/* Header Section */}
+        <Starfield />
+        <motion.div style={{ position: 'absolute', inset: 0, background: backgroundGradient }} />
         <motion.div
           style={{ ...styles.header, ...responsiveStyles.header }}
           variants={headerVariants}
         >
-          <motion.div style={styles.headerGlow} />
+          <div style={styles.headerGlow} />
           <motion.img
             src={profile}
             alt="Siva Satya Sai Bhagavan Profile"
             style={styles.profilePic}
             variants={profilePicVariants}
-            whileHover={{ scale: 1.1, boxShadow: '0 0 50px rgba(59, 130, 246, 0.7)' }}
+            whileHover={{ scale: 1.1, boxShadow: '0 0 50px rgba(124, 58, 237, 0.7)', rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 220 }}
             tabIndex={0}
           />
           <motion.h2
-            style={{ ...styles.title, ...responsiveStyles.title, animation: 'holographicPulse 2.5s ease-in-out infinite alternate' }}
+            style={{ ...styles.title, ...responsiveStyles.title }}
           >
-            👋 Hi, I'm <span style={{ color: '#3b82f6' }}>Bhagavan GopalaJosyula</span>
+            👋 Hi, I'm <span style={{ background: 'linear-gradient(90deg, #7c3aed, #00c6ff)', backgroundClip: 'text', WebkitBackgroundClip: 'text' }}>Bhagavan GopalaJosyula</span>
           </motion.h2>
           <motion.div
             style={styles.titleUnderline}
@@ -757,23 +820,20 @@ const Home = () => {
             style={styles.button}
             variants={contentChildVariants}
             transition={{ delay: 0.4 }}
-            whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(59, 130, 246, 0.7)' }}
+            whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(124, 58, 237, 0.7)' }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate('/Projects')}
+            onKeyDown={(e) => e.key === 'Enter' && navigate('/Projects')}
             aria-label="View My Experience"
             tabIndex={0}
           >
-            View My Experience →
-            <motion.div
-              style={{ marginLeft: '8px' }}
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            >
+            <motion.span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              View My Experience →
               <FaStar size={14} />
-            </motion.div>
+            </motion.span>
+            <ButtonShine isActive={true} />
           </motion.button>
         </motion.div>
-        {/* Timeline Section */}
         <motion.div
           style={{ ...styles.timeline, ...responsiveStyles.timeline }}
           variants={containerVariants}
@@ -801,4 +861,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);
