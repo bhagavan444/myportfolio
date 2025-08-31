@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { FaExternalLinkAlt, FaBriefcase, FaCogs } from 'react-icons/fa';
 import {
   SiMongodb,
@@ -21,7 +21,61 @@ import {
   SiKeras,
 } from 'react-icons/si';
 
-// Tech icon component with carousel effect
+// Starfield Component (from EducationEnhanced.jsx, adapted to Internships colors)
+const Starfield = ({ starCount = 120 }) => {
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+      {[...Array(starCount)].map((_, i) => {
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 2 + 1;
+        return (
+          <motion.div
+            key={`star-${i}`}
+            style={{
+              position: 'absolute',
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: size,
+              height: size,
+              background: 'white',
+              borderRadius: '50%',
+              boxShadow: '0 0 5px rgba(59, 130, 246, 0.3)',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0, 0.5] }}
+            transition={{
+              duration: duration,
+              repeat: Infinity,
+              repeatType: 'loop',
+              delay: Math.random() * 3,
+            }}
+          />
+        );
+      })}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={`comet-${i}`}
+          style={{
+            position: 'absolute',
+            width: 2,
+            height: 2,
+            background: 'rgba(59, 130, 246, 0.8)',
+            borderRadius: '50%',
+            boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)',
+          }}
+          initial={{ x: '100%', y: `${Math.random() * 100}%`, opacity: 0 }}
+          animate={{
+            x: '-100%',
+            opacity: [0, 1, 0],
+            transition: { duration: 3 + i * 0.5, repeat: Infinity, ease: 'linear' },
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Tech Icon Component with carousel effect
 const TechIcon = React.memo(({ tech, index }) => {
   const iconMap = {
     MongoDB: { icon: <SiMongodb />, label: 'MongoDB' },
@@ -92,7 +146,7 @@ const TechIcon = React.memo(({ tech, index }) => {
   );
 });
 
-// Concept tag component with floating animation
+// Concept Tag Component with floating animation
 const ConceptTag = React.memo(({ concept, index }) => (
   <motion.span
     style={{
@@ -134,7 +188,24 @@ const internshipData = [
     description:
       'Completed a certified internship in AI, ML & Data Science (AIMLDS). Worked on real-time datasets, implemented preprocessing, exploratory data analysis (EDA), and built predictive models using Python, Pandas, NumPy, and scikit-learn.',
     tech: 'Python, Pandas, Numpy, Scikit-learn',
-    concepts: ['Data Preprocessing', 'Exploratory Data Analysis', 'Predictive Modeling', 'Feature Engineering', 'Model Evaluation', 'Data Visualization', 'Regression', 'Classification', 'Clustering', 'Time Series Analysis', 'Natural Language Processing', 'Deep Learning', 'Model Deployment', 'Data Ethics', 'Big Data Basics', 'AI/ML Workflows',],
+    concepts: [
+      'Data Preprocessing',
+      'Exploratory Data Analysis',
+      'Predictive Modeling',
+      'Feature Engineering',
+      'Model Evaluation',
+      'Data Visualization',
+      'Regression',
+      'Classification',
+      'Clustering',
+      'Time Series Analysis',
+      'Natural Language Processing',
+      'Deep Learning',
+      'Model Deployment',
+      'Data Ethics',
+      'Big Data Basics',
+      'AI/ML Workflows',
+    ],
     certificateLink: 'https://drive.google.com/file/d/1yQQqBf32o8d3sYlheDCdaLTKj5_hepfY/view?usp=sharing',
     githubLink: 'https://github.com/bhagavan444',
     icon: FaBriefcase,
@@ -147,7 +218,24 @@ const internshipData = [
     description:
       'Successfully completed a certified internship in Artificial Intelligence & Machine Learning focused on image classification. Developed a deep learning-based Fruit and Vegetable Disease Classifier using transfer learning with MobileNetV2. Implemented model training, validation, and Flask-based deployment for real-time disease detection.',
     tech: 'Python, TensorFlow, Keras, Flask, React, CSS3',
-    concepts: ['Transfer Learning', 'Image Classification', 'Model Deployment', 'Deep Learning', 'Data Augmentation', 'Convolutional Neural Networks (CNNs)', 'Flask Web Framework', 'RESTful APIs', 'Frontend Integration', 'Model Evaluation', 'Hyperparameter Tuning', 'Cross-Validation', 'Data Preprocessing', 'Visualization with Matplotlib/Seaborn', 'Version Control with Git', 'Cloud Deployment Basics'],
+    concepts: [
+      'Transfer Learning',
+      'Image Classification',
+      'Model Deployment',
+      'Deep Learning',
+      'Data Augmentation',
+      'Convolutional Neural Networks (CNNs)',
+      'Flask Web Framework',
+      'RESTful APIs',
+      'Frontend Integration',
+      'Model Evaluation',
+      'Hyperparameter Tuning',
+      'Cross-Validation',
+      'Data Preprocessing',
+      'Visualization with Matplotlib/Seaborn',
+      'Version Control with Git',
+      'Cloud Deployment Basics',
+    ],
     certificateLink: 'https://drive.google.com/file/d/1-_8ZI8uZ3DcrFpfZ3pts7VSYrAqPN5Zw/view?usp=sharing',
     githubLink: 'https://github.com/bhagavan444/smartbidgeproject',
     icon: FaBriefcase,
@@ -352,6 +440,10 @@ const styles = {
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
+  label: {
+    fontWeight: 'bold',
+    color: '#c026d3',
+  },
   expandedTile: {
     position: 'fixed',
     top: '50%',
@@ -443,6 +535,11 @@ const animationStyles = `
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
   }
+  @keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 600% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 `;
 
 // Animation Variants
@@ -513,11 +610,26 @@ const Internships = () => {
   const [filter, setFilter] = useState('All');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [selectedInternship, setSelectedInternship] = useState(null);
-  const { scrollYProgress } = useScroll();
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start end', 'end start'] });
   const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.4, 1]), { stiffness: 150, damping: 20 });
   const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
   const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
-  const containerRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const backgroundGradient = useTransform(
+    [mouseX, mouseY],
+    ([latestX, latestY]) =>
+      `radial-gradient(circle at ${latestX + window.innerWidth / 2}px ${
+        latestY + window.innerHeight / 2
+      }px, rgba(59, 130, 246, 0.25), transparent 40%)`
+  );
+
+  const handleMouseMove = useCallback((e) => {
+    mouseX.set(e.clientX - window.innerWidth / 2);
+    mouseY.set(e.clientY - window.innerHeight / 2);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -581,34 +693,13 @@ const Internships = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      onMouseMove={handleMouseMove}
       role="region"
       aria-label="Internships section"
     >
       <style>{animationStyles}</style>
-      {/* Background Particles */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-            height: `clamp(0.5rem, calc(0.1vw + ${0.5 + i * 0.1}rem), ${1 + i * 0.15}rem)`,
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5), rgba(192, 38, 211, 0.3))',
-            borderRadius: '50%',
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            pointerEvents: 'none',
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.7, 0.2],
-            scale: [1, 1.4, 1],
-            rotate: [0, 360, 0],
-          }}
-          transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      ))}
-      {/* Holographic Glow */}
+      <Starfield />
+      <motion.div style={{ position: 'absolute', inset: 0, background: backgroundGradient }} />
       <motion.div
         style={{
           ...styles.holographicGlow,
@@ -616,7 +707,7 @@ const Internships = () => {
           animation: 'glowShift 12s ease-in-out infinite',
         }}
       />
-      {/* Header Section */}
+      <motion.div style={styles.overlay} />
       <motion.header
         style={{
           ...styles.header,
@@ -649,7 +740,6 @@ const Internships = () => {
           A showcase of my professional experience, highlighting my contributions to real-world projects in AI, Machine Learning, and Data Science during internships.
         </p>
       </motion.header>
-      {/* Filter Bar */}
       <motion.div
         style={{
           ...styles.filterBar,
@@ -680,7 +770,6 @@ const Internships = () => {
           ))}
         </AnimatePresence>
       </motion.div>
-      {/* Internships Grid */}
       <motion.div
         style={{
           ...styles.grid,
@@ -793,6 +882,8 @@ const Internships = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={styles.link}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                       View Certificate
@@ -804,6 +895,8 @@ const Internships = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={styles.link}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                       View GitHub
@@ -815,7 +908,6 @@ const Internships = () => {
           })}
         </AnimatePresence>
       </motion.div>
-      {/* Expanded Tile Modal */}
       <AnimatePresence>
         {selectedInternship && (
           <>
@@ -912,6 +1004,8 @@ const Internships = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ ...styles.link, fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                     View Certificate
@@ -923,6 +1017,8 @@ const Internships = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ ...styles.link, fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                     View GitHub
