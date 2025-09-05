@@ -209,7 +209,7 @@ body {
   }
 
   .nav-link-wrapper a {
-    font-size: 1rem; /* Larger font for mobile */
+    font-size: 1.4rem; /* Larger font for mobile */
     padding: 0.1rem 0;
     width: 100%;
     text-align: center;
