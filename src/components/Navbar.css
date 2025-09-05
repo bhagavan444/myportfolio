@@ -56,8 +56,7 @@ body {
 
 /* === 🌟 Nav Logo === */
 .nav-logo a {
-  margin-right: 30px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 900;
   background: var(--gradient-1);
   background-size: 300%;
@@ -188,15 +187,19 @@ body {
     position: fixed; /* Use fixed for full viewport overlay */
     top: 0; /* From top of viewport */
     left: 0;
-    padding-bottom: 6rem; /* Extra padding at bottom */
-    height:auto;
     width: 100vw;
+    /* Height calculation: 100vh minus the height of the fixed navbar
+       This ensures the menu doesn't go underneath the navbar content */
+    height: calc(100vh - 55px); /* Adjusted for nav-container height of 55px */
+    margin-top: 55px; /* Offset by the navbar height */
     background: linear-gradient(135deg, rgba(0, 15, 30, 0.98), rgba(10, 0, 40, 0.98));
     flex-direction: column;
-    justify-content: center; /* Center items vertically */
+    /* Changed justify-content to flex-start or space-around based on content */
+    /* If you want items at the top and spread out: */
+    justify-content: flex-start; /* Start items from the top */
     align-items: center;
-    padding: 1rem;
-    gap: 1rem;
+    padding: 1.5rem; /* Slightly reduced padding to save vertical space */
+    gap: 1rem; /* Reduced gap between links */
     box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.4);
     z-index: 999; /* Below navbar, above content */
     overflow-y: auto; /* Allow scrolling if many links */
@@ -209,9 +212,14 @@ body {
     transform: translateX(0); /* Slide in */
   }
 
+  .nav-link-wrapper {
+    width: 100%; /* Ensure link wrappers take full width */
+    text-align: center; /* Center the text inside the wrapper */
+  }
+
   .nav-link-wrapper a {
-    font-size: 1rem; /* Larger font for mobile */
-    padding: 0.3rem 0;
+    font-size: 1.2rem; /* Slightly smaller font for more links */
+    padding: 0.8rem 0; /* Adjusted padding */
     width: 100%;
     text-align: center;
     background: var(--gradient-2);
@@ -222,19 +230,20 @@ body {
   }
 
   .nav-link-wrapper a::after {
-    height: 4px; /* Thicker underline on mobile */
-    bottom: -8px;
+    height: 3px; /* Slightly thinner underline on mobile */
+    bottom: -6px; /* Adjusted position */
   }
 
   /* Separate mobile icons */
   .nav-icons-mobile {
     display: flex;
-    gap: 1rem;
-    margin-top: 2rem; /* Space from links */
+    gap: 1.5rem; /* Reduced gap between icons */
+    margin-top: 1.5rem; /* Space from links */
+    padding-bottom: 1rem; /* Ensure space at bottom if scrolled */
   }
 
   .nav-icons-mobile a {
-    font-size: 1rem; /* Larger icons on mobile */
+    font-size: 1.8rem; /* Slightly smaller icons for more compact look */
     background: var(--gradient-3);
     background-size: 200%;
     background-clip: text;
@@ -246,8 +255,8 @@ body {
 
   .nav-icons-mobile a:hover,
   .nav-icons-mobile a:focus {
-    transform: scale(1.15);
-    text-shadow: 0 0 25px var(--accent-cyan), 0 0 35px var(--secondary-pink);
+    transform: scale(1.1); /* Slightly less aggressive scale */
+    text-shadow: 0 0 20px var(--accent-cyan), 0 0 30px var(--secondary-pink);
   }
 
   .nav-container {
@@ -281,8 +290,14 @@ body {
   }
 
   .nav-icons-desktop {
+    display: flex; /* Ensure desktop icons are visible */
     gap: 1rem;
     margin-left: 1.5rem;
+  }
+
+  /* Make sure mobile icons are hidden on tablet/desktop */
+  .nav-icons-mobile {
+    display: none;
   }
 
   .nav-icons-desktop a {
@@ -295,9 +310,6 @@ body {
   0% { background-position: 0% 0%; }
   100% { background-position: 200% 0%; }
 }
-
-/* @keyframes slideIn and holographicPulse are removed as Framer Motion handles these better,
-   and holographicPulse wasn't directly used or clearly defined in the original. */
 
 /* === 🎨 Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {

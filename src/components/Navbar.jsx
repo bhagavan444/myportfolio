@@ -94,7 +94,7 @@ const Navbar = () => {
           transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.1 }}
         >
           <Link to="/home">
-            G.Bhagavan
+            <span className="logo-text">MyPortfolio</span>
           </Link>
         </motion.div>
 
