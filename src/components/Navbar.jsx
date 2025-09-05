@@ -40,6 +40,7 @@ const Navbar = () => {
     { label: "Projects", path: "projects" },
     { label: "Resume", path: "resume" },
     { label: "Contact", path: "contact" },
+    { label: "Details", path: "personaldetails" },
   ];
 
   // Animation variants for Framer Motion

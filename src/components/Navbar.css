@@ -56,7 +56,7 @@ body {
 
 /* === 🌟 Nav Logo === */
 .nav-logo a {
-  margin-right: 30px;
+  margin-right: 60px;
   font-size: 1.5rem;
   font-weight: 900;
   background: var(--gradient-1);
@@ -80,7 +80,7 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem; /* Increased gap for better spacing */
+  gap: 0.7rem; /* Increased gap for better spacing */
   flex-grow: 1; /* Allow links to take available space */
   justify-content: flex-end; /* Push links to the right */
 }
@@ -255,6 +255,7 @@ body {
   }
 
   .nav-logo a {
+    
     font-size: 1.6rem;
   }
 }

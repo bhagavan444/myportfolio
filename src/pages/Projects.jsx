@@ -121,7 +121,7 @@ const projectData = [
     description: 'An intelligent MERN stack application that allows users to create professional resumes with modern templates, scoring using ATS.',
     tech: 'MongoDB, Express, React, Node, Firebase Auth, HTML/CSS',
     link: 'https://github.com/bhagavan444/resumebuilder',
-    video: 'https://drive.google.com/file/d/1ipW_G3kZSAzXtIlTftVP3ZRtoHo1WW4w/view?usp=sharing',
+    video: 'https://drive.google.com/file/d/1Ml9hSjYsHldIIDQQtHvr0gpIn1RTvBhk/view?usp=sharing',
     category: 'Full Stack',
   },
   {
@@ -137,7 +137,7 @@ const projectData = [
     description: "ML-powered system recommending careers based on user's data. Includes predictions, roadmap, and resources.",
     tech: 'Python, Flask, React, Scikit-learn, Pandas, HTML/CSS',
     link: 'https://github.com/bhagavan444/career-path-project',
-    video: 'https://drive.google.com/file/d/157c-gRjolkpnfsL_KqmQdoKSJcSzDtn4/view?usp=sharing',
+    video: 'https://drive.google.com/file/d/1cHQUdThz6tm7uvds_g2OfMcg3j9wHuRS/view?usp=sharing',
     category: 'Machine Learning',
   },
   {
@@ -161,7 +161,7 @@ const projectData = [
     description: 'LangChain-based chatbot that recommends careers through interactive dialogue, powered by AI.',
     tech: 'LangChain, Flask, React, Python',
     link: 'https://github.com/bhagavan444/smart-career-chatbot',
-    video: 'https://drive.google.com/file/d/1hZPMCocA0kJKl9iZehD6FLfpSk2-4O-4/view?usp=sharing',
+    video: 'https://drive.google.com/file/d/1pOfpAUaFigPo9w-YB7s4MuIEE3-bdTr0/view?usp=sharing',
     category: 'Machine Learning',
   },
   {

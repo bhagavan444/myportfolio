@@ -64,9 +64,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/education" element={<Education />} />
           <Route path="/myskills" element={<MySkills />} />
-          <Route path="/personal-details" element={<PersonalDetails />} />
+          <Route path="/personaldetails" element={<PersonalDetails />} />
           <Route path="/internships" element={<Internships />} />
           <Route path="/hackathons" element={<Hackathons />} />
+          
 
           {/* Optional fallback route */}
           <Route path="*" element={<h1 className="text-center text-3xl">404 - Page Not Found</h1>} />
