@@ -121,6 +121,7 @@ const projectData = [
     description: 'An intelligent MERN stack application that allows users to create professional resumes with modern templates, scoring using ATS.',
     tech: 'MongoDB, Express, React, Node, Firebase Auth, HTML/CSS',
     link: 'https://github.com/bhagavan444/resumebuilder',
+    video: 'https://drive.google.com/file/d/1ipW_G3kZSAzXtIlTftVP3ZRtoHo1WW4w/view?usp=sharing',
     category: 'Full Stack',
   },
   {
@@ -128,6 +129,7 @@ const projectData = [
     description: 'Flask + MobileNetV2-based image classifier to detect fruit/vegetable health. Real-time prediction and animated UI.',
     tech: 'TensorFlow, Keras, Flask, React, CSS, Python',
     link: 'https://github.com/bhagavan444/smartbidgeproject',
+    video: 'https://drive.google.com/file/d/1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/view?usp=sharing',
     category: 'Machine Learning',
   },
   {
@@ -135,6 +137,7 @@ const projectData = [
     description: "ML-powered system recommending careers based on user's data. Includes predictions, roadmap, and resources.",
     tech: 'Python, Flask, React, Scikit-learn, Pandas, HTML/CSS',
     link: 'https://github.com/bhagavan444/career-path-project',
+    video: 'https://drive.google.com/file/d/157c-gRjolkpnfsL_KqmQdoKSJcSzDtn4/view?usp=sharing',
     category: 'Machine Learning',
   },
   {
@@ -142,6 +145,7 @@ const projectData = [
     description: 'Full-stack app for buying/selling electronics. Built during a hackathon with real-time chat, image uploads, auth.',
     tech: 'MongoDB, Express, React, Node, Cloud Computing, Django',
     link: 'https://github.com/bhagavan444/hackathon-project',
+    video: 'https://drive.google.com/file/d/1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/view?usp=sharing',
     category: 'Full Stack',
   },
   {
@@ -149,6 +153,7 @@ const projectData = [
     description: 'An AI-driven app that detects fake news using TF-IDF, NLP, and classification models.',
     tech: 'Python, Flask, Scikit-learn, TF-IDF, NLTK, HTML/CSS',
     link: 'https://github.com/bhagavan444/fake-news-detector',
+    video: 'https://drive.google.com/file/d/1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/view?usp=sharing',
     category: 'Machine Learning',
   },
   {
@@ -156,6 +161,7 @@ const projectData = [
     description: 'LangChain-based chatbot that recommends careers through interactive dialogue, powered by AI.',
     tech: 'LangChain, Flask, React, Python',
     link: 'https://github.com/bhagavan444/smart-career-chatbot',
+    video: 'https://drive.google.com/file/d/1hZPMCocA0kJKl9iZehD6FLfpSk2-4O-4/view?usp=sharing',
     category: 'Machine Learning',
   },
   {
@@ -163,6 +169,7 @@ const projectData = [
     description: 'A Flask ML app predicting diabetes from user medical data. Simple and elegant UI.',
     tech: 'Python, Flask, Scikit-learn, Pandas, HTML/CSS',
     link: 'https://github.com/bhagavan444/diabetes-predictor-app',
+    video: 'https://drive.google.com/',
     category: 'Machine Learning',
   },
   {
@@ -170,6 +177,7 @@ const projectData = [
     description: 'Collection of mini-ML projects including diabetes, heart, and cancer risk predictors.',
     tech: 'Python, Flask, Scikit-learn, Pandas, TensorFlow, Numpy',
     link: 'https://github.com/bhagavan444',
+    video: 'https://drive.google.com/',
     category: 'Machine Learning',
   },
 ];
@@ -369,6 +377,19 @@ const styles = {
     fontWeight: '600',
     boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)',
     cursor: 'pointer',
+    alignItems: 'center',
+    gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
+  },
+  demoButton: {
+    display: 'inline-flex',
+    padding: 'clamp(0.6rem, 1.5vw, 1rem) clamp(1.2rem, 2.5vw, 1.8rem)',
+    background: 'linear-gradient(90deg, #c026d3, #3b82f6)',
+    color: '#f0faff',
+    borderRadius: 'clamp(10px, 1.8vw, 14px)',
+    textDecoration: 'none',
+    fontWeight: '600',
+    fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+    boxShadow: '0 0 15px rgba(192, 38, 211, 0.5)',
     alignItems: 'center',
     gap: 'clamp(0.3rem, 0.8vw, 0.5rem)',
   },
@@ -618,6 +639,19 @@ const ProjectTile = React.lazy(() => Promise.resolve({
             <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
             View Project
           </motion.a>
+          <motion.a
+            href={project.video}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.demoButton}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+            aria-label={`View demo video for ${project.title}`}
+          >
+            <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
+            Project Demo
+          </motion.a>
         </motion.div>
       </motion.article>
     </ProjectCardErrorBoundary>
@@ -634,6 +668,7 @@ const Projects = () => {
   const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [0.85, 1]), { stiffness: 150, damping: 20 });
   const rotate = useSpring(useTransform(scrollYProgress, [0, 0.5], [-5, 0]), { stiffness: 150, damping: 20 });
   const modalRef = useRef(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? 'hidden' : 'auto';
@@ -670,6 +705,10 @@ const Projects = () => {
 
   const handleTileClick = useCallback((project) => {
     setSelectedProject(project);
+  }, []);
+
+  const handleVideoClick = useCallback((video) => {
+    window.open(video, '_blank');
   }, []);
 
   const handleClose = useCallback(() => {
@@ -912,6 +951,19 @@ const Projects = () => {
                 >
                   <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
                   View Project
+                </motion.a>
+                <motion.a
+                  href={selectedProject.video}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.demoButton}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(192, 38, 211, 0.7)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`View demo video for ${selectedProject.title}`}
+                >
+                  <FaExternalLinkAlt style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }} />
+                  Project Demo
                 </motion.a>
                 <motion.button
                   style={{

@@ -1,242 +1,290 @@
+/* === 🎨 Variables & Base Styles === */
+:root {
+  --primary-blue: #00bfff; /* Deep Sky Blue */
+  --secondary-pink: #ff69b4; /* Hot Pink */
+  --accent-cyan: #00ffcc; /* Bright Cyan */
+  --dark-bg: #000f1e; /* Very Dark Blue */
+  --dark-bg-light: #001f3f; /* Slightly lighter dark blue */
+  --text-light: #e0e7ff; /* Off-white for text */
+  --gradient-1: linear-gradient(45deg, #00bfff, #ff69b4, #00ffcc);
+  --gradient-2: linear-gradient(90deg, #3b82f6, #a855f7, #facc15);
+  --gradient-3: linear-gradient(90deg, #00ffcc, #ff33cc);
+  --box-shadow-light: 0 4px 15px rgba(0, 191, 255, 0.2);
+  --box-shadow-dark: 0 8px 30px rgba(0, 191, 255, 0.4), 0 -2px 15px rgba(255, 105, 180, 0.3);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Use a modern font, ensure it's imported */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0d1117; /* Example dark background for entire page */
+  color: var(--text-light);
+}
+
 /* === 🔝 Animated Navbar === */
 .animated-navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 15, 30, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent; /* Default to transparent */
   z-index: 1000;
-  padding: clamp(0.8rem, 2vw, 1.2rem) 0;
-  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2), 0 -1px 8px rgba(192, 38, 211, 0.1);
-  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-  transform: perspective(800px) translateZ(0);
+  padding: 1rem 0; /* Consistent padding */
+  transition: all 0.4s ease;
+  will-change: background, box-shadow, backdrop-filter, transform; /* Optimize transitions */
 }
 
-/* Hover effect for navbar */
-.animated-navbar:hover {
-  background: rgba(0, 15, 30, 0.8);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3), 0 -2px 12px rgba(192, 38, 211, 0.2);
-  transform: perspective(800px) translateZ(3px);
-}
-
-/* Scroll effect for visibility */
 .animated-navbar.scrolled {
   background: rgba(0, 15, 30, 0.9);
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  backdrop-filter: blur(15px); /* Slightly stronger blur */
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: var(--box-shadow-dark);
+  padding: 0.8rem 0; /* Smaller padding when scrolled */
 }
 
 /* === 📏 Nav Container === */
 .nav-container {
-  max-width: clamp(800px, 90vw, 1200px);
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 clamp(1rem, 2vw, 2rem);
-  gap: clamp(1rem, 2vw, 2rem);
-  height: clamp(40px, 5vw, 50px);
+  padding: 0 2rem; /* Left/right padding */
+  height: 60px; /* Fixed height for clarity */
 }
 
 /* === 🌟 Nav Logo === */
 .nav-logo a {
-  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  font-size: 1.8rem;
   font-weight: 900;
-  background: linear-gradient(45deg, #3b82f6, #c026d3, #4c1d95);
-  background-size: 200%;
+  background: var(--gradient-1);
+  background-size: 300%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   text-decoration: none;
-  animation: gradientFlow 5s linear infinite;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  animation: gradientFlow 8s linear infinite; /* Slower, smoother gradient */
+  text-shadow: 0 0 12px var(--primary-blue), 0 0 20px rgba(255, 105, 180, 0.4);
   transition: transform 0.3s ease, text-shadow 0.3s ease;
+  perspective: 1000px; /* For 3D transform */
 }
 
-.nav-logo a:hover,
-.nav-logo a:focus {
-  transform: scale(1.1);
-  text-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 20px rgba(192, 38, 211, 0.5);
+.nav-logo a:hover {
+  transform: scale(1.08) rotateY(5deg); /* Subtle 3D hover */
+  text-shadow: 0 0 18px var(--primary-blue), 0 0 28px var(--secondary-pink);
 }
 
-/* === 🔗 Nav Links === */
+/* === 🔗 Nav Links (Desktop) === */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(0.5rem, 1vw, 1rem);
+  gap: 1.5rem; /* Increased gap for better spacing */
+  flex-grow: 1; /* Allow links to take available space */
+  justify-content: flex-end; /* Push links to the right */
 }
 
-.nav-link a {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-  font-weight: 600;
-  background: linear-gradient(90deg, #3b82f6, #c026d3, #e0e7ff);
-  background-size: 200%;
+.nav-link-wrapper { /* Wrapper for motion.div */
+  display: flex;
+}
+
+.nav-link-wrapper a {
+  font-size: 1.05rem; /* Slightly adjusted size */
+  font-weight: 700;
+  background: var(--gradient-2);
+  background-size: 300%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   text-decoration: none;
   position: relative;
-  padding: clamp(0.5rem, 1vw, 0.8rem);
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+  padding: 0.6rem 0;
+  transition: transform 0.3s ease, text-shadow 0.3s ease, color 0.3s ease;
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
 }
 
-.nav-link a::after {
+.nav-link-wrapper a::after {
   content: '';
   position: absolute;
   width: 0;
-  height: 2px;
-  bottom: -4px;
+  height: 3px; /* Thicker underline */
+  bottom: -6px; /* Slightly lower */
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(90deg, #3b82f6, #c026d3);
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-pink));
+  transition: width 0.3s ease, background 0.3s ease;
   border-radius: 2px;
 }
 
-.nav-link a:hover::after,
-.nav-link a.active-link::after,
-.nav-link a:focus::after {
-  width: 80%;
+.nav-link-wrapper a:hover::after,
+.nav-link-wrapper a.active-link::after,
+.nav-link-wrapper a:focus::after {
+  width: 90%; /* Wider underline */
 }
 
-.nav-link a:hover,
-.nav-link a:focus {
-  transform: translateY(-2px);
-  text-shadow: 0 0 12px rgba(59, 130, 246, 0.7), 0 0 15px rgba(192, 38, 211, 0.5);
+.nav-link-wrapper a:hover,
+.nav-link-wrapper a:focus {
+  transform: translateY(-3px); /* More pronounced lift */
+  text-shadow: 0 0 15px var(--primary-blue), 0 0 20px var(--secondary-pink);
 }
 
-.nav-link a.active-link {
-  text-shadow: 0 0 12px rgba(59, 130, 246, 0.8), 0 0 15px rgba(192, 38, 211, 0.6);
+.nav-link-wrapper a.active-link {
+  text-shadow: 0 0 18px var(--primary-blue), 0 0 25px var(--secondary-pink);
 }
 
-/* === 🌐 Nav Icons === */
-.nav-icons {
+/* === 🌐 Nav Icons (Desktop) === */
+.nav-icons-desktop { /* New class for desktop icons */
   display: flex;
-  gap: clamp(1rem, 2vw, 1.5rem);
+  gap: 1.2rem;
+  margin-left: 2rem; /* Add some margin to separate from links */
 }
 
-.nav-icons a {
-  font-size: clamp(1.4rem, 2vw, 1.6rem);
-  background: linear-gradient(90deg, #3b82f6, #c026d3);
-  background-size: 200%;
+.nav-icons-desktop a {
+  font-size: 1.6rem;
+  background: var(--gradient-3);
+  background-size: 300%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   transition: transform 0.3s ease, text-shadow 0.3s ease;
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+  text-shadow: 0 0 10px var(--accent-cyan);
 }
 
-.nav-icons a:hover,
-.nav-icons a:focus {
-  transform: scale(1.15);
-  text-shadow: 0 0 15px rgba(59, 130, 246, 0.7), 0 0 20px rgba(192, 38, 211, 0.5);
+.nav-icons-desktop a:hover,
+.nav-icons-desktop a:focus {
+  transform: scale(1.2) rotate(8deg); /* More dynamic hover */
+  text-shadow: 0 0 20px var(--accent-cyan), 0 0 30px var(--secondary-pink);
 }
 
 /* === 🍔 Hamburger Menu === */
 .hamburger {
-  display: none;
+  display: none; /* Hidden by default on desktop */
   cursor: pointer;
-  font-size: clamp(1.8rem, 2.5vw, 2rem);
-  background: linear-gradient(45deg, #3b82f6, #c026d3);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
-  padding: 0.5rem;
+  font-size: 2rem;
+  color: var(--accent-cyan);
+  padding: 0.6rem;
   border-radius: 50%;
+  background: rgba(0, 191, 255, 0.1); /* Subtle background */
+  transition: all 0.3s ease;
+  outline: none; /* Handled by focus state */
 }
 
 .hamburger:hover,
 .hamburger:focus {
-  transform: scale(1.15) rotate(45deg);
-  text-shadow: 0 0 15px rgba(59, 130, 246, 0.7), 0 0 20px rgba(192, 38, 211, 0.5);
+  background: rgba(0, 191, 255, 0.2);
+  color: var(--secondary-pink);
+  box-shadow: 0 0 15px var(--accent-cyan);
 }
 
 /* === 📱 Mobile Responsive Design === */
 @media (max-width: 768px) {
   .hamburger {
-    display: block;
+    display: block; /* Show hamburger on mobile */
   }
 
   .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
+    display: none; /* Hide desktop links initially */
+    position: fixed; /* Use fixed for full viewport overlay */
+    top: 0; /* From top of viewport */
     left: 0;
-    right: 0;
     width: 100vw;
-    background: linear-gradient(135deg, rgba(0, 15, 30, 0.95), rgba(10, 0, 40, 0.95));
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(135deg, rgba(0, 15, 30, 0.98), rgba(10, 0, 40, 0.98));
     flex-direction: column;
-    padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
-    gap: clamp(1.2rem, 2.5vw, 1.5rem);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(59, 130, 246, 0.3);
-    border-radius: 0 0 15px 15px;
-    z-index: 1100;
+    justify-content: center; /* Center items vertically */
     align-items: center;
-    animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.4);
+    z-index: 999; /* Below navbar, above content */
+    overflow-y: auto; /* Allow scrolling if many links */
+    transform: translateX(100%); /* Start off-screen to the right */
+    transition: transform 0.4s ease-out;
   }
 
   .nav-links.open {
     display: flex;
-    transform: scale(1.02);
+    transform: translateX(0); /* Slide in */
   }
 
-  .nav-link a {
-    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
-    padding: clamp(1rem, 2vw, 1.2rem);
+  .nav-link-wrapper a {
+    font-size: 1rem; /* Larger font for mobile */
+    padding: 0.3rem 0;
     width: 100%;
     text-align: center;
-    background: linear-gradient(90deg, #3b82f6, #c026d3, #e0e7ff);
+    background: var(--gradient-2);
     background-size: 200%;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
   }
 
-  .nav-icons {
-    display: none;
+  .nav-link-wrapper a::after {
+    height: 4px; /* Thicker underline on mobile */
+    bottom: -8px;
+  }
+
+  /* Separate mobile icons */
+  .nav-icons-mobile {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem; /* Space from links */
+  }
+
+  .nav-icons-mobile a {
+    font-size: 1rem; /* Larger icons on mobile */
+    background: var(--gradient-3);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 12px var(--accent-cyan);
+  }
+
+  .nav-icons-mobile a:hover,
+  .nav-icons-mobile a:focus {
+    transform: scale(1.15);
+    text-shadow: 0 0 25px var(--accent-cyan), 0 0 35px var(--secondary-pink);
   }
 
   .nav-container {
-    padding: 0 clamp(0.8rem, 1.5vw, 1rem);
-    height: clamp(40px, 5vw, 50px);
+    padding: 0 1rem;
+    height: 55px; /* Adjust height for mobile */
   }
 
   .nav-logo a {
-    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-size: 1.6rem;
   }
 }
 
 /* === 📱 Tablet Responsive Design === */
 @media (min-width: 769px) and (max-width: 1024px) {
   .nav-container {
-    max-width: clamp(600px, 90vw, 900px);
-    padding: 0 clamp(1rem, 2vw, 1.5rem);
-    height: clamp(40px, 5vw, 50px);
+    max-width: 960px; /* Slightly smaller max-width for tablets */
+    padding: 0 1.5rem;
   }
 
   .nav-logo a {
-    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    font-size: 1.7rem;
   }
 
   .nav-links {
-    gap: clamp(0.8rem, 1.5vw, 1rem);
+    gap: 1.2rem;
   }
 
-  .nav-link a {
-    font-size: clamp(0.9rem, 1.5vw, 1rem);
-    padding: clamp(0.5rem, 1vw, 0.7rem);
+  .nav-link-wrapper a {
+    font-size: 1rem;
+    padding: 0.5rem 0;
   }
 
-  .nav-icons {
-    gap: clamp(0.8rem, 1.5vw, 1.2rem);
+  .nav-icons-desktop {
+    gap: 1rem;
+    margin-left: 1.5rem;
   }
 
-  .nav-icons a {
-    font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+  .nav-icons-desktop a {
+    font-size: 1.5rem;
   }
 }
 
@@ -246,33 +294,41 @@
   100% { background-position: 200% 0%; }
 }
 
-@keyframes slideIn {
-  from { transform: translateY(-30px) scale(0.95); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
-}
-
-@keyframes holographicPulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
+/* @keyframes slideIn and holographicPulse are removed as Framer Motion handles these better,
+   and holographicPulse wasn't directly used or clearly defined in the original. */
 
 /* === 🎨 Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
   .animated-navbar,
   .nav-logo a,
-  .nav-link a,
-  .nav-icons a,
+  .nav-link-wrapper a,
+  .nav-icons-desktop a,
+  .nav-icons-mobile a,
   .hamburger,
   .nav-links {
-    transition: none;
-    animation: none;
+    transition: none !important; /* !important to override inline styles */
+    animation: none !important;
+  }
+
+  .animated-navbar.scrolled {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .nav-logo a:hover,
+  .nav-link-wrapper a:hover,
+  .nav-icons-desktop a:hover,
+  .nav-icons-mobile a:hover {
+    transform: none !important;
   }
 }
 
 /* Focus states for accessibility */
-.nav-link a:focus,
-.nav-icons a:focus,
+.nav-link-wrapper a:focus,
+.nav-icons-desktop a:focus,
+.nav-icons-mobile a:focus,
 .hamburger:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
+  outline: 3px solid var(--accent-cyan); /* Thicker outline */
+  outline-offset: 4px; /* More offset */
+  border-radius: 4px; /* Slightly rounded outline */
 }
