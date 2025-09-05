@@ -56,7 +56,8 @@ body {
 
 /* === 🌟 Nav Logo === */
 .nav-logo a {
-  font-size: 1.8rem;
+  margin-right: 30px;
+  font-size: 1.5rem;
   font-weight: 900;
   background: var(--gradient-1);
   background-size: 300%;
