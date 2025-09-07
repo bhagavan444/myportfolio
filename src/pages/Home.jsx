@@ -801,7 +801,7 @@ const Home = () => {
           <motion.h2
             style={{ ...styles.title, ...responsiveStyles.title }}
           >
-            👋 Hi, I'm <span style={{ background: 'linear-gradient(90deg, #7c3aed, #00c6ff)', backgroundClip: 'text', WebkitBackgroundClip: 'text' }}>Bhagavan GopalaJosyula</span>
+            👋 Hi, I'm <span style={{ background: 'linear-gradient(90deg, #7c3aed, #00c6ff)', backgroundClip: 'text', WebkitBackgroundClip: 'text' }}>Siva Satya Sai Bhagavan</span>
           </motion.h2>
           <motion.div
             style={styles.titleUnderline}

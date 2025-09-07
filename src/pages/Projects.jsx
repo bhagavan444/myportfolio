@@ -154,7 +154,7 @@ const projectData = [
   description: 'AI-powered web application that identifies fake news using NLP techniques, TF-IDF vectorization, and machine learning classification models.',
   tech: 'Python, Flask, Scikit-learn, NLTK, TF-IDF, HTML, CSS, JavaScript',
   link: 'https://github.com/bhagavan444/fake-news-detector',
-  //video: 'https://drive.google.com/file/d/1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/view?usp=sharing',
+  video: 'https://drive.google.com/file/d/1sBIB10_UrncsuAhfs3ekjSJbE58LxUQO/view?usp=sharing',
   category: 'Machine Learning',
 },
   {
@@ -171,14 +171,6 @@ const projectData = [
   tech: 'Python, Flask, React, Scikit-learn, Pandas, HTML/CSS',
   link: 'https://github.com/bhagavan444/diabetes-predictor-app',
   video: 'https://drive.google.com/file/d/1UYQasrq1EMuDOcBZiAHF19JyR6F5T7g4/view?usp=sharing',
-  category: 'Machine Learning',
-},
-  {
-  title: '📊 Machine Learning Predictions',
-  description: 'Collection of mini-ML classifications & predictions including diabetes, heart, and cancer risk predictors.',
-  tech: 'Python, Flask, Scikit-learn, Pandas, TensorFlow, NumPy, Matplotlib, Seaborn, Jupyter Notebook',
-  link: 'https://github.com/bhagavan444',
-  video: 'https://drive.google.com/',
   category: 'Machine Learning',
 }
 

@@ -670,7 +670,7 @@ const About = () => {
           <motion.h2
             style={{ ...styles.title, ...responsiveStyles.title }}
           >
-            👋 About Bhagavan GopalaJosyula
+            👋 About Siva Satya Sai Bhagavan GopalaJosyula
           </motion.h2>
           <motion.div
             style={styles.titleUnderline}
