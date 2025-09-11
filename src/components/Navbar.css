@@ -80,7 +80,7 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 0.7rem; /* Increased gap for better spacing */
+  gap: 1.5rem; /* Increased gap for better spacing */
   flex-grow: 1; /* Allow links to take available space */
   justify-content: flex-end; /* Push links to the right */
 }
@@ -190,12 +190,12 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh; /* Full viewport height */
-    background: linear-gradient(135deg, rgba(0, 15, 30, 0.98), rgba(10, 0, 40, 0.98));
+    background:black;
     flex-direction: column;
     justify-content: center; /* Center items vertically */
     align-items: center;
     padding: 1rem;
-    gap: 1.3rem;
+    gap: 3rem;
     box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.4);
     z-index: 999; /* Below navbar, above content */
     overflow-y: auto; /* Allow scrolling if many links */

@@ -30,7 +30,7 @@ const Navbar = () => {
   // Define navigation links
   const navLinks = [
     { label: "Home", path: "home" },
-    { label: "About", path: "about" },
+    //{ label: "About", path: "about" },
     { label: "Education", path: "education" },
     { label: "Workshops", path: "workshops" },
     { label: "Skills", path: "myskills" },
@@ -40,7 +40,7 @@ const Navbar = () => {
     { label: "Projects", path: "projects" },
     { label: "Resume", path: "resume" },
     { label: "Contact", path: "contact" },
-    { label: "Details", path: "personaldetails" },
+    //{ label: "Details", path: "personaldetails" },
   ];
 
   // Animation variants for Framer Motion
